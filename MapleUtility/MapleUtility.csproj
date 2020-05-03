@@ -146,6 +146,7 @@
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
+    <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerUIBar.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelDebug.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelInformation.cs" />
@@ -163,6 +164,9 @@
     </Compile>
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlSoundSetting.xaml.cs">
       <DependentUpon>UserControlSoundSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml.cs">
+      <DependentUpon>WindowTimerUIBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\WindowInformation.xaml.cs">
       <DependentUpon>WindowInformation.xaml</DependentUpon>
@@ -223,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Plugins\Views\UserControls\Timer\Setting\UserControlSoundSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,5 @@
-﻿using MapleUtility.Plugins.Helpers;
+﻿using MapleUtility.Plugins.Common;
+using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.ViewModels.Views;
@@ -35,6 +36,9 @@ namespace MapleUtility.Plugins.Views.Windows
             var settingItem = SettingHelper.LoadSettingFile();
             if (settingItem == null)
                 settingItem = new SettingItem();
+
+            Defines.UIBAR_WIDTH = settingItem.UIBAR_WIDTH;
+            Defines.UIBAR_HEIGHT = settingItem.UIBAR_HEIGHT;
 
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
             timerVM.Initialize(settingItem);
@@ -86,7 +90,9 @@ namespace MapleUtility.Plugins.Views.Windows
                 IsAlertShowScreenChecked = timerVM.IsAlertShowScreenChecked,
                 IsTimerResetChecked = timerVM.IsTimerResetChecked,
                 TimerOnOffKey = timerVM.TimerOnOffKey,
-                TimerOnOffModifierKey = timerVM.TimerOnOffModifierKey
+                TimerOnOffModifierKey = timerVM.TimerOnOffModifierKey,
+                UIBAR_WIDTH = Defines.UIBAR_WIDTH,
+                UIBAR_HEIGHT = Defines.UIBAR_HEIGHT
             };
             SettingHelper.SaveSettingFile(settingItem);
 

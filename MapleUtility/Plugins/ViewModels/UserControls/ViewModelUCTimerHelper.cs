@@ -159,6 +159,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand PlayTestSoundCommand { get; set; }
         public ICommand OpenSettingCommand { get; set; }
         public ICommand CheckCommand { get; set; }
+        public ICommand OpenUIBarCommand { get; set; }
         public ICommand SettingKeyCommand { get; set; }
         #endregion
 
@@ -172,10 +173,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             AddTimerCommand = new RelayCommand(o => AddTimerEvent());
             RemoveTimerCommand = new RelayCommand(o => RemoveTimerEvent());
             RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((TimerItem) o));
-            SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
             PlayTestSoundCommand = new RelayCommand(o => PlaySound((TimerItem) o));
             OpenSettingCommand = new RelayCommand(o => OpenSettingEvent((Window) o));
             CheckCommand = new RelayCommand(o => CheckEvent());
+            OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
+            SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
         }
 
         public void Initialize(SettingItem settingItem)
@@ -430,6 +432,16 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
 
             return true;
+        }
+
+        private void OpenUIBarEvent()
+        {
+            var window = WindowTimerUIBar.Instance;
+
+            var vm = window.DataContext as ViewModelTimerUIBar;
+            vm.RunningTimerList = RunningTimerList;
+
+            window.Show();
         }
 
         private void SettingKeyEvent(object parameter)

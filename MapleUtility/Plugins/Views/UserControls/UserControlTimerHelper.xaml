@@ -211,7 +211,11 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="● 현재 실행중인 타이머" Margin="3, 0" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="3, 0, 0, 0">
+                <TextBlock Text="● 현재 실행중인 타이머" VerticalAlignment="Center"/>
+                <Button Content="UIBar" Command="{Binding OpenUIBarCommand}" Margin="10, 8, 0, 8" Padding="12, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
+            </StackPanel>
+            
             <telerik:RadListBox x:Name="lbRunningTimer" Grid.Row="1" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" >
                 <telerik:RadListBox.Style>
                     <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">

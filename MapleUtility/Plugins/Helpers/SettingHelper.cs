@@ -60,5 +60,8 @@ namespace MapleUtility.Plugins.Helpers
         public bool IsTimerResetChecked = false;
         public Key? TimerOnOffKey = null;
         public ModifierKeys? TimerOnOffModifierKey = null;
+
+        public int UIBAR_WIDTH = 400;
+        public int UIBAR_HEIGHT = 110;
     }
 }
