@@ -1,0 +1,271 @@
+﻿<UserControl x:Class="MapleUtility.Plugins.Views.Windows.UserControls.UserControlTimerHelper"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+             xmlns:converters="clr-namespace:MapleUtility.Plugins.Converters"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1000">
+
+    <UserControl.Resources>
+        <converters:MultiParamConverter x:Key="MultiParamConverter"/>
+
+        <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="RemainTime" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0, 5">
+                <telerik:RadToggleSwitchButton IsChecked="{Binding IsTimerON}" ContentPosition="Both" CheckedContent="Timer ON" UncheckedContent="Timer OFF" TrackWidth="40"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <telerik:RadComboBox Width="150" ItemsSource="{Binding PresetList}" SelectedItem="{Binding SelectedPreset}" DisplayMemberPath="Name"/>
+                    <Button Width="100" Content="Add Timer" Command="{Binding AddTimerCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                    <telerik:RadButton Width="100" Content="Remove Timer" Command="{Binding RemoveTimerCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                        <telerik:RadButton.Style>
+                            <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsRemoveTimerEnabeld}" Value="True">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </telerik:RadButton.Style>
+                    </telerik:RadButton>
+
+                    <Button Width="100" Content="Open Setting" Command="{Binding OpenSettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
+                </StackPanel>
+            </Grid>
+
+            <telerik:RadGridView
+                Grid.Row="1"
+                RowHeight="36"
+                ItemsSource="{Binding PresetTimerList}"
+                HorizontalAlignment="Stretch"
+                AutoGenerateColumns="False"
+                CanUserFreezeColumns="False"
+                CanUserResizeColumns="False"
+                CanUserReorderColumns="False"
+                RowIndicatorVisibility="Collapsed"
+                GroupRenderMode="Flat"
+                ShowGroupPanel="False"
+                EditTriggers="CellClick">
+
+                <telerik:RadGridView.Resources>
+                    <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
+                        <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                </telerik:RadGridView.Resources>
+
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn
+                        Width="35"
+                        IsReadOnly="True"
+                        IsFilterable="False"
+                        IsSortable="False"
+                        TextAlignment="Center"
+                        EditTriggers="CellClick">
+
+                        <telerik:GridViewDataColumn.Header>
+                            <Grid HorizontalAlignment="Right">
+                                <CheckBox IsChecked="{Binding DataContext.IsTimerAllChecked, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:UserControlTimerHelper}}" HorizontalAlignment="Center"/>
+                            </Grid>
+                        </telerik:GridViewDataColumn.Header>
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource AncestorType=local:UserControlTimerHelper}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
+                        Width="2*"
+					    Header="알림 이름"
+                        HeaderTextAlignment="Center"
+					    DataMemberBinding="{Binding Name}"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsSortable="False"/>
+
+                    <telerik:GridViewDataColumn
+                        Width="150"
+					    Header="단축키 설정"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding KeyString}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SettingKeyCommand}" mat:MaterialAssist.FocusBrush="Transparent">
+                                    <Button.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource MultiParamConverter}">
+                                            <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}"/>
+                                            <Binding />
+                                        </MultiBinding>
+                                    </Button.CommandParameter>
+                                </Button>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
+                        Width="140"
+					    Header="타이머 시간"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <telerik:RadTimeSpanPicker HorizontalAlignment="Center" VerticalAlignment="Center" Value="{Binding TimerTime, Mode=TwoWay}" StringFormat="hh\:mm\:ss" TimeSpanWatermarkContent="Select Time.." mat:MaterialAssist.FocusBrush="Transparent">
+                                    <telerik:RadTimeSpanPicker.TimeSpanComponents>
+                                        <telerik:HourTimeSpanComponent Minimum="0" Maximum="23"/>
+                                        <telerik:MinuteTimeSpanComponent Step="1"/>
+                                        <telerik:SecondTimeSpanComponent Step="1"/>
+                                    </telerik:RadTimeSpanPicker.TimeSpanComponents>
+                                </telerik:RadTimeSpanPicker>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
+                        Width="3*"
+					    Header="알림 사운드"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="45"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <telerik:RadComboBox Grid.Column="0"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SoundList}"
+                                        SelectedItem="{Binding SoundItem, Mode=TwoWay}"
+                                        ClearSelectionButtonVisibility="Visible" 
+                                        EmptyText="(사운드 없음)"
+                                        DisplayMemberPath="Name"
+                                        VerticalContentAlignment="Center">
+                                        
+                                        <telerik:RadComboBox.ClearSelectionButtonContent>
+                                            <Grid Width="120" HorizontalAlignment="Left">
+                                                <TextBlock Text="(사운드 없음)"/>
+                                            </Grid>
+                                        </telerik:RadComboBox.ClearSelectionButtonContent>
+                                    </telerik:RadComboBox>
+                                    <telerik:RadSlider Value="{Binding TimerVolume}" TickFrequency="10" TickPlacement="BottomRight" Minimum="0" Maximum="100" Grid.Column="1" Margin="10, 0" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Text="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" Margin="5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                    <Button Grid.Column="3" Margin="0, 0, 5, 0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.PlayTestSoundCommand}" CommandParameter="{Binding .}" Padding="3" VerticalAlignment="Center" HorizontalContentAlignment="Center" mat:MaterialAssist.FocusBrush="Transparent">
+                                        <Button.Content>
+                                            <Image Source="/MapleUtility;component/Plugins/Images/sound.png"/>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                </telerik:RadGridView.Columns>
+
+            </telerik:RadGridView>
+
+        </Grid>
+        <Grid Grid.Column="1" Margin="5, 0, 0, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="● 현재 실행중인 타이머" Margin="3, 0" VerticalAlignment="Center"/>
+            <telerik:RadListBox x:Name="lbRunningTimer" Grid.Row="1" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" >
+                <telerik:RadListBox.Style>
+                    <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">
+                        <Setter Property="Background" Value="#11000000"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsTimerON}" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </telerik:RadListBox.Style>
+                <telerik:RadListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource RadListBoxItemStyle}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="telerik:RadListBoxItem">
+                                    <Grid Background="Transparent">
+                                        <Grid Margin="0">
+                                            <Border x:Name="BorderVisual" BorderBrush="LightGray" BorderThickness="0 0 0 1"/>
+                                            <mat:FluentControl x:Name="Fluent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ClipToBounds="True">
+                                                <ContentControl x:Name="contentPresenter"
+                                                    Margin="{TemplateBinding Padding}"
+                                                    Foreground="{TemplateBinding Foreground}"
+                                                    IsTabStop="False"
+                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                    Content="{TemplateBinding Content}"
+                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                                            </mat:FluentControl>
+                                        </Grid>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </telerik:RadListBox.ItemContainerStyle>
+                <telerik:RadListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="5, 0, 0 ,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="60"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding RemainTime, StringFormat=hh\\:mm\\:ss}" VerticalAlignment="Center"/>
+                            <Button Grid.Column="2" Content="✕" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.RemoveRunningTimerCommand}" CommandParameter="{Binding .}" FontSize="10" mat:MaterialAssist.FocusBrush="Transparent" Padding="0, 3"/>
+                        </Grid>
+                    </DataTemplate>
+                </telerik:RadListBox.ItemTemplate>
+            </telerik:RadListBox>
+        </Grid>
+    </Grid>
+</UserControl>

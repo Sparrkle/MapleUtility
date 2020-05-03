@@ -1,0 +1,45 @@
+﻿<Window x:Class="MapleUtility.Plugins.Views.Windows.WindowMain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
+        xmlns:usercontrol="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+        Closed="Window_Closed"
+        mc:Ignorable="d"
+        Title="Maple Utility" Height="600" Width="1050" MinHeight="600" MinWidth="1050">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <telerik:RadTabControl Grid.Row="0">
+            <telerik:RadTabItem Header="Timer Helper" Width="120">
+                <telerik:RadTabItem.Content>
+                    <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
+
+        <Grid Grid.Row="1" Background="#dddddd">
+            <Grid.Resources>
+                <Style TargetType="telerik:RadButton" BasedOn="{StaticResource RadButtonStyle}">
+                    <Setter Property="BorderBrush" Value="#888888"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                </Style>
+            </Grid.Resources>
+
+            <Button Command="{Binding DonateCommand}" HorizontalAlignment="Left" Margin="5" Padding="10, -2, 10, 0" Background="Transparent" Foreground="#666666" Content="Donate" BorderThickness="5" mat:MaterialAssist.CornerRadius="15" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Command="{Binding InformationCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" HorizontalAlignment="Right" Margin="7" Padding="0" Background="Transparent" BorderThickness="5" mat:MaterialAssist.CornerRadius="255" mat:MaterialAssist.FocusBrush="Transparent">
+                <Button.Content>
+                    <Image Source="/MapleUtility;component/Plugins/Images/questionmark.png"/>
+                </Button.Content>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

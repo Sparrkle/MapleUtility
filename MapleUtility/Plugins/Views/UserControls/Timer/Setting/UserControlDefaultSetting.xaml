@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting.UserControlDefaultSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
+             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <Grid Margin="5">
+        <StackPanel Orientation="Vertical" Margin="5, 0">
+            
+            <StackPanel Orientation="Horizontal" Height="40" Margin="0, 2" ToolTip="체크가 해제되어 있으면, 지정된 시간이 지날때 까지 타이머가 꺼지지 않습니다.">
+                <TextBlock Text="한번 더 누를시 타이머 초기화" VerticalAlignment="Center" Width="270"/>
+                <CheckBox IsChecked="{Binding IsTimerResetChecked}" Margin="5, 0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0, 2" Height="40">
+                <TextBlock Text="타이머 ON/OFF 단축키" VerticalAlignment="Center" Width="270"/>
+                <Button Width="130" Content="{Binding OnOffKeyString}" Command="{Binding OnOffSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 5"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2, 0, 0">
+                <TextBlock Text="타이머 완료 시 화면 하단에 알림 창 표시" VerticalAlignment="Center" Width="270"/>
+                <CheckBox IsChecked="{Binding IsAlertShowScreenChecked}" Margin="5, 0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="20, 0, 0, 2" Height="38" IsEnabled="{Binding IsAlertShowScreenChecked}">
+                <TextBlock Text="타이머 완료 알림 창 지속 시간 (초)" VerticalAlignment="Center" Width="250"/>
+                <TextBox Width="80" Text="{Binding AlertDurationSecond}" Margin="5, 5"/>
+            </StackPanel>
+
+        </StackPanel>        
+    </Grid>
+</UserControl>
