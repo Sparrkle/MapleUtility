@@ -61,9 +61,9 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
         {
             Key inputKey = e.Key.Equals(Key.ImeProcessed) ? e.ImeProcessedKey : e.Key;
 
-            if (!inputKey.HasFlag(Key.LeftCtrl) && !inputKey.HasFlag(Key.LeftAlt) && !inputKey.HasFlag(Key.LeftShift)
-                && !inputKey.HasFlag(Key.RightCtrl) && !inputKey.HasFlag(Key.RightAlt) && !inputKey.HasFlag(Key.RightShift)
-                && !inputKey.HasFlag(Key.LWin) && !inputKey.HasFlag(Key.RWin) && !inputKey.HasFlag(Key.KanaMode))
+            if (!(inputKey == Key.LeftCtrl) && !(inputKey == Key.LeftAlt) && !(inputKey == Key.LeftShift)
+                && !(inputKey == Key.RightCtrl) && !(inputKey == Key.RightAlt) && !(inputKey == Key.RightShift)
+                && !(inputKey == Key.LWin) && !(inputKey == Key.RWin) && !(inputKey == Key.KanaMode))
                 PressedKey = inputKey;
             else
                 PressedKey = null;
