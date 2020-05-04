@@ -45,6 +45,17 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
             }
         }
 
+        private bool isShowUIBarTimerName;
+        public bool IsShowUIBarTimerName
+        {
+            get { return isShowUIBarTimerName; }
+            set
+            {
+                isShowUIBarTimerName = value;
+                OnPropertyChanged("IsShowUIBarTimerName");
+            }
+        }
+
         #region Button Command Variables
         public ICommand CloseCommand { get; set; }
         #endregion

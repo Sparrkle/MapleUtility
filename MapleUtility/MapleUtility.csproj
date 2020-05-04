@@ -142,6 +142,7 @@
     <Compile Include="Plugins\Helpers\SettingHelper.cs" />
     <Compile Include="Plugins\Lib\Notifier.cs" />
     <Compile Include="Plugins\Lib\RelayCommand.cs" />
+    <Compile Include="Plugins\Models\ImageItem.cs" />
     <Compile Include="Plugins\Models\PresetItem.cs" />
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
@@ -152,6 +153,9 @@
     <Compile Include="Plugins\ViewModels\Views\ViewModelInformation.cs" />
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlPresetSetting.xaml.cs">
       <DependentUpon>UserControlPresetSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlImageSetting.xaml.cs">
+      <DependentUpon>UserControlImageSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\UserControls\UserControlTimerHelper.xaml.cs">
       <DependentUpon>UserControlTimerHelper.xaml</DependentUpon>
@@ -215,6 +219,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Plugins\Views\UserControls\Timer\Setting\UserControlPresetSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\Views\UserControls\Timer\Setting\UserControlImageSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

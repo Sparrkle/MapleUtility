@@ -97,7 +97,7 @@ namespace MapleUtility.Plugins.Models
             {
                 endTime = value;
                 OnPropertyChanged("EndTime");
-                OnPropertyChanged("RemainTime");
+                RefreshRemainTime();
             }
         }
 
@@ -107,10 +107,40 @@ namespace MapleUtility.Plugins.Models
             get
             {
                 var remainTime = EndTime - DateTime.Now.AddSeconds(-1);
-                if (remainTime >= TimerTime.Value.Add(new TimeSpan(0, 0, 1)))
-                    return remainTime.Value.Add(new TimeSpan(0, 0, -1));
-
                 return remainTime;
+            }
+        }
+
+        [JsonIgnore]
+        public string RemainTimeSeconds
+        {
+            get
+            {
+                if (!RemainTime.HasValue)
+                    return "";
+
+                var totalSeconds = RemainTime.Value.TotalSeconds - 1;
+
+                if (totalSeconds > 1.0f)
+                    return totalSeconds.ToString("F0");
+                else
+                    return totalSeconds.ToString("F1");
+            }
+        }
+
+        [JsonIgnore]
+        public float RemainRadius
+        {
+            get
+            {
+                if (!RemainTime.HasValue || !TimerTime.HasValue)
+                    return 359.9f;
+
+                var result = (float)(360.0 * (RemainTime.Value.TotalSeconds / TimerTime.Value.TotalSeconds));
+                if (result >= 360.0f)
+                    return 359.9f;
+
+                return result;
             }
         }
 
@@ -148,6 +178,17 @@ namespace MapleUtility.Plugins.Models
                     return resultText.Substring(0, resultText.Length - 2);
                 else
                     return resultText + AlertKey.ToString();
+            }
+        }
+
+        private ImageItem imageItem;
+        public ImageItem ImageItem
+        {
+            get { return imageItem; }
+            set
+            {
+                imageItem = value;
+                OnPropertyChanged("ImageItem");
             }
         }
 
@@ -190,6 +231,8 @@ namespace MapleUtility.Plugins.Models
         public void RefreshRemainTime()
         {
             OnPropertyChanged("RemainTime");
+            OnPropertyChanged("RemainTimeSeconds");
+            OnPropertyChanged("RemainRadius");
         }
 
         public void RefreshSoundString()
@@ -212,6 +255,7 @@ namespace MapleUtility.Plugins.Models
                 AlertKey = this.AlertKey,
                 TimerTime = this.TimerTime,
                 Volume = this.Volume,
+                ImageItem = this.ImageItem,
                 SoundItem = this.SoundItem,
                 Name = this.Name
             };

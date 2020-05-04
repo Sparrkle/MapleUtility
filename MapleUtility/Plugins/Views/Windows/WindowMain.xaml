@@ -9,7 +9,7 @@
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
         Closed="Window_Closed"
         mc:Ignorable="d"
-        Title="Maple Utility" Height="600" Width="1050" MinHeight="600" MinWidth="1050">
+        Title="Maple Utility" Height="600" Width="1170" MinHeight="600" MinWidth="1170">
 
     <Grid>
         <Grid.RowDefinitions>

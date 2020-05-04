@@ -59,6 +59,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private ObservableCollection<ImageItem> imageList;
+        public ObservableCollection<ImageItem> ImageList
+        {
+            get { return imageList; }
+            set
+            {
+                imageList = value;
+                OnPropertyChanged("ImageList");
+            }
+        }
+
         private ObservableCollection<SoundItem> soundList;
         public ObservableCollection<SoundItem> SoundList
         {
@@ -149,6 +160,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public bool IsTimerResetChecked = false;
         public bool IsOpenSettingWindow = false;
         public int AlertDuration;
+        public bool IsShowUIBarTimerName;
         public bool IsAlertShowScreenChecked;
         public RadDesktopAlertManager AlertManager = new RadDesktopAlertManager();
 
@@ -242,7 +254,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 SelectedPreset = settingItem.SelectedPreset;
             }
 
+            if (settingItem.ImageList == null)
+                ImageList = new ObservableCollection<ImageItem>();
+            else
+                ImageList = settingItem.ImageList;
+
             AlertDuration = settingItem.AlertDuration;
+            IsShowUIBarTimerName = settingItem.IsShowUIBarTimerName;
             IsAlertShowScreenChecked = settingItem.IsAlertShowScreenChecked;
             IsTimerResetChecked = settingItem.IsTimerResetChecked;
             TimerOnOffKey = settingItem.TimerOnOffKey;
@@ -319,9 +337,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsTimerResetChecked = IsTimerResetChecked;
             timerSettingVM.SoundList = SoundList;
             timerSettingVM.PresetList = PresetList;
+            timerSettingVM.ImageList = ImageList;
             timerSettingVM.TimerList = TimerList;
             timerSettingVM.CurrentPreset = SelectedPreset;
             timerSettingVM.AlertDuration = AlertDuration;
+            timerSettingVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
 
             IsOpenSettingWindow = true;
@@ -333,8 +353,16 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             TimerOnOffKey = timerSettingVM.TimerOnOffKey;
             TimerOnOffModifierKey = timerSettingVM.TimerOnOffModifierKey;
             PresetList = timerSettingVM.PresetList;
+            ImageList = timerSettingVM.ImageList;
             AlertDuration = timerSettingVM.AlertDuration;
+            IsShowUIBarTimerName = timerSettingVM.IsShowUIBarTimerName;
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
+
+            if(WindowTimerUIBar.Instance.IsLoaded)
+            {
+                var timerUIBarVM = WindowTimerUIBar.Instance.DataContext as ViewModelTimerUIBar;
+                timerUIBarVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
+            }
         }
 
         public void KeyDownEvent(GlobalKeyboardHookHelperEventArgs args)
@@ -440,6 +468,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             var vm = window.DataContext as ViewModelTimerUIBar;
             vm.RunningTimerList = RunningTimerList;
+            vm.IsShowUIBarTimerName = IsShowUIBarTimerName;
 
             window.Show();
         }
@@ -473,6 +502,9 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             try
             {
                 var soundItem = item.SoundItem;
+                if (soundItem == null)
+                    return;
+
                 if (item.PrevWavePlayer != null)
                 {
                     item.PrevWavePlayer.Stop();

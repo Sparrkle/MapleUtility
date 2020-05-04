@@ -27,6 +27,11 @@
                     <settingControl:UserControlPresetSetting />
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Image Setting" Width="120">
+                <telerik:RadTabItem.Content>
+                    <settingControl:UserControlImageSetting />
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
             <telerik:RadTabItem Header="Sound Setting" Width="120">
                 <telerik:RadTabItem.Content>
                     <settingControl:UserControlSoundSetting />

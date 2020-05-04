@@ -6,6 +6,7 @@ using MapleUtility.Plugins.ViewModels.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,9 @@ namespace MapleUtility.Plugins.Views.Windows
 
         public WindowMain()
         {
+            if(!Directory.Exists(Defines.ImageFolderPath))
+                Directory.CreateDirectory(Defines.ImageFolderPath);
+
             var vm = new ViewModelMainWindow();
             this.DataContext = vm;
             InitializeComponent();
@@ -85,8 +89,10 @@ namespace MapleUtility.Plugins.Views.Windows
                 TimerList = timerVM.TimerList,
                 SoundList = timerVM.SoundList,
                 PresetList = timerVM.PresetList,
+                ImageList = timerVM.ImageList,
                 SelectedPreset = timerVM.SelectedPreset,
                 AlertDuration = timerVM.AlertDuration,
+                IsShowUIBarTimerName = timerVM.IsShowUIBarTimerName,
                 IsAlertShowScreenChecked = timerVM.IsAlertShowScreenChecked,
                 IsTimerResetChecked = timerVM.IsTimerResetChecked,
                 TimerOnOffKey = timerVM.TimerOnOffKey,

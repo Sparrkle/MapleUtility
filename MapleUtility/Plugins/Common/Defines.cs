@@ -11,6 +11,7 @@ namespace MapleUtility.Plugins.Common
         public const int SETTING_SIZE = 2;
         public const string SETTING_PW = "EnosisChruko";
         public static string FilePath = AppDomain.CurrentDomain.BaseDirectory + "MapleUtility.setting";
+        public static string ImageFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
 
         public static int UIBAR_WIDTH = 400;
         public static int UIBAR_HEIGHT = 110;

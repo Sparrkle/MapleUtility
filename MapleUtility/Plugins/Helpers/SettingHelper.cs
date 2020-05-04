@@ -53,9 +53,11 @@ namespace MapleUtility.Plugins.Helpers
     {
         public ObservableCollection<TimerItem> TimerList;
         public ObservableCollection<PresetItem> PresetList;
+        public ObservableCollection<ImageItem> ImageList;
         public ObservableCollection<SoundItem> SoundList;
         public PresetItem SelectedPreset;
         public int AlertDuration = 2000;
+        public bool IsShowUIBarTimerName = true;
         public bool IsAlertShowScreenChecked = false;
         public bool IsTimerResetChecked = false;
         public Key? TimerOnOffKey = null;

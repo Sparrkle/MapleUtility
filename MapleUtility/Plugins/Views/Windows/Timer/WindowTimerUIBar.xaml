@@ -14,7 +14,7 @@
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
         Background="#30ffffff"
-        Title="Timer UI Bar" MinWidth="200" MinHeight="100" MaxHeight="150" MaxWidth="600"
+        Title="Timer UI Bar" MinWidth="350" MinHeight="80" MaxHeight="80" MaxWidth="600"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
 
@@ -30,13 +30,16 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Button Grid.Row="0" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 5, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
-            <telerik:RadListBox Grid.Row="1" Background="Transparent" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" HorizontalContentAlignment="Stretch" VerticalAlignment="Stretch">
+            <telerik:RadListBox Grid.Row="1" Height="50" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <telerik:RadListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource RadListBoxItemStyle}">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="telerik:RadListBoxItem">
@@ -64,34 +67,62 @@
                 </telerik:RadListBox.ItemContainerStyle>
                 <telerik:RadListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
+                        <StackPanel Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </telerik:RadListBox.ItemsPanel>
                 
                 <telerik:RadListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
-                            <Grid>
+                        <Grid Width="50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black">
+                            <Grid Panel.ZIndex="1">
                                 <telerik:Arc
-                                    Fill="Blue"
+                                    Fill="#88003264"
                                     ArcThickness="255"
                                     Diameter="50"
                                     StartAngle="0"
-                                    EndAngle="0.1"
+                                    EndAngle="{Binding RemainRadius}"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center">
                                     <telerik:Arc.RenderTransform>
                                         <TransformGroup>
                                             <RotateTransform CenterX="25" CenterY="25" Angle="270" />
-                                            <ScaleTransform ScaleX="5" ScaleY="5" CenterX="25" CenterY="25"/>
+                                            <ScaleTransform ScaleX="-5" ScaleY="5" CenterX="25" CenterY="25"/>
                                         </TransformGroup>
                                     </telerik:Arc.RenderTransform>
                                 </telerik:Arc>
                             </Grid>
 
-                            <StackPanel Width="60" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding RemainTime.TotalSeconds, StringFormat={}{0:#}}" HorizontalAlignment="Center" Foreground="White" FontSize="14"/>
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" Foreground="White"/>
+                            <Grid Background="#bb000000" Panel.ZIndex="0"/>
+                            <Image Source="{Binding ImageItem.DisplayedImage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
+
+                            <StackPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect
+                                                    ShadowDepth="4"
+                                                    Direction="330"
+                                                    Color="Black"
+                                                    Opacity="0.5"
+                                                    BlurRadius="4"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" Foreground="White">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontSize" Value="14"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName}" Value="False">
+                                                    <Setter Property="FontSize" Value="16"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Text="{Binding Name}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="White"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

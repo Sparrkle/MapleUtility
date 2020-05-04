@@ -1,4 +1,5 @@
 ﻿using MapleUtility.Plugin.Lib;
+using MapleUtility.Plugins.Common;
 using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
@@ -38,6 +39,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 presetList = value;
                 OnPropertyChanged("PresetList");
+            }
+        }
+
+        private ObservableCollection<ImageItem> imageList;
+        public ObservableCollection<ImageItem> ImageList
+        {
+            get { return imageList; }
+            set
+            {
+                imageList = value;
+                OnPropertyChanged("ImageList");
             }
         }
 
@@ -141,6 +153,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private bool isShowUIBarTimerName;
+        public bool IsShowUIBarTimerName
+        {
+            get { return isShowUIBarTimerName; }
+            set
+            {
+                isShowUIBarTimerName = value;
+                OnPropertyChanged("IsShowUIBarTimerName");
+            }
+        }
+
         private bool isAlertShowScreenChecked;
         public bool IsAlertShowScreenChecked
         {
@@ -205,6 +228,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         public ICommand CopyCurrentPresetCommand { get; set; }
         public ICommand AddPresetCommand { get; set; }
         public ICommand RemovePresetCommand { get; set; }
+        public ICommand SyncImageFilesCommand { get; set; }
         public ICommand AddSoundCommand { get; set; }
         public ICommand RemoveSoundCommand { get; set; }
         public ICommand PresetCheckCommand { get; set; }
@@ -220,6 +244,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
             CopyCurrentPresetCommand = new RelayCommand(o => CopyCurrentPresetEvent());
             AddPresetCommand = new RelayCommand(o => AddPresetEvent());
             RemovePresetCommand = new RelayCommand(o => RemovePresetEvent());
+            SyncImageFilesCommand = new RelayCommand(o => SyncImageFilesEvent());
             AddSoundCommand = new RelayCommand(o => AddSoundEvent());
             RemoveSoundCommand = new RelayCommand(o => RemoveSoundEvent());
             PresetCheckCommand = new RelayCommand(o => PresetCheckEvent());
@@ -262,6 +287,27 @@ namespace MapleUtility.Plugins.ViewModels.Views
             PresetList.Add(presetItem);
 
             PresetCheckEvent();
+        }
+
+        private void SyncImageFilesEvent()
+        {
+            var images = Directory.GetFiles(Defines.ImageFolderPath).ToList();
+
+            foreach(var image in images)
+            {
+                var fileName = Path.GetFileName(image);
+                var ext = Path.GetExtension(fileName);
+
+                if (ext != ".png" && ext != ".jpg" && ext != ".gif")
+                    continue;
+
+                if (ImageList.Any(o => o.FileName == fileName))
+                    continue;
+
+                ImageList.Add(new ImageItem(fileName));
+            }
+
+            ImageList = new ObservableCollection<ImageItem>(ImageList.OrderBy(o => o.FileName));
         }
 
         private void AddPresetEvent()

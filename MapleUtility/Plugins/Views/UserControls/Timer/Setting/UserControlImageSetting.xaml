@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting.UserControlImageSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0, 0, 0, 5">
+            <Button Content="Sync Image Files" Command="{Binding SyncImageFilesCommand}" HorizontalAlignment="Left" mat:MaterialAssist.FocusBrush="Transparent"/>
+        </Grid>
+
+        <telerik:RadGridView
+            Grid.Row="1"
+            RowHeight="50"
+            ItemsSource="{Binding ImageList, Mode=TwoWay}"
+            HorizontalAlignment="Stretch"
+            AutoGenerateColumns="False"
+            CanUserFreezeColumns="False"
+            CanUserResizeColumns="False"
+            CanUserReorderColumns="False"
+            RowIndicatorVisibility="Collapsed"
+            GroupRenderMode="Flat"
+            ShowGroupPanel="False">
+
+            <telerik:RadGridView.Resources>
+                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
+                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
+                </Style>
+            </telerik:RadGridView.Resources>
+
+            <telerik:RadGridView.Columns>
+
+                <telerik:GridViewDataColumn
+                    Width="2*"
+					Header="이미지 이름"
+                    HeaderTextAlignment="Center"
+					DataMemberBinding="{Binding Name}"
+					IsGroupable="False"
+					IsFilterable="False"
+                    IsSortable="False"/>
+
+                <telerik:GridViewDataColumn
+                    Width="60"
+					Header="이미지"
+                    HeaderTextAlignment="Center"
+					IsGroupable="False"
+					IsFilterable="False"
+                    IsReadOnly="True">
+
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Width="40" Height="40">
+                                <Image Source="{Binding DisplayedImage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"/>
+                            </Grid>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+
+            </telerik:RadGridView.Columns>
+
+        </telerik:RadGridView>
+    </Grid>
+</UserControl>

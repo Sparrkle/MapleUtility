@@ -38,7 +38,7 @@
                 <telerik:RadToggleSwitchButton IsChecked="{Binding IsTimerON}" ContentPosition="Both" CheckedContent="Timer ON" UncheckedContent="Timer OFF" TrackWidth="40"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <telerik:RadComboBox Width="150" ItemsSource="{Binding PresetList}" SelectedItem="{Binding SelectedPreset}" DisplayMemberPath="Name"/>
+                    <telerik:RadComboBox Width="150" ItemsSource="{Binding PresetList}" SelectedItem="{Binding SelectedPreset}" DisplayMemberPath="Name" mat:MaterialAssist.FocusBrush="Transparent"/>
                     <Button Width="100" Content="Add Timer" Command="{Binding AddTimerCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
                     <telerik:RadButton Width="100" Content="Remove Timer" Command="{Binding RemoveTimerCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
                         <telerik:RadButton.Style>
@@ -156,6 +156,38 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
+                        Width="120"
+					    Header="이미지"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <telerik:RadComboBox 
+                                    ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.ImageList}"
+                                    SelectedItem="{Binding ImageItem, Mode=TwoWay}"
+                                    ClearSelectionButtonVisibility="Visible" 
+                                    EmptyText="(이미지 없음)"
+                                    DisplayMemberPath="Name"
+                                    VerticalContentAlignment="Center"
+                                    Margin="5, 0"
+                                    mat:MaterialAssist.FocusBrush="Transparent">
+
+                                    <telerik:RadComboBox.ClearSelectionButtonContent>
+                                        <Grid Width="100" HorizontalAlignment="Left">
+                                            <TextBlock Text="(이미지 없음)"/>
+                                        </Grid>
+                                    </telerik:RadComboBox.ClearSelectionButtonContent>
+
+                                </telerik:RadComboBox>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
                         Width="3*"
 					    Header="알림 사운드"
                         HeaderTextAlignment="Center"
@@ -179,7 +211,8 @@
                                         ClearSelectionButtonVisibility="Visible" 
                                         EmptyText="(사운드 없음)"
                                         DisplayMemberPath="Name"
-                                        VerticalContentAlignment="Center">
+                                        VerticalContentAlignment="Center"
+                                        mat:MaterialAssist.FocusBrush="Transparent">
                                         
                                         <telerik:RadComboBox.ClearSelectionButtonContent>
                                             <Grid Width="120" HorizontalAlignment="Left">
@@ -264,7 +297,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" Text="{Binding RemainTime, StringFormat=hh\\:mm\\:ss}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             <Button Grid.Column="2" Content="✕" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.RemoveRunningTimerCommand}" CommandParameter="{Binding .}" FontSize="10" mat:MaterialAssist.FocusBrush="Transparent" Padding="0, 3"/>
                         </Grid>
                     </DataTemplate>
