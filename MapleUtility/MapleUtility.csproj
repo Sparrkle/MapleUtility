@@ -134,6 +134,7 @@
   <ItemGroup>
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />
+    <Compile Include="Plugins\Helpers\KeyTextHelper.cs" />
     <Compile Include="Plugins\Helpers\RegexHelper.cs" />
     <Compile Include="Plugins\Converters\MultiParamConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />

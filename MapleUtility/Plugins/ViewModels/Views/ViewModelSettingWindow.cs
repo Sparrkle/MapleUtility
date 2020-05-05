@@ -132,24 +132,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         {
             get
             {
-                if (TimerOnOffModifierKey == null && TimerOnOffKey == null)
-                    return "없음";
-
-                var resultText = "";
-                if (TimerOnOffModifierKey.HasValue)
-                {
-                    if (TimerOnOffModifierKey.Value.HasFlag(ModifierKeys.Control))
-                        resultText += "Ctrl + ";
-                    if (TimerOnOffModifierKey.Value.HasFlag(ModifierKeys.Alt))
-                        resultText += "Alt + ";
-                    if (TimerOnOffModifierKey.Value.HasFlag(ModifierKeys.Shift))
-                        resultText += "Shift + ";
-                }
-
-                if (TimerOnOffKey == null && resultText.Length >= 2)
-                    return resultText.Substring(0, resultText.Length - 2);
-                else
-                    return resultText + TimerOnOffKey.ToString();
+                return KeyTextHelper.ConvertKeyText(TimerOnOffModifierKey, TimerOnOffKey, "없음");
             }
         }
 

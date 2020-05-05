@@ -160,24 +160,7 @@ namespace MapleUtility.Plugins.Models
         {
             get
             {
-                if (ModifierKey == null && AlertKey == null)
-                    return "없음";
-
-                var resultText = "";
-                if (ModifierKey.HasValue)
-                {
-                    if (ModifierKey.Value.HasFlag(ModifierKeys.Control))
-                        resultText += "Ctrl + ";
-                    if (ModifierKey.Value.HasFlag(ModifierKeys.Alt))
-                        resultText += "Alt + ";
-                    if (ModifierKey.Value.HasFlag(ModifierKeys.Shift))
-                        resultText += "Shift + ";
-                }
-
-                if (AlertKey == null && resultText.Length >= 2)
-                    return resultText.Substring(0, resultText.Length - 2);
-                else
-                    return resultText + AlertKey.ToString();
+                return KeyTextHelper.ConvertKeyText(ModifierKey, AlertKey, "없음");
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using MapleUtility.Plugin.Lib;
+using MapleUtility.Plugins.Helpers;
 using System.Windows;
 using System.Windows.Input;
 
@@ -10,24 +11,7 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
         {
             get
             {
-                if (ModifierKey == null && PressedKey == null)
-                    return "지정할 단축키를 입력해주세요.";
-
-                var resultText = "";
-                if(ModifierKey.HasValue)
-                {
-                    if (ModifierKey.Value.HasFlag(ModifierKeys.Control))
-                        resultText += "Ctrl + ";
-                    if (ModifierKey.Value.HasFlag(ModifierKeys.Alt))
-                        resultText += "Alt + ";
-                    if (ModifierKey.Value.HasFlag(ModifierKeys.Shift))
-                        resultText += "Shift + ";
-                }
-
-                if (PressedKey == null && resultText.Length >= 2)
-                    return resultText.Substring(0, resultText.Length - 2);
-                else
-                    return resultText + PressedKey.ToString();
+                return KeyTextHelper.ConvertKeyText(ModifierKey, PressedKey, "지정할 단축키를 입력해주세요.");
             }
         }
 
@@ -59,7 +43,11 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
 
         public void PressKeyEvent(KeyEventArgs e)
         {
-            Key inputKey = e.Key.Equals(Key.ImeProcessed) ? e.ImeProcessedKey : e.Key;
+            Key inputKey;
+            if (e.SystemKey != Key.None)
+                inputKey = e.SystemKey;
+            else
+                inputKey = e.Key.Equals(Key.ImeProcessed) ? e.ImeProcessedKey : e.Key;
 
             if (!(inputKey == Key.LeftCtrl) && !(inputKey == Key.LeftAlt) && !(inputKey == Key.LeftShift)
                 && !(inputKey == Key.RightCtrl) && !(inputKey == Key.RightAlt) && !(inputKey == Key.RightShift)
