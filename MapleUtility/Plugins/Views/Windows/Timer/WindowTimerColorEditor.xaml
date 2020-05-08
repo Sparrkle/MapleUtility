@@ -1,0 +1,22 @@
+﻿<Window x:Class="MapleUtility.Plugins.Views.Windows.Timer.WindowTimerColorEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.Timer"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        Title="Edit Colors" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Icon="/MapleUtility;component/Plugins/Images/colorcircle.png" Height="335" Width="400">
+    
+    <Grid x:Name="LayoutRoot" Background="White">
+        <StackPanel>
+            <telerik:RadColorEditor x:Name="colorEditor" SelectedColor="{Binding RemainSquareTempColor, Mode=TwoWay}"/>
+            <Grid>
+                <Rectangle Height="1" HorizontalAlignment="Stretch" Fill="#FFD6D6D6" VerticalAlignment="Top" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <telerik:RadButton Content="OK" Margin="0 8 5 3" Width="60" Click="OK_Click"/>
+                    <telerik:RadButton Content="Cancel" Margin="0 8 5 3" Width="60" Click="Cancel_Click"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -12,11 +12,13 @@ namespace MapleUtility.Plugins.Helpers
     {
         public static void Write(string text)
         {
-            var window = WindowDebug.Instance;
+            var window = WindowDebug.Instance as WindowDebug;
             if(window.IsLoaded)
             {
                 var vm = window.DataContext as ViewModelDebug;
                 vm.DebugTextList.Add(text);
+
+                window.lbDebug.ScrollIntoView(vm.DebugTextList.Count() - 1);
             }
         }
     }

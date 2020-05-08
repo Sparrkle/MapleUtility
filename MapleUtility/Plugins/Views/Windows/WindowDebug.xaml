@@ -12,7 +12,7 @@
         mc:Ignorable="d" ResizeMode="NoResize" Background="Black"
         Title="DEBUG WINDOW" Height="400" Width="600">
 
-    <telerik:RadListBox ItemsSource="{Binding DebugTextList}" Background="Black" IsScrollIntoViewEnabled="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+    <telerik:RadListBox x:Name="lbDebug" ItemsSource="{Binding DebugTextList}" Background="Black" IsScrollIntoViewEnabled="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
         <telerik:RadListBox.ItemContainerStyle>
             <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource RadListBoxItemStyle}">
                 <Setter Property="Template">

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MapleUtility.Plugins.ViewModels.Views
 {
@@ -50,17 +51,6 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 imageList = value;
                 OnPropertyChanged("ImageList");
-            }
-        }
-
-        private bool isTimerResetChecked;
-        public bool IsTimerResetChecked
-        {
-            get { return isTimerResetChecked; }
-            set
-            {
-                isTimerResetChecked = value;
-                OnPropertyChanged("IsTimerResetChecked");
             }
         }
 
@@ -128,14 +118,6 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
-        public string OnOffKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(TimerOnOffModifierKey, TimerOnOffKey, "없음");
-            }
-        }
-
         private bool isShowUIBarTimerName;
         public bool IsShowUIBarTimerName
         {
@@ -155,6 +137,74 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 isAlertShowScreenChecked = value;
                 OnPropertyChanged("IsAlertShowScreenChecked");
+            }
+        }
+
+        private Color remainSquareColor;
+        public Color RemainSquareColor
+        {
+            get { return remainSquareColor; }
+            set
+            {
+                remainSquareColor = value;
+                OnPropertyChanged("RemainSquareColor");
+                OnPropertyChanged("RemainSquareResultColor");
+            }
+        }
+
+        private Color? remainSquareTempColor;
+        public Color? RemainSquareTempColor
+        {
+            get { return remainSquareTempColor; }
+            set
+            {
+                remainSquareTempColor = value;
+                OnPropertyChanged("RemainSquareTempColor");
+                OnPropertyChanged("RemainSquareResultColor");
+            }
+        }
+
+        public Color RemainSquareResultColor
+        {
+            get
+            {
+                if (RemainSquareTempColor != null)
+                    return RemainSquareTempColor.Value;
+                else
+                    return RemainSquareColor;
+            }
+            set
+            {
+                RemainSquareColor = value;
+                OnPropertyChanged("RemainSquareResultColor");
+            }
+        }
+
+        private float remainBackAlpha;
+        public float RemainBackAlpha
+        {
+            get { return remainBackAlpha; }
+            set
+            {
+                int intValue = Convert.ToInt32(value);
+
+                if (intValue > 100)
+                    intValue = 100;
+                if (intValue < 0)
+                    intValue = 0;
+
+                remainBackAlpha = intValue;
+                OnPropertyChanged("RemainBackAlpha");
+                OnPropertyChanged("RemainBackColor");
+            }
+        }
+
+        public Color RemainBackColor
+        {
+            get
+            {
+                var alpha = Convert.ToByte(Math.Truncate(255 / 100 * remainBackAlpha));
+                return Color.FromArgb(alpha, 0, 0, 0);
             }
         }
 
@@ -203,11 +253,53 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        public string OnOffKeyString
+        {
+            get
+            {
+                return KeyTextHelper.ConvertKeyText(TimerOnOffModifierKey, TimerOnOffKey, "없음");
+            }
+        }
+
+        private ModifierKeys? pauseAllModifierKey = null;
+        public ModifierKeys? PauseAllModifierKey
+        {
+            get { return pauseAllModifierKey; }
+            set
+            {
+                pauseAllModifierKey = value;
+                OnPropertyChanged("PauseAllModifierKey");
+                OnPropertyChanged("PauseAllKeyString");
+            }
+        }
+
+        private Key? pauseAllKey = null;
+        public Key? PauseAllKey
+        {
+            get { return pauseAllKey; }
+            set
+            {
+                pauseAllKey = value;
+                OnPropertyChanged("PauseAllKey");
+                OnPropertyChanged("PauseAllKeyString");
+            }
+        }
+
+        public string PauseAllKeyString
+        {
+            get
+            {
+                return KeyTextHelper.ConvertKeyText(PauseAllModifierKey, PauseAllKey, "없음");
+            }
+        }
+
         public PresetItem CurrentPreset = null;
         public ObservableCollection<TimerItem> TimerList = null;
 
         #region Button Command Variables
         public ICommand OnOffSettingKeyCommand { get; set; }
+        public ICommand PauseAllSettingKeyCommand { get; set; }
+        public ICommand OpenColorPickerCommand { get; set; }
         public ICommand CopyCurrentPresetCommand { get; set; }
         public ICommand AddPresetCommand { get; set; }
         public ICommand RemovePresetCommand { get; set; }
@@ -224,6 +316,8 @@ namespace MapleUtility.Plugins.ViewModels.Views
         public ViewModelSettingWindow()
         {
             OnOffSettingKeyCommand = new RelayCommand(o => OnOffSettingKeyEvent((Window)o));
+            PauseAllSettingKeyCommand = new RelayCommand(o => PauseAllSettingKeyEvent((Window)o));
+            OpenColorPickerCommand = new RelayCommand(o => OpenColorPickerEvent());
             CopyCurrentPresetCommand = new RelayCommand(o => CopyCurrentPresetEvent());
             AddPresetCommand = new RelayCommand(o => AddPresetEvent());
             RemovePresetCommand = new RelayCommand(o => RemovePresetEvent());
@@ -253,6 +347,38 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
             TimerOnOffKey = vm.PressedKey;
             TimerOnOffModifierKey = vm.ModifierKey;
+        }
+
+        private void PauseAllSettingKeyEvent(Window window)
+        {
+            var dialog = new WindowTimerPressKeyboard();
+            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
+
+            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
+            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
+
+            vm.PressedKey = PauseAllKey;
+            vm.ModifierKey = PauseAllModifierKey;
+            vm.ChangeKeyText();
+
+            dialog.ShowDialog();
+
+            PauseAllKey = vm.PressedKey;
+            PauseAllModifierKey = vm.ModifierKey;
+        }
+
+        private void OpenColorPickerEvent()
+        {
+            var window = new WindowTimerColorEditor();
+            window.DataContext = this;
+
+            RemainSquareTempColor = RemainSquareColor;
+
+            window.ShowDialog();
+
+            if(window.DialogResult == true)
+                RemainSquareColor = RemainSquareTempColor.Value;
+            RemainSquareTempColor = null;
         }
 
         private void CopyCurrentPresetEvent()

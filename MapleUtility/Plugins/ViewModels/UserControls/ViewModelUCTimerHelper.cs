@@ -1,4 +1,5 @@
 ﻿using MapleUtility.Plugin.Lib;
+using MapleUtility.Plugins.Common;
 using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views;
@@ -81,6 +82,26 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        public int UIBarWidth
+        {
+            get { return Defines.UIBAR_WIDTH; }
+            set
+            {
+                Defines.UIBAR_WIDTH = value;
+                OnPropertyChanged("UIBarWidth");
+            }
+        }
+
+        public int UIBarHeight
+        {
+            get { return Defines.UIBAR_HEIGHT; }
+            set
+            {
+                Defines.UIBAR_HEIGHT = value;
+                OnPropertyChanged("UIBarHeight");
+            }
+        }
+
         private bool isTimerON = true;
         public bool IsTimerON
         {
@@ -89,11 +110,26 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 isTimerON = value;
                 OnPropertyChanged("IsTimerON");
+                OnPropertyChanged("IsTimerDisabled");
 
                 if (!IsTimerON)
                 {
+                    IsTimerPaused = false;
                     RemoveAllRunningTimer();
                 }
+            }
+        }
+
+        private bool isTimerPaused;
+        public bool IsTimerPaused
+        {
+            get { return isTimerPaused; }
+            set
+            {
+                isTimerPaused = value;
+                OnPropertyChanged("IsTimerPaused");
+
+                PauseEvent();
             }
         }
 
@@ -155,12 +191,55 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private Color remainSquareColor;
+        public Color RemainSquareColor
+        {
+            get { return remainSquareColor; }
+            set
+            {
+                remainSquareColor = value;
+                OnPropertyChanged("RemainSquareColor");
+            }
+        }
+
+        private bool isShowUIBarTimerName;
+        public bool IsShowUIBarTimerName
+        {
+            get { return isShowUIBarTimerName; }
+            set
+            {
+                isShowUIBarTimerName = value;
+                OnPropertyChanged("IsShowUIBarTimerName");
+            }
+        }
+
+        private float remainBackAlpha;
+        public float RemainBackAlpha
+        {
+            get { return remainBackAlpha; }
+            set
+            {
+                remainBackAlpha = value;
+                OnPropertyChanged("RemainBackAlpha");
+                OnPropertyChanged("RemainBackColor");
+            }
+        }
+
+        public Color RemainBackColor
+        {
+            get
+            {
+                var alpha = Convert.ToByte(Math.Truncate(255 / 100 * RemainBackAlpha));
+                return Color.FromArgb(alpha, 0, 0, 0);
+            }
+        }
+
         public Key? TimerOnOffKey = null;
         public ModifierKeys? TimerOnOffModifierKey = null;
-        public bool IsTimerResetChecked = false;
+        public Key? PauseAllKey = null;
+        public ModifierKeys? PauseAllModifierKey = null;
         public bool IsOpenSettingWindow = false;
         public int AlertDuration;
-        public bool IsShowUIBarTimerName;
         public bool IsAlertShowScreenChecked;
         public RadDesktopAlertManager AlertManager = new RadDesktopAlertManager();
 
@@ -172,6 +251,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand OpenSettingCommand { get; set; }
         public ICommand CheckCommand { get; set; }
         public ICommand OpenUIBarCommand { get; set; }
+        public ICommand CloseUIBarCommand { get; set; }
         public ICommand SettingKeyCommand { get; set; }
         #endregion
 
@@ -189,6 +269,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             OpenSettingCommand = new RelayCommand(o => OpenSettingEvent((Window) o));
             CheckCommand = new RelayCommand(o => CheckEvent());
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
+            CloseUIBarCommand = new RelayCommand(o => CloseUIBarEvent((Window) o));
             SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
         }
 
@@ -207,22 +288,22 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
                 var inputKey = timer.AlertKey.Value;
 
-                if (inputKey.HasFlag(Key.LeftCtrl) || inputKey.HasFlag(Key.RightCtrl))
+                if (inputKey == Key.LeftCtrl || inputKey == Key.RightCtrl)
                 {
                     timer.AlertKey = null;
                     timer.ModifierKey = ModifierKeys.Control;
                 }
-                else if (inputKey.HasFlag(Key.LeftAlt) || inputKey.HasFlag(Key.RightAlt))
+                else if (inputKey == Key.LeftAlt || inputKey == Key.RightAlt)
                 {
                     timer.AlertKey = null;
                     timer.ModifierKey = ModifierKeys.Alt;
                 }
-                else if (inputKey.HasFlag(Key.LeftShift) || inputKey.HasFlag(Key.RightShift))
+                else if (inputKey == Key.LeftShift || inputKey == Key.RightShift)
                 {
                     timer.AlertKey = null;
                     timer.ModifierKey = ModifierKeys.Shift;
                 }
-                else if (inputKey.HasFlag(Key.LWin) || inputKey.HasFlag(Key.RWin) || inputKey.HasFlag(Key.KanaMode))
+                else if (inputKey == Key.LWin || inputKey == Key.RWin || inputKey == Key.KanaMode)
                     timer.AlertKey = null;
             }
 
@@ -259,16 +340,22 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             else
                 ImageList = settingItem.ImageList;
 
+            RemainSquareColor = settingItem.RemainSquareColor;
+            RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
             IsShowUIBarTimerName = settingItem.IsShowUIBarTimerName;
             IsAlertShowScreenChecked = settingItem.IsAlertShowScreenChecked;
-            IsTimerResetChecked = settingItem.IsTimerResetChecked;
             TimerOnOffKey = settingItem.TimerOnOffKey;
             TimerOnOffModifierKey = settingItem.TimerOnOffModifierKey;
+            PauseAllKey = settingItem.PauseAllKey;
+            PauseAllModifierKey = settingItem.PauseAllModifierKey;
         }
 
         public void TickEvent(object sender, EventArgs e)
         {
+            if (IsTimerPaused)
+                return;
+
             foreach(var runningTimer in RunningTimerList.ToList())
             {
                 if(runningTimer.EndTime <= DateTime.Now)
@@ -334,12 +421,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             timerSettingVM.TimerOnOffKey = TimerOnOffKey;
             timerSettingVM.TimerOnOffModifierKey = TimerOnOffModifierKey;
-            timerSettingVM.IsTimerResetChecked = IsTimerResetChecked;
+            timerSettingVM.PauseAllKey = PauseAllKey;
+            timerSettingVM.PauseAllModifierKey = PauseAllModifierKey;
             timerSettingVM.SoundList = SoundList;
             timerSettingVM.PresetList = PresetList;
             timerSettingVM.ImageList = ImageList;
             timerSettingVM.TimerList = TimerList;
             timerSettingVM.CurrentPreset = SelectedPreset;
+            timerSettingVM.RemainSquareResultColor = RemainSquareColor;
+            timerSettingVM.RemainBackAlpha = RemainBackAlpha;
             timerSettingVM.AlertDuration = AlertDuration;
             timerSettingVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
@@ -349,20 +439,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsOpenSettingWindow = false;
 
             SoundList = timerSettingVM.SoundList;
-            IsTimerResetChecked = timerSettingVM.IsTimerResetChecked;
             TimerOnOffKey = timerSettingVM.TimerOnOffKey;
             TimerOnOffModifierKey = timerSettingVM.TimerOnOffModifierKey;
+            PauseAllKey = timerSettingVM.PauseAllKey;
+            PauseAllModifierKey = timerSettingVM.PauseAllModifierKey;
             PresetList = timerSettingVM.PresetList;
             ImageList = timerSettingVM.ImageList;
+            RemainSquareColor = timerSettingVM.RemainSquareResultColor;
+            RemainBackAlpha = timerSettingVM.RemainBackAlpha;
             AlertDuration = timerSettingVM.AlertDuration;
             IsShowUIBarTimerName = timerSettingVM.IsShowUIBarTimerName;
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
-
-            if(WindowTimerUIBar.Instance.IsLoaded)
-            {
-                var timerUIBarVM = WindowTimerUIBar.Instance.DataContext as ViewModelTimerUIBar;
-                timerUIBarVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
-            }
         }
 
         public void KeyDownEvent(GlobalKeyboardHookHelperEventArgs args)
@@ -391,13 +478,19 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         private void CheckTimerKey()
         {
-            if(TimerOnOffModifierKey != null && TimerOnOffKey != null)
+            if (PauseAllModifierKey != null && PauseAllKey != null)
+            {
+                if (CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
+                    IsTimerPaused = !IsTimerPaused;
+            }
+
+            if (TimerOnOffModifierKey != null && TimerOnOffKey != null)
             {
                 if (CheckPressModifierAndNormalKey(TimerOnOffModifierKey, TimerOnOffKey))
                     IsTimerON = !IsTimerON;
             }
 
-            if (!IsTimerON)
+            if (!IsTimerON || IsTimerPaused)
                 return;
 
             foreach (var timer in PresetTimerList)
@@ -416,7 +509,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
                 if (timer.EndTime != null && timer.EndTime > DateTime.Now)
                 {
-                    if (!IsTimerResetChecked)
+                    if (!timer.IsTimerResetTimeChecked)
                         continue;
 
                     timer.EndTime = DateTime.Now + timer.TimerTime;
@@ -427,6 +520,24 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     RunningTimerList.Add(timer);
                 }
                 DebugLogHelper.Write(timer.Name + " 타이머 작동되었습니다.");
+            }
+        }
+
+        private void PauseEvent()
+        {
+            // 일시정지 된 상태이므로, 해제
+            if(!IsTimerPaused)
+            {
+                foreach(var runningTimer in RunningTimerList)
+                {
+                    runningTimer.EndTime += DateTime.Now - runningTimer.PauseTime;
+                    runningTimer.PauseTime = null;
+                }
+            }
+            else // 일시정지 설정
+            {
+                foreach (var runningTimer in RunningTimerList)
+                    runningTimer.PauseTime = DateTime.Now;
             }
         }
 
@@ -465,12 +576,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         private void OpenUIBarEvent()
         {
             var window = WindowTimerUIBar.Instance;
-
-            var vm = window.DataContext as ViewModelTimerUIBar;
-            vm.RunningTimerList = RunningTimerList;
-            vm.IsShowUIBarTimerName = IsShowUIBarTimerName;
+            window.DataContext = this;
 
             window.Show();
+        }
+
+        private void CloseUIBarEvent(Window window)
+        {
+            window.Close();
         }
 
         private void SettingKeyEvent(object parameter)
@@ -526,7 +639,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 WaveChannel32 inputStream = new WaveChannel32(waveStream);
                 inputStream.PadWithZeroes = false;
 
-                wavePlayer.Volume = item.TimerVolume / 100;
+                wavePlayer.Volume = item.Volume / 100;
                 wavePlayer.Init(inputStream);
                 wavePlayer.Play();
 

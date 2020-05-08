@@ -148,7 +148,6 @@
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
-    <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerUIBar.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelDebug.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelInformation.cs" />
@@ -170,8 +169,14 @@
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlSoundSetting.xaml.cs">
       <DependentUpon>UserControlSoundSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Views\Windows\Timer\WindowTimerColorEditor.xaml.cs">
+      <DependentUpon>WindowTimerColorEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml.cs">
       <DependentUpon>WindowTimerUIBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\WindowChurukoLab.xaml.cs">
+      <DependentUpon>WindowChurukoLab.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\WindowInformation.xaml.cs">
       <DependentUpon>WindowInformation.xaml</DependentUpon>
@@ -239,7 +244,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Plugins\Views\Windows\Timer\WindowTimerColorEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\WindowChurukoLab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -304,6 +317,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Plugins\Images\churuko_white.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Plugins\Images\colorcircle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

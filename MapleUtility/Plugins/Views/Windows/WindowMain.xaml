@@ -8,8 +8,10 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
         Closed="Window_Closed"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Maple Utility" Height="600" Width="1170" MinHeight="600" MinWidth="1170">
+        Title="Maple Utility" Height="600" Width="1220" MinHeight="600" MinWidth="1220"
+        Loaded="Window_Loaded">
 
     <Grid>
         <Grid.RowDefinitions>

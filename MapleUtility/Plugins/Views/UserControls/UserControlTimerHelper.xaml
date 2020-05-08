@@ -134,7 +134,7 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="140"
+                        Width="120"
 					    Header="타이머 시간"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"
@@ -143,13 +143,34 @@
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <telerik:RadTimeSpanPicker HorizontalAlignment="Center" VerticalAlignment="Center" Value="{Binding TimerTime, Mode=TwoWay}" StringFormat="hh\:mm\:ss" TimeSpanWatermarkContent="Select Time.." mat:MaterialAssist.FocusBrush="Transparent">
+                                <telerik:RadTimeSpanPicker Margin="5, 0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding TimerTime, Mode=TwoWay}" StringFormat="hh\:mm\:ss" TimeSpanWatermarkContent="Select Time.." mat:MaterialAssist.FocusBrush="Transparent">
                                     <telerik:RadTimeSpanPicker.TimeSpanComponents>
                                         <telerik:HourTimeSpanComponent Minimum="0" Maximum="23"/>
                                         <telerik:MinuteTimeSpanComponent Step="1"/>
                                         <telerik:SecondTimeSpanComponent Step="1"/>
                                     </telerik:RadTimeSpanPicker.TimeSpanComponents>
                                 </telerik:RadTimeSpanPicker>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
+                        Width="90"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True">
+
+                        <telerik:GridViewDataColumn.Header>
+                            <TextBlock HorizontalAlignment="Center" Text="시간 초기화" ToolTipService.ToolTip="체크 할 경우 타이머가 실행 되고 있는 상태에서 해당 타이머의 키를 누르면 시간이 초기화됩니다."/>
+                        </telerik:GridViewDataColumn.Header>
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsTimerResetTimeChecked, Mode=TwoWay}"/>
+                                </Grid>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
 
@@ -220,7 +241,7 @@
                                             </Grid>
                                         </telerik:RadComboBox.ClearSelectionButtonContent>
                                     </telerik:RadComboBox>
-                                    <telerik:RadSlider Value="{Binding TimerVolume}" TickFrequency="10" TickPlacement="BottomRight" Minimum="0" Maximum="100" Grid.Column="1" Margin="10, 0" VerticalAlignment="Center"/>
+                                    <telerik:RadSlider Value="{Binding Volume}" TickFrequency="10" TickPlacement="BottomRight" Minimum="0" Maximum="100" Grid.Column="1" Margin="10, 0" VerticalAlignment="Center"/>
                                     <TextBox Grid.Column="2" Text="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" Margin="5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
                                     <Button Grid.Column="3" Margin="0, 0, 5, 0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.PlayTestSoundCommand}" CommandParameter="{Binding .}" Padding="3" VerticalAlignment="Center" HorizontalContentAlignment="Center" mat:MaterialAssist.FocusBrush="Transparent">
                                         <Button.Content>
@@ -248,14 +269,49 @@
                 <TextBlock Text="● 현재 실행중인 타이머" VerticalAlignment="Center"/>
                 <Button Content="UIBar" Command="{Binding OpenUIBarCommand}" Margin="10, 8, 0, 8" Padding="12, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
             </StackPanel>
-            
-            <telerik:RadListBox x:Name="lbRunningTimer" Grid.Row="1" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" >
+
+            <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#aa000000">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Text" Value=""/>
+                        <Setter Property="Effect">
+                            <Setter.Value>
+                                <DropShadowEffect
+                                    ShadowDepth="5"
+                                    Direction="330"
+                                    Color="Black"
+                                    Opacity="0.5"
+                                    BlurRadius="5"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsTimerPaused}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Text" Value="PAUSE"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsTimerON}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Text" Value="TIMER OFF"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <telerik:RadListBox Grid.Row="1" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" >
                 <telerik:RadListBox.Style>
                     <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">
-                        <Setter Property="Background" Value="#11000000"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="IsEnabled" Value="True"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsTimerON}" Value="True">
-                                <Setter Property="Background" Value="White"/>
+                            <DataTrigger Binding="{Binding IsTimerON}" Value="False">
+                                <Setter Property="Background" Value="#11000000"/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsTimerPaused}" Value="True">
+                                <Setter Property="Background" Value="#11000000"/>
+                                <Setter Property="IsEnabled" Value="False"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

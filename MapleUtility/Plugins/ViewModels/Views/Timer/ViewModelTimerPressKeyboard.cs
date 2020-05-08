@@ -44,6 +44,9 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
         public void PressKeyEvent(KeyEventArgs e)
         {
             Key inputKey;
+
+            DebugLogHelper.Write(e.Key.ToString() + " 키( + " + e.SystemKey.ToString() + ")를 바인딩 시도합니다.");
+
             if (e.SystemKey != Key.None)
                 inputKey = e.SystemKey;
             else

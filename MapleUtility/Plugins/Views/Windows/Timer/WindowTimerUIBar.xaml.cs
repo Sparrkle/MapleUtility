@@ -41,7 +41,6 @@ namespace MapleUtility.Plugins.Views.Windows.Timer
 
         public WindowTimerUIBar()
         {
-            this.DataContext = new ViewModelTimerUIBar();
             InitializeComponent();
         }
 

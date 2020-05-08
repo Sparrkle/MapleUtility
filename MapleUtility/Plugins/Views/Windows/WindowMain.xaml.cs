@@ -91,18 +91,36 @@ namespace MapleUtility.Plugins.Views.Windows
                 PresetList = timerVM.PresetList,
                 ImageList = timerVM.ImageList,
                 SelectedPreset = timerVM.SelectedPreset,
+                RemainSquareColor = timerVM.RemainSquareColor,
+                RemainBackAlpha = timerVM.RemainBackAlpha,
                 AlertDuration = timerVM.AlertDuration,
                 IsShowUIBarTimerName = timerVM.IsShowUIBarTimerName,
                 IsAlertShowScreenChecked = timerVM.IsAlertShowScreenChecked,
-                IsTimerResetChecked = timerVM.IsTimerResetChecked,
                 TimerOnOffKey = timerVM.TimerOnOffKey,
                 TimerOnOffModifierKey = timerVM.TimerOnOffModifierKey,
+                PauseAllKey = timerVM.PauseAllKey,
+                PauseAllModifierKey = timerVM.PauseAllModifierKey,
                 UIBAR_WIDTH = Defines.UIBAR_WIDTH,
                 UIBAR_HEIGHT = Defines.UIBAR_HEIGHT
             };
             SettingHelper.SaveSettingFile(settingItem);
 
             Application.Current.Shutdown();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var lastestTime = SettingHelper.LoadSettingChurukoLab();
+            
+            if(lastestTime.HasValue)
+            {
+                var now = DateTime.Now;
+                if (now.Year < lastestTime.Value.Year || now.Month < lastestTime.Value.Month || now.Day <= lastestTime.Value.Day)
+                    return;
+            }
+
+            var windowChurukoLab = new WindowChurukoLab();
+            windowChurukoLab.Show();
         }
     }
 }

@@ -38,18 +38,12 @@ namespace MapleUtility.Plugins.Models
         }
 
         private float volume = 100;
-        [JsonIgnore]
-        public string Volume
+        public float Volume
         {
-            get { return Convert.ToInt32(volume).ToString(); }
+            get { return volume; }
             set
             {
-                int intValue = 0;
-                try
-                {
-                    intValue = Int32.Parse(RegexHelper.CleanStringOfNonDigits(value));
-                }
-                catch (Exception e) { intValue = 0; }
+                int intValue = Convert.ToInt32(value);
 
                 if (intValue > 100)
                     intValue = 100;
@@ -58,19 +52,6 @@ namespace MapleUtility.Plugins.Models
 
                 volume = intValue;
                 OnPropertyChanged("Volume");
-                OnPropertyChanged("TimerVolume");
-            }
-        }
-
-        [JsonIgnore]
-        public float TimerVolume
-        {
-            get { return volume; }
-            set
-            {
-                volume = value;
-                OnPropertyChanged("Volume");
-                OnPropertyChanged("TimerVolume");
             }
         }
 
@@ -102,12 +83,28 @@ namespace MapleUtility.Plugins.Models
         }
 
         [JsonIgnore]
+        private DateTime? pauseTime;
+        [JsonIgnore]
+        public DateTime? PauseTime
+        {
+            get { return pauseTime; }
+            set
+            {
+                pauseTime = value;
+                OnPropertyChanged("PauseTime");
+                RefreshRemainTime();
+            }
+        }
+
+        [JsonIgnore]
         public TimeSpan? RemainTime
         {
             get
             {
-                var remainTime = EndTime - DateTime.Now.AddSeconds(-1);
-                return remainTime;
+                if (PauseTime.HasValue)
+                    return EndTime - DateTime.Now + (DateTime.Now - PauseTime);
+
+                return EndTime - DateTime.Now;
             }
         }
 
@@ -119,7 +116,7 @@ namespace MapleUtility.Plugins.Models
                 if (!RemainTime.HasValue)
                     return "";
 
-                var totalSeconds = RemainTime.Value.TotalSeconds - 1;
+                var totalSeconds = RemainTime.Value.TotalSeconds;
 
                 if (totalSeconds > 1.0f)
                     return totalSeconds.ToString("F0");
@@ -152,6 +149,17 @@ namespace MapleUtility.Plugins.Models
             {
                 timerTime = value;
                 OnPropertyChanged("TimerTime");
+            }
+        }
+
+        private bool isTimerResetTimeChecked;
+        public bool IsTimerResetTimeChecked
+        {
+            get { return isTimerResetTimeChecked; }
+            set
+            {
+                isTimerResetTimeChecked = value;
+                OnPropertyChanged("IsTimerResetTimeChecked");
             }
         }
 
