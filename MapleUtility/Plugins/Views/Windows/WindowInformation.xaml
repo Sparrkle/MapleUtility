@@ -47,13 +47,36 @@
                 <TextBlock Text="도와주신분" Style="{StaticResource MainTextBlockStyle}"/>
                 <TextBlock Text="이노시스 월화견, 이노시스 로빈잉, 이노시스 밑밥깔지마" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="이노시스 샤를로타" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Text="Churuko Lab" Style="{StaticResource MainTextBlockStyle}"/>
+                <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    <Hyperlink
+                        FontSize="14"
+                        NavigateUri="https://enosischuruko.tistory.com/"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        https://enosischuruko.tistory.com/
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
 
             <StackPanel Grid.Row="1">
                 <TextBlock Text="음원 사용 출처 (기본 알림음)" Style="{StaticResource MainTextBlockStyle}"/>
-                <TextBlock Text="https://notificationsounds.com/message-tones/" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    <Hyperlink
+                        FontSize="14"
+                        NavigateUri="https://notificationsounds.com/message-tones/"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        https://notificationsounds.com/message-tones/
+                    </Hyperlink>
+                </TextBlock>
                 <TextBlock Text="Audio Signal, Sound Icon 사용 출처" Style="{StaticResource MainTextBlockStyle}"/>
-                <TextBlock Text="https://www.pngfuel.com/free-png/gqcds" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    <Hyperlink 
+                        FontSize="14"
+                        NavigateUri="https://www.pngfuel.com/free-png/gqcds"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        https://www.pngfuel.com/free-png/gqcds
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </Grid>
     </Grid>

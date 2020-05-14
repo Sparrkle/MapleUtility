@@ -29,6 +29,9 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -60,6 +63,28 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -133,21 +158,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Common\Defines.cs" />
+    <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />
     <Compile Include="Plugins\Helpers\KeyTextHelper.cs" />
+    <Compile Include="Plugins\Helpers\MapleDataHelper.cs" />
     <Compile Include="Plugins\Helpers\RegexHelper.cs" />
     <Compile Include="Plugins\Converters\MultiParamConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
     <Compile Include="Plugins\Helpers\GlobalKeyboardHookHelper.cs" />
     <Compile Include="Plugins\Helpers\InitialHelper.cs" />
     <Compile Include="Plugins\Helpers\SettingHelper.cs" />
+    <Compile Include="Plugins\Helpers\WindowHelper.cs" />
     <Compile Include="Plugins\Lib\Notifier.cs" />
     <Compile Include="Plugins\Lib\RelayCommand.cs" />
+    <Compile Include="Plugins\Models\ColumnItem.cs" />
     <Compile Include="Plugins\Models\ImageItem.cs" />
     <Compile Include="Plugins\Models\PresetItem.cs" />
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
+    <Compile Include="Plugins\Models\UnionDataModel.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
+    <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerColumnSetting.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelDebug.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelInformation.cs" />
@@ -169,8 +200,14 @@
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlSoundSetting.xaml.cs">
       <DependentUpon>UserControlSoundSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Views\UserControls\UserControlUnionRelocateHelper.xaml.cs">
+      <DependentUpon>UserControlUnionRelocateHelper.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerColorEditor.xaml.cs">
       <DependentUpon>WindowTimerColorEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\Timer\WindowTimerColumnSetting.xaml.cs">
+      <DependentUpon>WindowTimerColumnSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml.cs">
       <DependentUpon>WindowTimerUIBar.xaml</DependentUpon>
@@ -192,6 +229,9 @@
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerSettingWindow.xaml.cs">
       <DependentUpon>WindowTimerSettingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\WindowProgress.xaml.cs">
+      <DependentUpon>WindowProgress.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -244,7 +284,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Plugins\Views\UserControls\UserControlUnionRelocateHelper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerColorEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\Timer\WindowTimerColumnSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -273,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\WindowProgress.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -323,6 +375,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Plugins\Images\colorcircle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\Views\Windows\UnionRelocate\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

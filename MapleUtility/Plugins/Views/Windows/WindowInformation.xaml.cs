@@ -1,6 +1,7 @@
 ﻿using MapleUtility.Plugins.ViewModels.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MapleUtility.Plugins.Views.Windows
@@ -24,6 +26,11 @@ namespace MapleUtility.Plugins.Views.Windows
         {
             this.DataContext = new ViewModelInformation();
             InitializeComponent();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.ToString());
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
-        xmlns:usercontrol="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls"
+        xmlns:usercontrol="clr-namespace:MapleUtility.Plugins.Views.UserControls"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
         Closed="Window_Closed"
@@ -25,6 +25,11 @@
                     <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
+            <!--<telerik:RadTabItem Header="Union Helper" Width="120">
+                <telerik:RadTabItem.Content>
+                    <usercontrol:UserControlUnionRelocateHelper x:Name="ucUnionHelper"/>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>-->
         </telerik:RadTabControl>
 
         <Grid Grid.Row="1" Background="#dddddd">

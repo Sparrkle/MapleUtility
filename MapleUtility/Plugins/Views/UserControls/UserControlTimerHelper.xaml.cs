@@ -6,7 +6,7 @@ using System.Windows.Media;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.GridView;
 
-namespace MapleUtility.Plugins.Views.Windows.UserControls
+namespace MapleUtility.Plugins.Views.UserControls
 {
     /// <summary>
     /// UserControlTimerHelper.xaml에 대한 상호 작용 논리

@@ -46,7 +46,8 @@
             CanUserReorderColumns="False"
             RowIndicatorVisibility="Collapsed"
             GroupRenderMode="Flat"
-            ShowGroupPanel="False">
+            ShowGroupPanel="False"
+            EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
 
             <telerik:RadGridView.Resources>
                 <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
@@ -65,7 +66,7 @@
 
                     <telerik:GridViewDataColumn.Header>
                         <Grid HorizontalAlignment="Right">
-                            <CheckBox IsChecked="{Binding DataContext.IsSoundAllChecked, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Center"/>
+                            <CheckBox x:Name="cbSoundAll" IsChecked="{Binding IsSoundAllChecked}" HorizontalAlignment="Center"/>
                         </Grid>
                     </telerik:GridViewDataColumn.Header>
 

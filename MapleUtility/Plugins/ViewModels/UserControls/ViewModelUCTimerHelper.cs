@@ -82,6 +82,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private ObservableCollection<ColumnItem> columnList;
+        public ObservableCollection<ColumnItem> ColumnList
+        {
+            get { return columnList; }
+            set
+            {
+                columnList = value;
+                OnPropertyChanged("ColumnList");
+            }
+        }
+
         public int UIBarWidth
         {
             get { return Defines.UIBAR_WIDTH; }
@@ -115,6 +126,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (!IsTimerON)
                 {
                     IsTimerPaused = false;
+                    IsTimerLocked = false;
                     RemoveAllRunningTimer();
                 }
             }
@@ -130,6 +142,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 OnPropertyChanged("IsTimerPaused");
 
                 PauseEvent();
+            }
+        }
+
+        private bool isTimerLocked;
+        public bool IsTimerLocked
+        {
+            get { return isTimerLocked; }
+            set
+            {
+                isTimerLocked = value;
+                OnPropertyChanged("IsTimerLocked");
             }
         }
 
@@ -165,7 +188,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public bool IsRemoveTimerEnabeld
+        public bool IsRemoveTimerEnabled
         {
             get
             {
@@ -238,12 +261,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ModifierKeys? TimerOnOffModifierKey = null;
         public Key? PauseAllKey = null;
         public ModifierKeys? PauseAllModifierKey = null;
+        public Key? TimerLockKey = null;
+        public ModifierKeys? TimerLockModifierKey = null;
         public bool IsOpenSettingWindow = false;
         public int AlertDuration;
         public bool IsAlertShowScreenChecked;
         public RadDesktopAlertManager AlertManager = new RadDesktopAlertManager();
 
         #region Button Command Variables
+        public ICommand ColumnSettingCommand { get; set; }
         public ICommand AddTimerCommand { get; set; }
         public ICommand RemoveTimerCommand { get; set; }
         public ICommand RemoveRunningTimerCommand { get; set; }
@@ -251,7 +277,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand OpenSettingCommand { get; set; }
         public ICommand CheckCommand { get; set; }
         public ICommand OpenUIBarCommand { get; set; }
-        public ICommand CloseUIBarCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
         public ICommand SettingKeyCommand { get; set; }
         #endregion
 
@@ -262,6 +288,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             TimerList = new ObservableCollection<TimerItem>();
             RunningTimerList = new ObservableCollection<TimerItem>();
 
+            ColumnSettingCommand = new RelayCommand(o => ColumnSettingEvent());
             AddTimerCommand = new RelayCommand(o => AddTimerEvent());
             RemoveTimerCommand = new RelayCommand(o => RemoveTimerEvent());
             RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((TimerItem) o));
@@ -269,7 +296,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             OpenSettingCommand = new RelayCommand(o => OpenSettingEvent((Window) o));
             CheckCommand = new RelayCommand(o => CheckEvent());
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
-            CloseUIBarCommand = new RelayCommand(o => CloseUIBarEvent((Window) o));
+            CloseCommand = new RelayCommand(o => CloseEvent((Window) o));
             SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
         }
 
@@ -340,6 +367,21 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             else
                 ImageList = settingItem.ImageList;
 
+            if (settingItem.ColumnList == null)
+            {
+                ColumnList = new ObservableCollection<ColumnItem>()
+                {
+                    new ColumnItem(1, "단축키 설정"),
+                    new ColumnItem(2, "타이머 시간"),
+                    new ColumnItem(3, "자동 반복"),
+                    new ColumnItem(4, "시간 초기화"),
+                    new ColumnItem(5, "이미지"),
+                    new ColumnItem(6, "알림 사운드"),
+                };
+            }
+            else
+                ColumnList = settingItem.ColumnList;
+
             RemainSquareColor = settingItem.RemainSquareColor;
             RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
@@ -349,6 +391,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             TimerOnOffModifierKey = settingItem.TimerOnOffModifierKey;
             PauseAllKey = settingItem.PauseAllKey;
             PauseAllModifierKey = settingItem.PauseAllModifierKey;
+            TimerLockKey = settingItem.TimerLockKey;
+            TimerLockModifierKey = settingItem.TimerLockModifierKey;
         }
 
         public void TickEvent(object sender, EventArgs e)
@@ -371,12 +415,31 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     }
 
                     PlaySound(runningTimer);
+
                     runningTimer.EndTime = null;
                     RunningTimerList.Remove(runningTimer);
+
+                    if (runningTimer.IsTimerLoopChecked)
+                    {
+                        runningTimer.EndTime = DateTime.Now + runningTimer.TimerTime;
+                        RunningTimerList.Add(runningTimer);
+                    }
                 }
                 else
                     runningTimer.RefreshRemainTime();
             }
+        }
+
+        private void ColumnSettingEvent()
+        {
+            var window = new WindowTimerColumnSetting();
+            var vm = window.DataContext as ViewModelTimerColumnSetting;
+
+            vm.ColumnList = ColumnList;
+
+            window.ShowDialog();
+
+            ColumnList = vm.ColumnList;
         }
 
         private void AddTimerEvent()
@@ -423,6 +486,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.TimerOnOffModifierKey = TimerOnOffModifierKey;
             timerSettingVM.PauseAllKey = PauseAllKey;
             timerSettingVM.PauseAllModifierKey = PauseAllModifierKey;
+            timerSettingVM.TimerLockKey = TimerLockKey;
+            timerSettingVM.TimerLockModifierKey = TimerLockModifierKey;
             timerSettingVM.SoundList = SoundList;
             timerSettingVM.PresetList = PresetList;
             timerSettingVM.ImageList = ImageList;
@@ -443,6 +508,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             TimerOnOffModifierKey = timerSettingVM.TimerOnOffModifierKey;
             PauseAllKey = timerSettingVM.PauseAllKey;
             PauseAllModifierKey = timerSettingVM.PauseAllModifierKey;
+            TimerLockKey = timerSettingVM.TimerLockKey;
+            TimerLockModifierKey = timerSettingVM.TimerLockModifierKey;
             PresetList = timerSettingVM.PresetList;
             ImageList = timerSettingVM.ImageList;
             RemainSquareColor = timerSettingVM.RemainSquareResultColor;
@@ -478,10 +545,22 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         private void CheckTimerKey()
         {
-            if (PauseAllModifierKey != null && PauseAllKey != null)
+            if(!IsTimerLocked)
             {
-                if (CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
-                    IsTimerPaused = !IsTimerPaused;
+                if (PauseAllModifierKey != null && PauseAllKey != null)
+                {
+                    if (CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
+                        IsTimerPaused = !IsTimerPaused;
+                }
+            }
+
+            if(!IsTimerPaused)
+            {
+                if (TimerLockKey != null && TimerLockModifierKey != null)
+                {
+                    if (CheckPressModifierAndNormalKey(TimerLockModifierKey, TimerLockKey))
+                        IsTimerLocked = !IsTimerLocked;
+                }
             }
 
             if (TimerOnOffModifierKey != null && TimerOnOffKey != null)
@@ -490,12 +569,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     IsTimerON = !IsTimerON;
             }
 
-            if (!IsTimerON || IsTimerPaused)
+            if (!IsTimerON || IsTimerPaused || IsTimerLocked)
                 return;
 
             foreach (var timer in PresetTimerList)
             {
-                if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue)
+                if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds < 1)
                     continue;
 
                 if (!CheckPressModifierAndNormalKey(timer.ModifierKey, timer.AlertKey))
@@ -581,7 +660,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             window.Show();
         }
 
-        private void CloseUIBarEvent(Window window)
+        private void CloseEvent(Window window)
         {
             window.Close();
         }
@@ -615,7 +694,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             try
             {
                 var soundItem = item.SoundItem;
-                if (soundItem == null)
+                if (soundItem == null || soundItem.Path == null)
                     return;
 
                 if (item.PrevWavePlayer != null)
@@ -660,7 +739,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         private void CheckEvent()
         {
             OnPropertyChanged("IsTimerAllChecked");
-            OnPropertyChanged("IsRemoveTimerEnabeld");
+            OnPropertyChanged("IsRemoveTimerEnabled");
         }
     }
 }

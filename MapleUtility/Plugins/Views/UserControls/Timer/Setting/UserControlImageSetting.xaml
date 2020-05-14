@@ -31,7 +31,8 @@
             CanUserReorderColumns="False"
             RowIndicatorVisibility="Collapsed"
             GroupRenderMode="Flat"
-            ShowGroupPanel="False">
+            ShowGroupPanel="False"
+            EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
 
             <telerik:RadGridView.Resources>
                 <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">

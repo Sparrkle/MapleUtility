@@ -1,23 +1,12 @@
 ﻿using MapleUtility.Plugins.Common;
 using MapleUtility.Plugins.Helpers;
-using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.ViewModels.Views;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MapleUtility.Plugins.Views.Windows
 {
@@ -30,7 +19,7 @@ namespace MapleUtility.Plugins.Views.Windows
 
         public WindowMain()
         {
-            if(!Directory.Exists(Defines.ImageFolderPath))
+            if (!Directory.Exists(Defines.ImageFolderPath))
                 Directory.CreateDirectory(Defines.ImageFolderPath);
 
             var vm = new ViewModelMainWindow();
@@ -90,6 +79,7 @@ namespace MapleUtility.Plugins.Views.Windows
                 SoundList = timerVM.SoundList,
                 PresetList = timerVM.PresetList,
                 ImageList = timerVM.ImageList,
+                ColumnList = timerVM.ColumnList,
                 SelectedPreset = timerVM.SelectedPreset,
                 RemainSquareColor = timerVM.RemainSquareColor,
                 RemainBackAlpha = timerVM.RemainBackAlpha,
@@ -100,6 +90,8 @@ namespace MapleUtility.Plugins.Views.Windows
                 TimerOnOffModifierKey = timerVM.TimerOnOffModifierKey,
                 PauseAllKey = timerVM.PauseAllKey,
                 PauseAllModifierKey = timerVM.PauseAllModifierKey,
+                TimerLockKey = timerVM.TimerLockKey,
+                TimerLockModifierKey = timerVM.TimerLockModifierKey,
                 UIBAR_WIDTH = Defines.UIBAR_WIDTH,
                 UIBAR_HEIGHT = Defines.UIBAR_HEIGHT
             };

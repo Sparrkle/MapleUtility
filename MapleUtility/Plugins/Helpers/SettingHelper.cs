@@ -88,6 +88,7 @@ namespace MapleUtility.Plugins.Helpers
         public ObservableCollection<PresetItem> PresetList;
         public ObservableCollection<ImageItem> ImageList;
         public ObservableCollection<SoundItem> SoundList;
+        public ObservableCollection<ColumnItem> ColumnList;
         public PresetItem SelectedPreset;
         public Color RemainSquareColor = Color.FromArgb(88, 0, 50, 100);
         public float RemainBackAlpha = 78;
@@ -99,6 +100,8 @@ namespace MapleUtility.Plugins.Helpers
         public ModifierKeys? TimerOnOffModifierKey = null;
         public Key? PauseAllKey = null;
         public ModifierKeys? PauseAllModifierKey = null;
+        public Key? TimerLockKey = null;
+        public ModifierKeys? TimerLockModifierKey = null;
 
         public int UIBAR_WIDTH = 400;
         public int UIBAR_HEIGHT = 110;

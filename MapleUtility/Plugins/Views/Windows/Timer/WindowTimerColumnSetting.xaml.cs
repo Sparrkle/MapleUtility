@@ -1,4 +1,4 @@
-﻿using MapleUtility.Plugins.ViewModels.Views;
+﻿using MapleUtility.Plugins.ViewModels.Views.Timer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,18 +16,14 @@ using System.Windows.Shapes;
 namespace MapleUtility.Plugins.Views.Windows.Timer
 {
     /// <summary>
-    /// WindowTimerSettingWindow.xaml에 대한 상호 작용 논리
+    /// WindowTimerColumnSetting.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class WindowTimerSettingWindow : Window
+    public partial class WindowTimerColumnSetting : Window
     {
-        public WindowTimerSettingWindow()
+        public WindowTimerColumnSetting()
         {
-            this.DataContext = new ViewModelSettingWindow();
+            this.DataContext = new ViewModelTimerColumnSetting();
             InitializeComponent();
-
-            // 바인딩 안되는 오류 있음. 강제 설정
-            ucPreset.cbPresetAll.DataContext = this.DataContext;
-            ucSound.cbSoundAll.DataContext = this.DataContext;
         }
     }
 }

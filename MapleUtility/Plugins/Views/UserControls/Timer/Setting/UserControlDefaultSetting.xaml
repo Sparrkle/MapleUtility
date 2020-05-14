@@ -33,6 +33,11 @@
                 <Button Width="130" Content="{Binding PauseAllKeyString}" Command="{Binding PauseAllSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 5"/>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Margin="0, 2" Height="40">
+                <TextBlock Text="타이머 잠금 단축키" VerticalAlignment="Center" Width="270"/>
+                <Button Width="130" Content="{Binding TimerLockKeyString}" Command="{Binding TimerLockSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 5"/>
+            </StackPanel>
+
             <StackPanel Orientation="Horizontal" Height="40" Margin="0, 2">
                 <TextBlock Text="UI Bar에 타이머 이름 표시" VerticalAlignment="Center" Width="270"/>
                 <CheckBox IsChecked="{Binding IsShowUIBarTimerName}" Margin="5, 0"/>

@@ -1,46 +1,24 @@
-﻿<UserControl x:Class="MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting.UserControlPresetSetting"
+﻿<UserControl x:Class="MapleUtility.Plugins.Views.UserControls.UserControlUnionRelocateHelper"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
-             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+             xmlns:local="clr-namespace:MapleUtility.Plugins.Views.UserControls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0" HorizontalAlignment="Right">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0" Width="130" Content="Copy Current Preset" Command="{Binding CopyCurrentPresetCommand}" Margin="5, 5, 0, 5" mat:MaterialAssist.FocusBrush="Transparent"/>
-            <Button Grid.Column="1" Width="100" Content="New Preset" Command="{Binding AddPresetCommand}" Margin="5, 5, 0, 5" mat:MaterialAssist.FocusBrush="Transparent"/>
-            <telerik:RadButton Grid.Column="2" Width="100" Content="Remove Preset" Command="{Binding RemovePresetCommand}" Margin="5" mat:MaterialAssist.FocusBrush="Transparent">
-                <telerik:RadButton.Style>
-                    <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
-                        <Setter Property="IsEnabled" Value="False"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsRemovePresetEnabled}" Value="True">
-                                <Setter Property="IsEnabled" Value="True"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </telerik:RadButton.Style>
-            </telerik:RadButton>
-        </Grid>
+             d:DesignHeight="450" d:DesignWidth="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="440"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <telerik:RadGridView
-            Grid.Row="1"
-            RowHeight="36"
+            Grid.Column="3"
+            RowHeight="24"
             ItemsSource="{Binding PresetList, Mode=TwoWay}"
             HorizontalAlignment="Stretch"
             AutoGenerateColumns="False"
@@ -59,6 +37,7 @@
             </telerik:RadGridView.Resources>
 
             <telerik:RadGridView.Columns>
+                
                 <telerik:GridViewDataColumn
                     Width="35"
                     IsReadOnly="True"
@@ -85,6 +64,33 @@
                 <telerik:GridViewDataColumn
                     Width="*"
 					Header="이름"
+                    HeaderTextAlignment="Center"
+					DataMemberBinding="{Binding Name}"
+					IsGroupable="False"
+					IsFilterable="False"
+                    IsSortable="False"/>
+
+                <telerik:GridViewDataColumn
+                    Width="*"
+					Header="레벨"
+                    HeaderTextAlignment="Center"
+					DataMemberBinding="{Binding Name}"
+					IsGroupable="False"
+					IsFilterable="False"
+                    IsSortable="False"/>
+
+                <telerik:GridViewDataColumn
+                    Width="*"
+					Header="직업군"
+                    HeaderTextAlignment="Center"
+					DataMemberBinding="{Binding Name}"
+					IsGroupable="False"
+					IsFilterable="False"
+                    IsSortable="False"/>
+
+                <telerik:GridViewDataColumn
+                    Width="*"
+					Header="직업"
                     HeaderTextAlignment="Center"
 					DataMemberBinding="{Binding Name}"
 					IsGroupable="False"

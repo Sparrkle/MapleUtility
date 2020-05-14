@@ -293,12 +293,45 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private ModifierKeys? timerLockModifierKey = null;
+        public ModifierKeys? TimerLockModifierKey
+        {
+            get { return timerLockModifierKey; }
+            set
+            {
+                timerLockModifierKey = value;
+                OnPropertyChanged("TimerLockModifierKey");
+                OnPropertyChanged("TimerLockKeyString");
+            }
+        }
+
+        private Key? timerLockKey = null;
+        public Key? TimerLockKey
+        {
+            get { return timerLockKey; }
+            set
+            {
+                timerLockKey = value;
+                OnPropertyChanged("TimerLockKey");
+                OnPropertyChanged("TimerLockKeyString");
+            }
+        }
+
+        public string TimerLockKeyString
+        {
+            get
+            {
+                return KeyTextHelper.ConvertKeyText(TimerLockModifierKey, TimerLockKey, "없음");
+            }
+        }
+
         public PresetItem CurrentPreset = null;
         public ObservableCollection<TimerItem> TimerList = null;
 
         #region Button Command Variables
         public ICommand OnOffSettingKeyCommand { get; set; }
         public ICommand PauseAllSettingKeyCommand { get; set; }
+        public ICommand TimerLockSettingKeyCommand { get; set; }
         public ICommand OpenColorPickerCommand { get; set; }
         public ICommand CopyCurrentPresetCommand { get; set; }
         public ICommand AddPresetCommand { get; set; }
@@ -317,6 +350,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         {
             OnOffSettingKeyCommand = new RelayCommand(o => OnOffSettingKeyEvent((Window)o));
             PauseAllSettingKeyCommand = new RelayCommand(o => PauseAllSettingKeyEvent((Window)o));
+            TimerLockSettingKeyCommand = new RelayCommand(o => TimerLockSettingKeyEvent((Window)o));
             OpenColorPickerCommand = new RelayCommand(o => OpenColorPickerEvent());
             CopyCurrentPresetCommand = new RelayCommand(o => CopyCurrentPresetEvent());
             AddPresetCommand = new RelayCommand(o => AddPresetEvent());
@@ -365,6 +399,24 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
             PauseAllKey = vm.PressedKey;
             PauseAllModifierKey = vm.ModifierKey;
+        }
+
+        private void TimerLockSettingKeyEvent(Window window)
+        {
+            var dialog = new WindowTimerPressKeyboard();
+            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
+
+            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
+            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
+
+            vm.PressedKey = TimerLockKey;
+            vm.ModifierKey = TimerLockModifierKey;
+            vm.ChangeKeyText();
+
+            dialog.ShowDialog();
+
+            TimerLockKey = vm.PressedKey;
+            TimerLockModifierKey = vm.ModifierKey;
         }
 
         private void OpenColorPickerEvent()

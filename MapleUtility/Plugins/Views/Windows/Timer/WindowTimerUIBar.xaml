@@ -33,7 +33,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Command="{Binding CloseUIBarCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 5, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Grid.Row="0" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 5, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
 
             <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#33000000" Panel.ZIndex="10">
                 <Grid.Style>
@@ -44,6 +44,9 @@
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsTimerON}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsTimerLocked}" Value="True">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -70,13 +73,16 @@
                                 <DataTrigger Binding="{Binding IsTimerON}" Value="False">
                                     <Setter Property="Text" Value="TIMER OFF"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding IsTimerLocked}" Value="True">
+                                    <Setter Property="Text" Value="LOCKED"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
             </Grid>
-            
-            <telerik:RadListBox Grid.Row="1" Height="50" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+            <telerik:RadListBox Grid.Row="1" Height="50" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
                 <telerik:RadListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource RadListBoxItemStyle}">
                         <Setter Property="Padding" Value="0"/>

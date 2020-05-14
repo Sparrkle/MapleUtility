@@ -101,6 +101,9 @@ namespace MapleUtility.Plugins.Models
         {
             get
             {
+                if (!EndTime.HasValue)
+                    return null;
+
                 if (PauseTime.HasValue)
                     return EndTime - DateTime.Now + (DateTime.Now - PauseTime);
 
@@ -160,6 +163,17 @@ namespace MapleUtility.Plugins.Models
             {
                 isTimerResetTimeChecked = value;
                 OnPropertyChanged("IsTimerResetTimeChecked");
+            }
+        }
+
+        private bool isTimerLoopChecked;
+        public bool IsTimerLoopChecked
+        {
+            get { return isTimerLoopChecked; }
+            set
+            {
+                isTimerLoopChecked = value;
+                OnPropertyChanged("IsTimerLoopChecked");
             }
         }
 
