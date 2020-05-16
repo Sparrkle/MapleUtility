@@ -547,7 +547,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             if(!IsTimerLocked)
             {
-                if (PauseAllModifierKey != null && PauseAllKey != null)
+                if (!(PauseAllModifierKey == null && PauseAllKey == null))
                 {
                     if (CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
                         IsTimerPaused = !IsTimerPaused;
@@ -556,14 +556,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             if(!IsTimerPaused)
             {
-                if (TimerLockKey != null && TimerLockModifierKey != null)
+                if (!(TimerLockKey == null && TimerLockModifierKey == null))
                 {
                     if (CheckPressModifierAndNormalKey(TimerLockModifierKey, TimerLockKey))
                         IsTimerLocked = !IsTimerLocked;
                 }
             }
 
-            if (TimerOnOffModifierKey != null && TimerOnOffKey != null)
+            if (!(TimerOnOffModifierKey == null && TimerOnOffKey == null))
             {
                 if (CheckPressModifierAndNormalKey(TimerOnOffModifierKey, TimerOnOffKey))
                     IsTimerON = !IsTimerON;
