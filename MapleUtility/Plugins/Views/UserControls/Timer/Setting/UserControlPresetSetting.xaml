@@ -69,7 +69,7 @@
 
                     <telerik:GridViewDataColumn.Header>
                         <Grid HorizontalAlignment="Right">
-                            <CheckBox  x:Name="cbPresetAll" IsChecked="{Binding IsPresetAllChecked}" HorizontalAlignment="Center"/>
+                            <CheckBox x:Name="cbPresetAll" IsChecked="{Binding IsPresetAllChecked}" HorizontalAlignment="Center"/>
                         </Grid>
                     </telerik:GridViewDataColumn.Header>
 

@@ -89,6 +89,7 @@ namespace MapleUtility.Plugins.Helpers
         public ObservableCollection<ImageItem> ImageList;
         public ObservableCollection<SoundItem> SoundList;
         public ObservableCollection<ColumnItem> ColumnList;
+        public ObservableCollection<CharacterItem> CharacterList;
         public PresetItem SelectedPreset;
         public Color RemainSquareColor = Color.FromArgb(88, 0, 50, 100);
         public float RemainBackAlpha = 78;

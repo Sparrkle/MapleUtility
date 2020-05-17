@@ -159,6 +159,7 @@
   <ItemGroup>
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
+    <Compile Include="Plugins\Common\ExceptionDefines.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />
     <Compile Include="Plugins\Helpers\KeyTextHelper.cs" />
     <Compile Include="Plugins\Helpers\MapleDataHelper.cs" />
@@ -171,15 +172,18 @@
     <Compile Include="Plugins\Helpers\WindowHelper.cs" />
     <Compile Include="Plugins\Lib\Notifier.cs" />
     <Compile Include="Plugins\Lib\RelayCommand.cs" />
+    <Compile Include="Plugins\Lib\StockLib.cs" />
     <Compile Include="Plugins\Models\ColumnItem.cs" />
     <Compile Include="Plugins\Models\ImageItem.cs" />
     <Compile Include="Plugins\Models\PresetItem.cs" />
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
-    <Compile Include="Plugins\Models\UnionDataModel.cs" />
+    <Compile Include="Plugins\Models\CharacterItem.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
+    <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCUnionRelocateHelper.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerColumnSetting.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
+    <Compile Include="Plugins\ViewModels\Views\UnionRelocate\ViewModelUnionRelocateSyncSelect.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelDebug.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelInformation.cs" />
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlPresetSetting.xaml.cs">
@@ -211,6 +215,9 @@
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml.cs">
       <DependentUpon>WindowTimerUIBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\UnionRelocate\WindowUnionRelocateSyncSelect.xaml.cs">
+      <DependentUpon>WindowUnionRelocateSyncSelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\WindowChurukoLab.xaml.cs">
       <DependentUpon>WindowChurukoLab.xaml</DependentUpon>
@@ -300,6 +307,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Plugins\Views\Windows\UnionRelocate\WindowUnionRelocateSyncSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Plugins\Views\Windows\WindowChurukoLab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -376,8 +387,6 @@
   <ItemGroup>
     <Resource Include="Plugins\Images\colorcircle.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugins\Views\Windows\UnionRelocate\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -36,6 +36,9 @@ namespace MapleUtility.Plugins.Views.Windows
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
             timerVM.Initialize(settingItem);
 
+            var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
+            unionVM.Initialize(settingItem);
+
             vm.mainTimer.Tick += timerVM.TickEvent;
 
             _globalKeyboardHook = new GlobalKeyboardHookHelper();
@@ -68,6 +71,7 @@ namespace MapleUtility.Plugins.Views.Windows
             vm.mainTimer.Stop();
 
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
+            var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
             timerVM.RemoveAllRunningTimer();
 
             foreach (var timer in timerVM.TimerList)
@@ -93,7 +97,9 @@ namespace MapleUtility.Plugins.Views.Windows
                 TimerLockKey = timerVM.TimerLockKey,
                 TimerLockModifierKey = timerVM.TimerLockModifierKey,
                 UIBAR_WIDTH = Defines.UIBAR_WIDTH,
-                UIBAR_HEIGHT = Defines.UIBAR_HEIGHT
+                UIBAR_HEIGHT = Defines.UIBAR_HEIGHT,
+
+                CharacterList = unionVM.CharacterList,
             };
             SettingHelper.SaveSettingFile(settingItem);
 

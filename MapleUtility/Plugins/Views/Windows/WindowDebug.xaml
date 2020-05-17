@@ -6,7 +6,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
         xmlns:uc="clr-namespace:MapleUtility.Plugins.UserControls"
-        xmlns:usercontrol="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
         mc:Ignorable="d" ResizeMode="NoResize" Background="Black"
@@ -22,15 +21,15 @@
                                 <Grid Margin="0">
                                     <mat:FluentControl x:Name="Fluent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ClipToBounds="True">
                                         <ContentControl x:Name="contentPresenter"
-                                                    Margin="{TemplateBinding Padding}"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    IsTabStop="False"
-                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                    Content="{TemplateBinding Content}"
-                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
+                                            Margin="{TemplateBinding Padding}"
+                                            Foreground="{TemplateBinding Foreground}"
+                                            IsTabStop="False"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            Content="{TemplateBinding Content}"
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                            ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
                                     </mat:FluentControl>
                                 </Grid>
                             </Grid>

@@ -6,99 +6,147 @@
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.UserControls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1200">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="440"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="400"/>
         </Grid.ColumnDefinitions>
 
-        <telerik:RadGridView
-            Grid.Column="3"
-            RowHeight="24"
-            ItemsSource="{Binding PresetList, Mode=TwoWay}"
-            HorizontalAlignment="Stretch"
-            AutoGenerateColumns="False"
-            CanUserFreezeColumns="False"
-            CanUserResizeColumns="False"
-            CanUserReorderColumns="False"
-            RowIndicatorVisibility="Collapsed"
-            GroupRenderMode="Flat"
-            ShowGroupPanel="False"
-            EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
+        <Grid Grid.Column="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <telerik:RadGridView.Resources>
-                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                </Style>
-            </telerik:RadGridView.Resources>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5">
+                <Button Width="110" Content="Sync Character" Command="{Binding SyncCharacterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                <Button Width="110" Content="Add Character" Command="{Binding AddCharacterCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                <telerik:RadButton Width="110" Content="Remove Character" Command="{Binding RemoveCharacterCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                    <telerik:RadButton.Style>
+                        <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsRemoveCharacterEnabled}" Value="True">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </telerik:RadButton.Style>
+                </telerik:RadButton>
+            </StackPanel>
 
-            <telerik:RadGridView.Columns>
-                
-                <telerik:GridViewDataColumn
-                    Width="35"
-                    IsReadOnly="True"
-                    IsFilterable="False"
-                    IsSortable="False"
-                    TextAlignment="Center"
-                    EditTriggers="CellClick">
+            <telerik:RadGridView
+                Grid.Row="1"
+                RowHeight="24"
+                ItemsSource="{Binding CharacterList, Mode=TwoWay}"
+                HorizontalAlignment="Stretch"
+                AutoGenerateColumns="False"
+                CanUserFreezeColumns="False"
+                CanUserResizeColumns="False"
+                CanUserReorderColumns="False"
+                RowIndicatorVisibility="Collapsed"
+                GroupRenderMode="Flat"
+                ShowGroupPanel="False"
+                EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
 
-                    <telerik:GridViewDataColumn.Header>
-                        <Grid HorizontalAlignment="Right">
-                            <CheckBox  x:Name="cbPresetAll" IsChecked="{Binding IsPresetAllChecked}" HorizontalAlignment="Center"/>
-                        </Grid>
-                    </telerik:GridViewDataColumn.Header>
+                <telerik:RadGridView.Resources>
+                    <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
+                        <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
+                    </Style>
+                </telerik:RadGridView.Resources>
 
-                    <telerik:GridViewDataColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid Background="Transparent" HorizontalAlignment="Center">
-                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Command="{Binding DataContext.PresetCheckCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                <telerik:RadGridView.Columns>
+
+                    <telerik:GridViewDataColumn
+                        Width="35"
+                        IsReadOnly="True"
+                        IsFilterable="False"
+                        IsSortable="False"
+                        TextAlignment="Center"
+                        EditTriggers="CellClick">
+
+                        <telerik:GridViewDataColumn.Header>
+                            <Grid HorizontalAlignment="Right">
+                                <CheckBox x:Name="cbCharacterAll" IsChecked="{Binding IsCharacterAllChecked}" HorizontalAlignment="Center"/>
                             </Grid>
-                        </DataTemplate>
-                    </telerik:GridViewDataColumn.CellTemplate>
-                </telerik:GridViewDataColumn>
+                        </telerik:GridViewDataColumn.Header>
 
-                <telerik:GridViewDataColumn
-                    Width="*"
-					Header="이름"
-                    HeaderTextAlignment="Center"
-					DataMemberBinding="{Binding Name}"
-					IsGroupable="False"
-					IsFilterable="False"
-                    IsSortable="False"/>
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Command="{Binding DataContext.CheckCommand, RelativeSource={RelativeSource AncestorType=local:UserControlUnionRelocateHelper}}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
 
-                <telerik:GridViewDataColumn
-                    Width="*"
-					Header="레벨"
-                    HeaderTextAlignment="Center"
-					DataMemberBinding="{Binding Name}"
-					IsGroupable="False"
-					IsFilterable="False"
-                    IsSortable="False"/>
+                    <telerik:GridViewDataColumn
+                        Width="*"
+					    Header="이름"
+                        HeaderTextAlignment="Center"
+                        TextAlignment="Center"
+					    DataMemberBinding="{Binding Name}"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsSortable="False"/>
 
-                <telerik:GridViewDataColumn
-                    Width="*"
-					Header="직업군"
-                    HeaderTextAlignment="Center"
-					DataMemberBinding="{Binding Name}"
-					IsGroupable="False"
-					IsFilterable="False"
-                    IsSortable="False"/>
+                    <telerik:GridViewDataColumn
+                        Width="40"
+					    Header="레벨"
+                        HeaderTextAlignment="Center"
+                        TextAlignment="Center"
+					    DataMemberBinding="{Binding Level}"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsSortable="True"/>
 
-                <telerik:GridViewDataColumn
-                    Width="*"
-					Header="직업"
-                    HeaderTextAlignment="Center"
-					DataMemberBinding="{Binding Name}"
-					IsGroupable="False"
-					IsFilterable="False"
-                    IsSortable="False"/>
+                    <telerik:GridViewDataColumn
+                        Width="60"
+					    Header="직업군"
+                        HeaderTextAlignment="Center"
+                        TextAlignment="Center"
+					    DataMemberBinding="{Binding TypeString}"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True"
+                        IsSortable="False"/>
 
-            </telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn
+                        Width="155"
+					    Header="직업"
+                        HeaderTextAlignment="Center"
+                        TextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsSortable="False">
 
-        </telerik:RadGridView>
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <telerik:RadComboBox 
+                                    ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlUnionRelocateHelper}}, Path=DataContext.JobList}"
+                                    SelectedItem="{Binding Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    VerticalContentAlignment="Center"
+                                    Margin="5, 0"
+                                    IsEditable="True"
+                                    telerik:TextSearch.TextPath="."
+                                    TextSearchMode="StartsWith"
+                                    IsTextSearchEnabled="True"
+                                    mat:MaterialAssist.FocusBrush="Transparent"/>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                        
+                    </telerik:GridViewDataColumn>
+
+
+                </telerik:RadGridView.Columns>
+
+            </telerik:RadGridView>
+        </Grid>
     </Grid>
 </UserControl>

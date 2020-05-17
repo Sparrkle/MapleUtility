@@ -19,17 +19,17 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <telerik:RadTabControl Grid.Row="0">
-            <telerik:RadTabItem Header="Timer Helper" Width="120">
+        <telerik:RadTabControl Grid.Row="0" SelectedItem="{Binding SelectedTab}">
+            <telerik:RadTabItem Header="Timer Helper" Width="120" Selector.IsSelected="True">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
-            <!--<telerik:RadTabItem Header="Union Helper" Width="120">
+            <telerik:RadTabItem Header="Union Helper" Width="120">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlUnionRelocateHelper x:Name="ucUnionHelper"/>
                 </telerik:RadTabItem.Content>
-            </telerik:RadTabItem>-->
+            </telerik:RadTabItem>
         </telerik:RadTabControl>
 
         <Grid Grid.Row="1" Background="#dddddd">

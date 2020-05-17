@@ -1,4 +1,6 @@
 ﻿using MapleUtility.Plugin.Lib;
+using MapleUtility.Plugins.ViewModels.UserControls;
+using MapleUtility.Plugins.Views.UserControls;
 using MapleUtility.Plugins.Views.Windows;
 using System;
 using System.Collections.Generic;
@@ -8,11 +10,42 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Telerik.Windows.Controls;
 
 namespace MapleUtility.Plugins.ViewModels.Views
 {
-    public class ViewModelMainWindow
+    public class ViewModelMainWindow : Notifier
     {
+        private RadTabItem selectedTab;
+        public RadTabItem SelectedTab
+        {
+            get { return selectedTab; }
+            set
+            {
+                if(selectedTab != null)
+                {
+                    if (selectedTab.Header.ToString() == "Timer Helper")
+                    {
+                        if (value.Header.ToString() != "Timer Helper")
+                        {
+                            var vm = (selectedTab.Content as UserControlTimerHelper).DataContext as ViewModelUCTimerHelper;
+                            vm.IsOpenSettingWindow = true;
+                        }
+                    }
+                }
+
+                if (value.Header.ToString() == "Timer Helper")
+                {
+                    var vm = (value.Content as UserControlTimerHelper)?.DataContext as ViewModelUCTimerHelper;
+                    if(vm != null)
+                        vm.IsOpenSettingWindow = false;
+                }
+
+                selectedTab = value;
+                OnPropertyChanged("SelectedTab");
+            }
+        }
+
         public DispatcherTimer mainTimer = new DispatcherTimer();
 
         #region Button Command Variables

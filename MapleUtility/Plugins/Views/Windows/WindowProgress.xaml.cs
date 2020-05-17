@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Threading;
 using MapleUtility.Plugins.Common;
@@ -29,6 +30,7 @@ namespace MapleUtility.Plugins.Views.Windows
             set => Instance = value;
         }
 
+        public BackgroundWorker Worker;
         public bool IsCanceled = false;
         public DateTime lastUpdateTime;
         private ProgressType currentType;
@@ -48,18 +50,25 @@ namespace MapleUtility.Plugins.Views.Windows
 
         public void Update(ProgressType Type, string Content)
         {
-            Dispatcher.Invoke(() =>
+            try
             {
-                currentType = Type;
-                BusyContent = Content;
-                UpdateEvent();
-            }, DispatcherPriority.Background);
+                Dispatcher.Invoke(() =>
+                {
+                    currentType = Type;
+                    BusyContent = Content;
+                    UpdateEvent();
+                }, DispatcherPriority.Background);
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
         public void UpdateEvent()
         {
             if (IsCanceled)
-                throw new OperationCanceledException("Cancel Progress");
+                Worker.CancelAsync();
 
             string resultContent;
             if (currentType == ProgressType.UPDATE)
@@ -76,10 +85,10 @@ namespace MapleUtility.Plugins.Views.Windows
 
         private void Detail_Click(object sender, RoutedEventArgs e)
         {
-            if (Height == 200)
-                Height = 400;
+            if (Height == 220)
+                Height = 420;
             else
-                Height = 200;
+                Height = 220;
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using MapleUtility.Plugins.Helpers;
+using MapleUtility.Plugins.ViewModels.UserControls;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -15,9 +16,11 @@ namespace MapleUtility.Plugins.Views.UserControls
     {
         public UserControlUnionRelocateHelper()
         {
+            this.DataContext = new ViewModelUCUnionRelocateHelper();
             InitializeComponent();
 
-            var a = MapleDataHelper.GetUnionData("Uffiex");
+            // 바인딩 안되는 오류 있음. 강제 설정
+            cbCharacterAll.DataContext = this.DataContext;
         }
     }
 }

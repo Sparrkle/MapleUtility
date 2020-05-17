@@ -1,0 +1,108 @@
+﻿<Window 
+    x:Class="MapleUtility.Plugins.Views.Windows.UnionRelocate.WindowUnionRelocateSyncSelect"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UnionRelocate"
+    xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+    mc:Ignorable="d" ResizeMode="NoResize" Background="#252f46"
+    Title="Sync Select" Height="500" Width="700">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="MainTextBlockStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#fde2bc"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0, 10, 0, 2"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="SubTextBlockStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#c0a37b"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="10, 2"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="180"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Margin="5, 0, 0, 0">
+                <TextBlock Text="Utility Character Sync 기능 사용법" Style="{StaticResource MainTextBlockStyle}"/>
+                <TextBlock Text="Utility의 Character List에 있는 캐릭터들을 동기화하는 방식입니다." Style="{StaticResource SubTextBlockStyle}"/>
+                <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0">
+                    <TextBlock Text="1. 우측의 Utility Character List Sync 버튼을 클릭합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="2. 아래의 Sync 버튼을 클릭하면 Main Screen에서 체크되어 있는" Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="캐릭터들의 정보를 최신화합니다." Style="{StaticResource SubTextBlockStyle}" Margin="27, 2, 0, 2"/>
+                </StackPanel>
+                
+                <TextBlock Margin="0, 10, 0, 0"/>
+                <TextBlock Text="Maple Character Data Sync 기능 사용법" Style="{StaticResource MainTextBlockStyle}"/>
+                <TextBlock Text="메이플의 정보를 가져와서 동기화하는 방식입니다." Style="{StaticResource SubTextBlockStyle}"/>
+                <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0">
+                    <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    1.
+                    <Hyperlink 
+                        FontSize="14"
+                        NavigateUri="https://maplestory.nexon.com/Home/Main"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        메이플스토리 공식 홈페이지
+                    </Hyperlink>
+                    에 로그인합니다.
+                    </TextBlock>
+                    <TextBlock Text="2. 마이 메이플 -> 대표 캐릭터 변경 페이지로 이동합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="3. 넥슨 계정일 경우 메이플 ID를 선택합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="4. 월드/캐릭터 선택 영역의 서버를 선택합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="5. 현재 페이지에서 전체선택(Ctrl + A)하고 복사(Ctrl+C)를 합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="6. 우측의 Maple Character Data Sync 버튼을 클릭합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="7. 우측 입력칸에 붙여넣기(Ctrl + V)를 합니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="8. 아래의 Sync 버튼을 클릭하면 복사된 캐릭터 정보들로 동기화됩니다." Style="{StaticResource SubTextBlockStyle}"/>
+                    <TextBlock Text="** List에는 우측 입력칸에 있는 캐릭터들로만 구성됩니다." Style="{StaticResource SubTextBlockStyle}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Grid Grid.Column="1" Margin="0, 5, 0, 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <RadioButton Grid.Row="0" GroupName="rgSync" IsChecked="{Binding IsUtilitySyncChecked}" IsEnabled="{Binding IsUtilitySyncEnabled}" Content="Utility Character List Sync" Foreground="#c0a37b" Margin="0, 0, 0, 5"/>
+                <RadioButton Grid.Row="2" GroupName="rgSync" IsChecked="{Binding IsMapleDataSyncChecked}" Content="Maple Character Data Sync" Foreground="#c0a37b" Margin="0, 0, 0, 5"/>
+                <TextBox Grid.Row="4" Text="{Binding SyncData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" VerticalContentAlignment="Top">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="Background" Value="#66FFFFFF"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMapleDataSyncChecked}" Value="True">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="Background" Value="#FFFFFFFF"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
+            <Button Width="87" BorderBrush="Transparent" Background="#66FFFFFF" Content="Sync" HorizontalAlignment="Right" Command="{Binding SyncCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsSyncEnabled}" mat:MaterialAssist.FocusBrush="Transparent" Margin="0, 0, 5, 0"/>
+            <Button Width="87" BorderBrush="Transparent" Background="#66FFFFFF" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent"/>
+        </StackPanel>
+    </Grid>
+</Window>
+
