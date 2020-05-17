@@ -453,11 +453,12 @@ namespace MapleUtility.Plugins.ViewModels.Views
         private void SyncImageFilesEvent()
         {
             var images = Directory.GetFiles(Defines.ImageFolderPath).ToList();
+            ImageList.Clear();
 
             foreach(var image in images)
             {
                 var fileName = Path.GetFileName(image);
-                var ext = Path.GetExtension(fileName);
+                var ext = Path.GetExtension(fileName).ToLower();
 
                 if (ext != ".png" && ext != ".jpg" && ext != ".gif")
                     continue;

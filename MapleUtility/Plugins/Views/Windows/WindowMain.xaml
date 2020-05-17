@@ -25,7 +25,7 @@
                     <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Union Helper" Width="120">
+            <telerik:RadTabItem Header="Union Helper" Width="120" Visibility="Collapsed">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlUnionRelocateHelper x:Name="ucUnionHelper"/>
                 </telerik:RadTabItem.Content>
