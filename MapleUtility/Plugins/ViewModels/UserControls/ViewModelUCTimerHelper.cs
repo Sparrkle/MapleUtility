@@ -227,6 +227,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private bool isNumpadKeySync;
+        public bool IsNumpadKeySync
+        {
+            get { return isNumpadKeySync; }
+            set
+            {
+                isNumpadKeySync = value;
+                OnPropertyChanged("IsNumpadKeySync");
+            }
+        }
+
         private bool isShowUIBarTimerName;
         public bool IsShowUIBarTimerName
         {
@@ -519,21 +530,21 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
         }
 
-        public void KeyDownEvent()
+        public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckTimerKey();
+            CheckTimerKey(modifierKeys, inputKey);
         }
 
-        private void CheckTimerKey()
+        private void CheckTimerKey(ModifierKeys modifierKeys, Key inputKey)
         {
             if(!IsTimerLocked)
             {
                 if (!(PauseAllModifierKey == null && PauseAllKey == null))
                 {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
+                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, PauseAllModifierKey, PauseAllKey))
                         IsTimerPaused = !IsTimerPaused;
                 }
             }
@@ -542,14 +553,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 if (!(TimerLockKey == null && TimerLockModifierKey == null))
                 {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(TimerLockModifierKey, TimerLockKey))
+                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, TimerLockModifierKey, TimerLockKey))
                         IsTimerLocked = !IsTimerLocked;
                 }
             }
 
             if (!(TimerOnOffModifierKey == null && TimerOnOffKey == null))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(TimerOnOffModifierKey, TimerOnOffKey))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, TimerOnOffModifierKey, TimerOnOffKey))
                     IsTimerON = !IsTimerON;
             }
 
@@ -561,7 +572,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds < 1)
                     continue;
 
-                if (!KeyInputHelper.CheckPressModifierAndNormalKey(timer.ModifierKey, timer.AlertKey))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, timer.ModifierKey, timer.AlertKey))
                     continue;
 
                 if (timer.SoundItem != null)

@@ -390,34 +390,34 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyDownEvent()
+        public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckHillaKey();
+            CheckHillaKey(modifierKeys, inputKey);
         }
 
-        private void CheckHillaKey()
+        private void CheckHillaKey(ModifierKeys modifierKeys, Key inputKey)
         {
             if (!IsHelperON)
                 return;
 
             if (!(BackModifierKey == null && BackKey == null))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(BackModifierKey, BackKey))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, BackModifierKey, BackKey))
                     BackKeyEvent();
             }
 
             if (!(ScytheModifierKey == null && ScytheKey == null))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(ScytheModifierKey, ScytheKey))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, ScytheModifierKey, ScytheKey))
                     ScytheKeyEvent();
             }
 
             if (!(NextModifierKey == null && NextKey == null))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(NextModifierKey, NextKey))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, NextModifierKey, NextKey))
                     NextKeyEvent();
             }
         }

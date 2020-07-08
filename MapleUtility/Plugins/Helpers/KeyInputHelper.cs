@@ -8,32 +8,31 @@ namespace MapleUtility.Plugins.Helpers
 {
     public class KeyInputHelper
     {
-        public static List<Key> PressedKeyList = new List<Key>();
-
-        public static bool CheckPressModifierAndNormalKey(ModifierKeys? ModifierKey, Key? pressKey)
+        public static ModifierKeys GetModifierKeys(Keys key)
         {
-            if (ModifierKey.HasValue)
+            ModifierKeys keys = ModifierKeys.None;
+
+            if (key.HasFlag(Keys.Control))
+                keys |= ModifierKeys.Control;
+            if (key.HasFlag(Keys.Alt))
+                keys |= ModifierKeys.Alt;
+            if (key.HasFlag(Keys.Shift) || key.HasFlag(Keys.ShiftKey) || key.HasFlag(Keys.LShiftKey) || key.HasFlag(Keys.RShiftKey))
+                keys |= ModifierKeys.Shift;
+
+            return keys;
+        }
+
+        public static bool CheckPressModifierAndNormalKey(ModifierKeys inputModifierKeys, Key inputKey, ModifierKeys? modifierKey, Key? pressKey)
+        {
+            if (modifierKey.HasValue)
             {
-                if(ModifierKey == ModifierKeys.Control)
-                {
-                    if (!PressedKeyList.Any(o => o == Key.LeftCtrl || o == Key.RightCtrl))
-                        return false;
-                }
-                if (ModifierKey == ModifierKeys.Alt)
-                {
-                    if (!PressedKeyList.Any(o => o == Key.LeftAlt || o == Key.RightAlt))
-                        return false;
-                }
-                if (ModifierKey == ModifierKeys.Shift)
-                {
-                    if (!PressedKeyList.Any(o => o == Key.LeftShift || o == Key.RightShift))
-                        return false;
-                }
+                if ((modifierKey | inputModifierKeys) == 0)
+                    return false;
             }
 
             if (pressKey.HasValue)
             {
-                if (PressedKeyList.Any(o => o == pressKey.Value))
+                if (inputKey == pressKey.Value)
                     return true;
                 else
                     return false;

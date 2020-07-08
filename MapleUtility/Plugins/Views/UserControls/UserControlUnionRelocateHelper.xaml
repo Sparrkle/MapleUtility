@@ -67,7 +67,7 @@
         </Grid.ColumnDefinitions>
 
         <Border x:Name="borderUnion" Grid.Column="0" CornerRadius="5" Background="#222222">
-            <Grid Width="484" Height="440">
+            <Grid Width="484" Height="439.9">
                 <Path Stroke="White" StrokeThickness="0.5" Fill="#cc000000" Panel.ZIndex="2">
                     <Path.Data>
                         <GeometryGroup FillRule="EvenOdd">
