@@ -18,10 +18,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Resources;
 using Telerik.Windows.Controls;
+using Application = System.Windows.Application;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
@@ -281,8 +283,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand SettingKeyCommand { get; set; }
         #endregion
 
-        public List<Key> PressedKeyList = new List<Key>();
-
         public ViewModelUCTimerHelper()
         {
             TimerList = new ObservableCollection<TimerItem>();
@@ -519,28 +519,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
         }
 
-        public void KeyDownEvent(GlobalKeyboardHookHelperEventArgs args)
+        public void KeyDownEvent()
         {
             if (IsOpenSettingWindow)
                 return;
-
-            var inputKey = KeyInterop.KeyFromVirtualKey(args.KeyboardData.VirtualCode);
-
-            if (!PressedKeyList.Any(o => o == inputKey))
-                PressedKeyList.Add(inputKey);
 
             CheckTimerKey();
-        }
-
-        public void KeyUpEvent(GlobalKeyboardHookHelperEventArgs args)
-        {
-            if (IsOpenSettingWindow)
-                return;
-
-            var inputKey = KeyInterop.KeyFromVirtualKey(args.KeyboardData.VirtualCode);
-
-            if (PressedKeyList.Any(o => o == inputKey))
-                PressedKeyList.Remove(inputKey);
         }
 
         private void CheckTimerKey()
@@ -549,7 +533,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 if (!(PauseAllModifierKey == null && PauseAllKey == null))
                 {
-                    if (CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
+                    if (KeyInputHelper.CheckPressModifierAndNormalKey(PauseAllModifierKey, PauseAllKey))
                         IsTimerPaused = !IsTimerPaused;
                 }
             }
@@ -558,14 +542,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 if (!(TimerLockKey == null && TimerLockModifierKey == null))
                 {
-                    if (CheckPressModifierAndNormalKey(TimerLockModifierKey, TimerLockKey))
+                    if (KeyInputHelper.CheckPressModifierAndNormalKey(TimerLockModifierKey, TimerLockKey))
                         IsTimerLocked = !IsTimerLocked;
                 }
             }
 
             if (!(TimerOnOffModifierKey == null && TimerOnOffKey == null))
             {
-                if (CheckPressModifierAndNormalKey(TimerOnOffModifierKey, TimerOnOffKey))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(TimerOnOffModifierKey, TimerOnOffKey))
                     IsTimerON = !IsTimerON;
             }
 
@@ -577,7 +561,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds < 1)
                     continue;
 
-                if (!CheckPressModifierAndNormalKey(timer.ModifierKey, timer.AlertKey))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(timer.ModifierKey, timer.AlertKey))
                     continue;
 
                 if (timer.SoundItem != null)
@@ -618,38 +602,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 foreach (var runningTimer in RunningTimerList)
                     runningTimer.PauseTime = DateTime.Now;
             }
-        }
-
-        private bool CheckPressModifierAndNormalKey(ModifierKeys? modifierKeys, Key? pressKey)
-        {
-            if(modifierKeys.HasValue)
-            {
-                if(modifierKeys.Value.HasFlag(ModifierKeys.Control))
-                {
-                    if (!PressedKeyList.Any(o => o == Key.LeftCtrl || o == Key.RightCtrl))
-                        return false;
-                }
-                if (modifierKeys.Value.HasFlag(ModifierKeys.Alt))
-                {
-                    if (!PressedKeyList.Any(o => o == Key.LeftAlt || o == Key.RightAlt))
-                        return false;
-                }
-                if (modifierKeys.Value.HasFlag(ModifierKeys.Shift))
-                {
-                    if (!PressedKeyList.Any(o => o == Key.LeftShift || o == Key.RightShift))
-                        return false;
-                }
-            }
-
-            if(pressKey.HasValue)
-            {
-                if (PressedKeyList.Any(o => o == pressKey))
-                    return true;
-                else
-                    return false;
-            }
-
-            return true;
         }
 
         private void OpenUIBarEvent()

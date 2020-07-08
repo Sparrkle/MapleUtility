@@ -8,14 +8,14 @@
         Title="Information" Height="500" Width="800">
 
     <Window.Resources>
-        <Style TargetType="TextBlock" x:Key="MainTextBlockStyle">
+        <Style TargetType="TextBlock" x:Key="MainTextBlockStyle" BasedOn="{StaticResource BaseTextBlockType}">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="#fde2bc"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="0, 10, 0, 2"/>
         </Style>
 
-        <Style TargetType="TextBlock" x:Key="SubTextBlockStyle">
+        <Style TargetType="TextBlock" x:Key="SubTextBlockStyle" BasedOn="{StaticResource BaseTextBlockType}">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#c0a37b"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -75,6 +75,32 @@
                         NavigateUri="https://www.pngfuel.com/free-png/gqcds"
                         RequestNavigate="Hyperlink_RequestNavigate">
                         https://www.pngfuel.com/free-png/gqcds
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Text="Union Icon 사용 출처" Style="{StaticResource MainTextBlockStyle}"/>
+                <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    <Hyperlink 
+                        FontSize="14"
+                        NavigateUri="https://www.flaticon.com/authors/freepik"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        https://www.flaticon.com/authors/freepik
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    <Hyperlink 
+                        FontSize="14"
+                        NavigateUri="https://www.flaticon.com/authors/smashicons"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        https://www.flaticon.com/authors/smashicons
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock Text="Font 사용 출처" Style="{StaticResource MainTextBlockStyle}"/>
+                <TextBlock Style="{StaticResource SubTextBlockStyle}">
+                    <Hyperlink 
+                        FontSize="14"
+                        NavigateUri="http://levelup.nexon.com/font/index.aspx"
+                        RequestNavigate="Hyperlink_RequestNavigate">
+                        http://levelup.nexon.com/font/index.aspx
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>

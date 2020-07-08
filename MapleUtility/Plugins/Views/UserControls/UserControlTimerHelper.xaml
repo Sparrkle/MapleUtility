@@ -9,7 +9,7 @@
              xmlns:converters="clr-namespace:MapleUtility.Plugins.Converters"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="1200">
 
     <UserControl.Resources>
@@ -39,9 +39,9 @@
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <telerik:RadComboBox Width="150" ItemsSource="{Binding PresetList}" SelectedItem="{Binding SelectedPreset}" DisplayMemberPath="Name" mat:MaterialAssist.FocusBrush="Transparent"/>
-                    <Button Width="100" Content="Column Setting" Command="{Binding ColumnSettingCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
-                    <Button Width="100" Content="Add Timer" Command="{Binding AddTimerCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
-                    <telerik:RadButton Width="100" Content="Remove Timer" Command="{Binding RemoveTimerCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                    <Button Width="110" Content="Column Setting" Command="{Binding ColumnSettingCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                    <Button Width="110" Content="Add Timer" Command="{Binding AddTimerCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                    <telerik:RadButton Width="110" Content="Remove Timer" Command="{Binding RemoveTimerCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
                         <telerik:RadButton.Style>
                             <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                                 <Setter Property="IsEnabled" Value="False"/>
@@ -115,7 +115,7 @@
                         IsSortable="False"/>
 
                     <telerik:GridViewDataColumn
-                        Width="150"
+                        Width="130"
 					    Header="단축키 설정"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"
@@ -148,7 +148,7 @@
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <telerik:RadTimeSpanPicker Margin="5, 0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding TimerTime, Mode=TwoWay}" StringFormat="hh\:mm\:ss" TimeSpanWatermarkContent="Select Time.." mat:MaterialAssist.FocusBrush="Transparent">
+                                <telerik:RadTimeSpanPicker Margin="5, 0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding TimerTime, Mode=TwoWay}" StringFormat="hh\:mm\:ss" TimeSpanWatermarkContent="Select Time.." mat:MaterialAssist.FocusBrush="Transparent" FontFamily="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF">
                                     <telerik:RadTimeSpanPicker.TimeSpanComponents>
                                         <telerik:HourTimeSpanComponent Minimum="0" Maximum="23"/>
                                         <telerik:MinuteTimeSpanComponent Step="1"/>
@@ -202,7 +202,7 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="120"
+                        Width="130"
 					    Header="이미지"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"
@@ -300,7 +300,7 @@
 
             <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#aa000000">
                 <TextBlock.Style>
-                    <Style TargetType="TextBlock">
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                         <Setter Property="Text" Value=""/>
                         <Setter Property="Effect">

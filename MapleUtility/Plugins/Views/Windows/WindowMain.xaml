@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="Maple Utility" Height="600" Width="1220" MinHeight="600" MinWidth="1220"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded" >
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,14 +20,19 @@
         </Grid.RowDefinitions>
 
         <telerik:RadTabControl Grid.Row="0" SelectedItem="{Binding SelectedTab}">
-            <telerik:RadTabItem Header="Timer Helper" Width="120" Selector.IsSelected="True">
+            <telerik:RadTabItem Header="Timer Helper" Width="140" Selector.IsSelected="True">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Union Helper" Width="120" Visibility="Collapsed">
+            <telerik:RadTabItem Header="Union Helper" Width="140">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlUnionRelocateHelper x:Name="ucUnionHelper"/>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Verus Hilla Helper" Width="140">
+                <telerik:RadTabItem.Content>
+                    <usercontrol:UserControlVerusHillaHelper x:Name="ucVerusHillaHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
         </telerik:RadTabControl>
@@ -41,7 +46,7 @@
                 </Style>
             </Grid.Resources>
 
-            <Button Command="{Binding DonateCommand}" HorizontalAlignment="Left" Margin="5" Padding="10, -2, 10, 0" Background="Transparent" Foreground="#666666" Content="Donate" BorderThickness="5" mat:MaterialAssist.CornerRadius="15" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Command="{Binding DonateCommand}" HorizontalAlignment="Left" Margin="5" Padding="10, 0" Background="Transparent" Foreground="#666666" Content="Donate" BorderThickness="5" mat:MaterialAssist.CornerRadius="15" mat:MaterialAssist.FocusBrush="Transparent"/>
             <Button Command="{Binding InformationCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" HorizontalAlignment="Right" Margin="7" Padding="0" Background="Transparent" BorderThickness="5" mat:MaterialAssist.CornerRadius="255" mat:MaterialAssist.FocusBrush="Transparent">
                 <Button.Content>
                     <Image Source="/MapleUtility;component/Plugins/Images/questionmark.png"/>

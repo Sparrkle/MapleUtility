@@ -7,27 +7,285 @@
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             mc:Ignorable="d" 
+             xmlns:helper="clr-namespace:MapleUtility.Plugins.Helpers"
+             xmlns:enum="clr-namespace:MapleUtility.Plugins.Common"
+             xmlns:cvt="clr-namespace:MapleUtility.Plugins.Converters"
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="1200">
 
-    <Grid>
+    <UserControl.Resources>
+
+        <cvt:MultiParamConverter x:Key="MultiParamConverter"/>
+
+        <Style TargetType="TextBlock" x:Key="BaseUnionTextBlockStyle" BasedOn="{StaticResource BaseTextBlockType}">
+            <Setter Property="Foreground" Value="#60ffffff"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="CenterUnionTextBlockStyle" BasedOn="{StaticResource BaseUnionTextBlockStyle}">
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Text" Value="{Binding NameContainsArrow}"/>
+            <Setter Property="telerik:RadContextMenu.ContextMenu">
+                <Setter.Value>
+                    <telerik:RadContextMenu AttachOnHandledEvents="True" ItemsSource="{Binding ContextMenuItems}" EventName="MouseLeftButtonUp">
+                        <telerik:RadContextMenu.ItemContainerStyle>
+                            <Style TargetType="telerik:RadMenuItem" BasedOn="{StaticResource RadMenuItemStyle}">
+                                <Setter Property="Header" Value="{Binding .}" />
+                                <Setter Property="Icon" Value="{x:Null}"/>
+                                <Setter Property="Height" Value="22"/>
+                                <Setter Property="Width" Value="50"/>
+                                <Setter Property="IconColumnWidth" Value="0"/>
+                                <Setter Property="Padding" Value="5, 0"/>
+                                <Setter Property="Command" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.CenterUnionCaptureChangeCommand}"/>
+                                <Setter Property="CommandParameter">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{StaticResource MultiParamConverter}">
+                                            <Binding Path="DataContext.Name" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=TextBlock}"/>
+                                            <Binding Path="."/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </telerik:RadContextMenu.ItemContainerStyle>
+                    </telerik:RadContextMenu>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="440"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="494"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="3">
+        <Border x:Name="borderUnion" Grid.Column="0" CornerRadius="5" Background="#222222">
+            <Grid Width="484" Height="440">
+                <Path Stroke="White" StrokeThickness="0.5" Fill="#cc000000" Panel.ZIndex="2">
+                    <Path.Data>
+                        <GeometryGroup FillRule="EvenOdd">
+                            <RectangleGeometry Rect="0, 0, 10000, 10000" />
+                            <RectangleGeometry Rect="{Binding UnionSize}"/>
+                        </GeometryGroup>
+                    </Path.Data>
+                </Path>
+                
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="6*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseUnionTextBlockStyle}"/>
+                    </Grid.Resources>
+
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="상태이상내성" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0, 0, 0, 17"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="획득경험치" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0, 0, 0, 17"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="크리티컬 데미지" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="17, 0, 0, 10"/>
+                    <TextBlock Grid.Column="3" Grid.Row="1" Text="크리티컬 확률" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 0, 17, 10"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="방어율 무시" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="17, 0, 0, -10"/>
+                    <TextBlock Grid.Column="3" Grid.Row="2" Text="보스데미지" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0, 0, 17, -10"/>
+                    <TextBlock Grid.Column="1" Grid.Row="3" Text="버프지속시간" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0, 17, 0, 0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="3" Text="스탠스" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0, 17, 0, 0"/>
+
+                    <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="4*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource CenterUnionTextBlockStyle}"/>
+                        </Grid.Resources>
+
+                        <TextBlock Grid.Column="1" Grid.Row="0" DataContext="{Binding CenterUnionCaptureModelList[0]}" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Column="2" Grid.Row="0" DataContext="{Binding CenterUnionCaptureModelList[1]}" VerticalAlignment="Bottom"/>
+                        <TextBlock Grid.Column="0" Grid.Row="1" DataContext="{Binding CenterUnionCaptureModelList[2]}" VerticalAlignment="Center" Margin="30, 0, 0, 0"/>
+                        <TextBlock Grid.Column="3" Grid.Row="1" DataContext="{Binding CenterUnionCaptureModelList[3]}" VerticalAlignment="Center" Margin="0, 0, 30, 0"/>
+                        <TextBlock Grid.Column="0" Grid.Row="2" DataContext="{Binding CenterUnionCaptureModelList[4]}" VerticalAlignment="Center" Margin="30, 0, 0, 0"/>
+                        <TextBlock Grid.Column="3" Grid.Row="2" DataContext="{Binding CenterUnionCaptureModelList[5]}" VerticalAlignment="Center" Margin="0, 0, 30, 0"/>
+                        <TextBlock Grid.Column="1" Grid.Row="3" DataContext="{Binding CenterUnionCaptureModelList[6]}" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Column="2" Grid.Row="3" DataContext="{Binding CenterUnionCaptureModelList[7]}" VerticalAlignment="Top" Margin="5, 0, 0, 0"/>
+                    </Grid>
+                </Grid>
+                
+                <ItemsControl ItemsSource="{Binding BlockManager.Blocks}" Height="440">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid 
+                                Background="Transparent" 
+                                Rows="{Binding BlockManager.Rows}" 
+                                Columns="{Binding BlockManager.Columns}"
+                                helper:UnionGridDragDropHelper.IsEnabled="True"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="22" Height="22">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="telerik:DragDropManager.AllowCapturedDrag" Value="True" />
+                                        <Setter Property="telerik:TouchManager.DragStartTrigger" Value="TapHoldAndMove"/>
+                                    </Style>
+                                </Grid.Style>
+
+                                <Border BorderBrush="#33ffffff" BorderThickness="0.2" Panel.ZIndex="1"/>
+
+                                <Border BorderBrush="#ffffff" BorderThickness="{Binding BorderThickness}" Panel.ZIndex="1"/>
+
+                                <Rectangle Panel.ZIndex="1">
+                                    <Rectangle.Fill>
+                                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="1" RadiusY="1">
+                                            <GradientStop Color="#09000000" Offset="0" />
+                                            <GradientStop Color="Transparent" Offset="0.5" />
+                                        </RadialGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+
+                                <Rectangle Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}" Panel.ZIndex="0" Stroke="Transparent" StrokeThickness="0"/>
+
+                                <Image Width="14" Height="14" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="3">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="Warrior">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/warrior.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="Wizard">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/wizard.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="Archer">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/archer.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="Thief">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/thief.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="Pirate">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/pirate.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="Hybrid">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/xenon.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding MainCharacterItem.Type}" Value="MapleMobile">
+                                                    <Setter Property="Source" Value="/MapleUtility;component/Plugins/Images/mapleM.png"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Margin="5" BorderBrush="LightGray" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Row="0" HorizontalAlignment="Right" Content="정보 확인"/>
+                    <TextBlock Grid.Row="0" Text="{Binding TotalLevel, StringFormat={}총합 레벨 : {0}}" FontSize="20" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <TextBlock Text=" 공격대원 : " FontSize="20" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding BlockCharacterCount}" FontSize="20" VerticalAlignment="Center"/>
+                        <TextBlock Text=" / " FontSize="20" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding RankTotalCharacters}" FontSize="20" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="현재 유니온 레벨 : " VerticalAlignment="Center" Margin="0, 0, 5, 0"/>
+                        <telerik:RadComboBox Grid.Column="1" ItemsSource="{Binding VisibleRankList}" SelectedItem="{Binding SelectedRank}" DisplayMemberPath="Name" Margin="0, 5" mat:MaterialAssist.FocusBrush="Transparent"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Margin="5, 0" BorderBrush="LightGray" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="1"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="공격대원 효과" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="공격대 점령 효과" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="LightGray" Margin="0"/>
+                    <Separator Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Background="LightGray" Margin="0"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding CharacterPassiveText}" TextWrapping="Wrap" Margin="5, 4" FontSize="10"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding CaptureEffectText}" TextWrapping="Wrap" Margin="3, 2" FontSize="10"/>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="2" HorizontalAlignment="Right" Margin="5, 5, 5, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="우선순위 설정" Command="{Binding RelocateSettingCommand}"/>
+                <Button Grid.Column="2" Content="자동배치" Command="{Binding RelocateCommand}"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5">
-                <Button Width="110" Content="Sync Character" Command="{Binding SyncCharacterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
-                <Button Width="110" Content="Add Character" Command="{Binding AddCharacterCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
-                <telerik:RadButton Width="110" Content="Remove Character" Command="{Binding RemoveCharacterCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                <Button Width="130" Content="Sync Character" Command="{Binding SyncCharacterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                <Button Width="130" Content="Add Character" Command="{Binding AddCharacterCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
+                <telerik:RadButton Width="130" Content="Remove Character" Command="{Binding RemoveCharacterCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
                     <telerik:RadButton.Style>
                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                             <Setter Property="IsEnabled" Value="False"/>
@@ -43,7 +301,7 @@
 
             <telerik:RadGridView
                 Grid.Row="1"
-                RowHeight="24"
+                RowHeight="32"
                 ItemsSource="{Binding CharacterList, Mode=TwoWay}"
                 HorizontalAlignment="Stretch"
                 AutoGenerateColumns="False"
@@ -87,27 +345,53 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="*"
+                        Width="4*"
 					    Header="이름"
                         HeaderTextAlignment="Center"
-                        TextAlignment="Center"
 					    DataMemberBinding="{Binding Name}"
 					    IsGroupable="False"
 					    IsFilterable="False"
-                        IsSortable="False"/>
+                        IsSortable="False">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" TextAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                            <Setter Property="FontWeight" Value="Normal"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCaptured}" Value="True">
+                                                    <Setter Property="Foreground" Value="#ff342ead"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="40"
+                        Width="2*"
 					    Header="레벨"
                         HeaderTextAlignment="Center"
                         TextAlignment="Center"
 					    DataMemberBinding="{Binding Level}"
 					    IsGroupable="False"
 					    IsFilterable="False"
-                        IsSortable="True"/>
+                        IsSortable="True">
+
+                        <telerik:GridViewDataColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Level}" TextChanged="tbLevel_TextChanged" TextAlignment="Center"/>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellEditTemplate>
+                    </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="60"
+                        Width="3*"
 					    Header="직업군"
                         HeaderTextAlignment="Center"
                         TextAlignment="Center"
@@ -118,7 +402,7 @@
                         IsSortable="False"/>
 
                     <telerik:GridViewDataColumn
-                        Width="155"
+                        Width="7*"
 					    Header="직업"
                         HeaderTextAlignment="Center"
                         TextAlignment="Center"
@@ -131,6 +415,7 @@
                                 <telerik:RadComboBox 
                                     ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlUnionRelocateHelper}}, Path=DataContext.JobList}"
                                     SelectedItem="{Binding Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlUnionRelocateHelper}}, Path=DataContext.ChangeJobCommand}"
                                     VerticalContentAlignment="Center"
                                     Margin="5, 0"
                                     IsEditable="True"

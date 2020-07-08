@@ -87,6 +87,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enums.NET, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.3.0.3\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="FMUtils.KeyboardHook, Version=1.0.140.2145, Culture=neutral, PublicKeyToken=1acd76c568cde84e, processorArchitecture=MSIL">
+      <HintPath>..\packages\FMUtils.KeyboardHook.1.0.140.2145\lib\net40-Client\FMUtils.KeyboardHook.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -97,6 +103,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -160,27 +167,37 @@
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
+    <Compile Include="Plugins\Helpers\CharacterBlockHelper.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />
+    <Compile Include="Plugins\Helpers\GlobalKeyboardHookHelper.cs" />
+    <Compile Include="Plugins\Helpers\KeyInputHelper.cs" />
     <Compile Include="Plugins\Helpers\KeyTextHelper.cs" />
     <Compile Include="Plugins\Helpers\MapleDataHelper.cs" />
+    <Compile Include="Plugins\Helpers\MouseCommandHelper.cs" />
     <Compile Include="Plugins\Helpers\RegexHelper.cs" />
     <Compile Include="Plugins\Converters\MultiParamConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
-    <Compile Include="Plugins\Helpers\GlobalKeyboardHookHelper.cs" />
     <Compile Include="Plugins\Helpers\InitialHelper.cs" />
     <Compile Include="Plugins\Helpers\SettingHelper.cs" />
+    <Compile Include="Plugins\Helpers\UnionGridDragDropHelper.cs" />
     <Compile Include="Plugins\Helpers\WindowHelper.cs" />
     <Compile Include="Plugins\Lib\Notifier.cs" />
     <Compile Include="Plugins\Lib\RelayCommand.cs" />
     <Compile Include="Plugins\Lib\StockLib.cs" />
+    <Compile Include="Plugins\Models\BlockItem.cs" />
+    <Compile Include="Plugins\Models\BlockManagerItem.cs" />
+    <Compile Include="Plugins\Models\CenterUnionCaptureModel.cs" />
     <Compile Include="Plugins\Models\ColumnItem.cs" />
     <Compile Include="Plugins\Models\ImageItem.cs" />
     <Compile Include="Plugins\Models\PresetItem.cs" />
+    <Compile Include="Plugins\Models\RankItem.cs" />
+    <Compile Include="Plugins\Models\RowColumnItem.cs" />
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
     <Compile Include="Plugins\Models\CharacterItem.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCUnionRelocateHelper.cs" />
+    <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCVerusHillaHelper.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerColumnSetting.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
     <Compile Include="Plugins\ViewModels\Views\UnionRelocate\ViewModelUnionRelocateSyncSelect.cs" />
@@ -191,6 +208,9 @@
     </Compile>
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlImageSetting.xaml.cs">
       <DependentUpon>UserControlImageSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\UserControls\UserControlVerusHillaHelper.xaml.cs">
+      <DependentUpon>UserControlVerusHillaHelper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\UserControls\UserControlTimerHelper.xaml.cs">
       <DependentUpon>UserControlTimerHelper.xaml</DependentUpon>
@@ -212,6 +232,9 @@
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerColumnSetting.xaml.cs">
       <DependentUpon>WindowTimerColumnSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\Timer\WindowVerusHillaUIBar.xaml.cs">
+      <DependentUpon>WindowVerusHillaUIBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml.cs">
       <DependentUpon>WindowTimerUIBar.xaml</DependentUpon>
@@ -258,6 +281,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <Resource Include="Plugins\Fonts\NEXON Lv1 Gothic OTF.otf" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -276,6 +300,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\Views\UserControls\Timer\Setting\UserControlImageSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugins\Views\UserControls\UserControlVerusHillaHelper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -302,6 +330,10 @@
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerColumnSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\Timer\WindowVerusHillaUIBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml">
       <SubType>Designer</SubType>
@@ -387,6 +419,19 @@
   <ItemGroup>
     <Resource Include="Plugins\Images\colorcircle.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Plugins\Images\archer.png" />
+    <Resource Include="Plugins\Images\mapleM.png" />
+    <Resource Include="Plugins\Images\pirate.png" />
+    <Resource Include="Plugins\Images\thief.png" />
+    <Resource Include="Plugins\Images\warrior.png" />
+    <Resource Include="Plugins\Images\wizard.png" />
+    <Resource Include="Plugins\Images\xenon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Plugins\Images\Back.png" />
+    <Resource Include="Plugins\Images\Next.png" />
+    <Resource Include="Plugins\Images\Scythe.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

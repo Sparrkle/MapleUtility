@@ -1,6 +1,9 @@
 ﻿<Application x:Class="MapleUtility.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:MapleUtility" StartupUri="Plugins\Views\Windows\WindowMain.xaml"
              xmlns:grid="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView"
-             xmlns:telerik1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls">
+             xmlns:telerik1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
+             xmlns:telerikInput="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
+             xmlns:telerikNavigation="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation"
+             Exit="Application_Exit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -94,7 +97,56 @@
                     </MultiDataTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
-            
+
+            <Style x:Key="BaseRadTimePickerStyle" TargetType="{x:Type telerikInput:RadTimePicker}" BasedOn="{StaticResource RadDateTimePickerStyle}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type telerikInput:RadTimePicker}" BasedOn="{StaticResource BaseRadTimePickerStyle}"/>
+
+            <Style x:Key="BaseRadDesktopAlertStyle" TargetType="{x:Type telerikNavigation:RadDesktopAlert}" BasedOn="{StaticResource RadDesktopAlertStyle}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type telerikNavigation:RadDesktopAlert}" BasedOn="{StaticResource BaseRadDesktopAlertStyle}"/>
+
+            <Style x:Key="BaseRadTimeSpanPickerComponentStyle" TargetType="{x:Type telerikInput:RadTimeSpanPickerComponent}" BasedOn="{StaticResource RadTimeSpanPickerComponentStyle}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type telerikInput:RadTimeSpanPickerComponent}" BasedOn="{StaticResource BaseRadTimeSpanPickerComponentStyle}"/>
+
+            <Style x:Key="BaseRadWatermarkTextBoxStyle" TargetType="{x:Type telerik1:RadWatermarkTextBox}" BasedOn="{StaticResource RadWatermarkTextBoxStyle}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type telerik1:RadWatermarkTextBox}" BasedOn="{StaticResource BaseRadWatermarkTextBoxStyle}"/>
+
+            <Style x:Key="BaseRadClockStyle" TargetType="{x:Type telerikInput:RadClock}" BasedOn="{StaticResource RadClockStyle}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type telerikInput:RadClock}" BasedOn="{StaticResource BaseRadClockStyle}"/>
+
+            <Style x:Key="BaseRadComboBoxStyle" TargetType="{x:Type telerikInput:RadComboBox}" BasedOn="{StaticResource RadComboBoxStyle}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type telerikInput:RadComboBox}" BasedOn="{StaticResource BaseRadComboBoxStyle}"/>
+
+            <Style x:Key="BaseTextBoxType" TargetType="{x:Type TextBox}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseTextBoxType}"/>
+
+            <Style x:Key="BaseTextBlockType" TargetType="{x:Type TextBlock}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockType}"/>
+
             <Style x:Key="GridViewCellCustomStyle" TargetType="grid:GridViewCell">
                 <Setter Property="Template" Value="{StaticResource GridViewCellCustomTemplate}"/>
                 <Setter Property="FontSize" Value="{telerik1:FluentResource ResourceKey=FontSize}"/>

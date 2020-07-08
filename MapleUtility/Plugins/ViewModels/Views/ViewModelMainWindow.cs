@@ -58,7 +58,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
             DonateCommand = new RelayCommand(o => DonateEvent());
             InformationCommand = new RelayCommand(o => InformationEvent((Window)o));
 
-            mainTimer = new DispatcherTimer();
+            mainTimer = new DispatcherTimer(DispatcherPriority.Render);
             mainTimer.Interval = TimeSpan.FromSeconds(0.03);
             mainTimer.Start();
         }

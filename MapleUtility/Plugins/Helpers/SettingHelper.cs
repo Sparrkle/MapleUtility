@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
@@ -90,6 +91,7 @@ namespace MapleUtility.Plugins.Helpers
         public ObservableCollection<SoundItem> SoundList;
         public ObservableCollection<ColumnItem> ColumnList;
         public ObservableCollection<CharacterItem> CharacterList;
+        public BlockManagerItem BlockManager;
         public PresetItem SelectedPreset;
         public Color RemainSquareColor = Color.FromArgb(88, 0, 50, 100);
         public float RemainBackAlpha = 78;
@@ -104,7 +106,17 @@ namespace MapleUtility.Plugins.Helpers
         public Key? TimerLockKey = null;
         public ModifierKeys? TimerLockModifierKey = null;
 
+        public Key? BackKey = null;
+        public ModifierKeys? BackModifierKey = null;
+        public Key? ScytheKey = null;
+        public ModifierKeys? ScytheModifierKey = null;
+        public Key? NextKey = null;
+        public ModifierKeys? NextModifierKey = null;
+
         public int UIBAR_WIDTH = 400;
         public int UIBAR_HEIGHT = 110;
+
+        public int HILLA_UIBAR_WIDTH = 320;
+        public int HILLA_UIBAR_HEIGHT = 90;
     }
 }

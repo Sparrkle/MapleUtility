@@ -40,11 +40,15 @@ namespace MapleUtility.Plugins.Helpers
                                 var levelTypeRegex = Regex.Match(levelString, @"(?<=<td>Lv.)(.*)(?=<\/td>)");
 
                                 var characterInfo = characterTypeRegex.Value.Replace(" ", "").Split('/');
+                                var level = Int32.Parse(levelTypeRegex.Value.Replace(" ", ""));
+                                if (level < 60)
+                                    return null;
+
                                 ResultModel = new CharacterItem()
                                 {
                                     Name = nickName,
                                     Job = characterInfo[1],
-                                    Level = Int32.Parse(levelTypeRegex.Value.Replace(" ", ""))
+                                    Level = level
                                 };
                             }
                             catch (Exception e)
@@ -80,7 +84,7 @@ namespace MapleUtility.Plugins.Helpers
                 var characterDataArray = characterDataRegex.Value.Split('\n');
 
                 var server = characterDataArray[0].Replace("월드/캐릭터 선택", "").Replace("\r", "");
-                var characterDataSplitServer = characterDataArray[1].Split(new string[] { server }, StringSplitOptions.None);
+                var characterDataSplitServer = characterDataArray[characterDataArray.Count()-2].Split(new string[] { server }, StringSplitOptions.None);
                 var prevCharacter = characterDataSplitServer[0];
 
                 string result = StockLib.AddString("", prevCharacter, "\n", false);

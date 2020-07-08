@@ -10,14 +10,14 @@
     Title="Sync Select" Height="500" Width="700">
 
     <Window.Resources>
-        <Style TargetType="TextBlock" x:Key="MainTextBlockStyle">
+        <Style TargetType="TextBlock" x:Key="MainTextBlockStyle" BasedOn="{StaticResource BaseTextBlockType}">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="#fde2bc"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Margin" Value="0, 10, 0, 2"/>
         </Style>
 
-        <Style TargetType="TextBlock" x:Key="SubTextBlockStyle">
+        <Style TargetType="TextBlock" x:Key="SubTextBlockStyle" BasedOn="{StaticResource BaseTextBlockType}">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="#c0a37b"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -34,7 +34,7 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="180"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
             <StackPanel Grid.Column="0" Margin="5, 0, 0, 0">
@@ -100,8 +100,8 @@
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
-            <Button Width="87" BorderBrush="Transparent" Background="#66FFFFFF" Content="Sync" HorizontalAlignment="Right" Command="{Binding SyncCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsSyncEnabled}" mat:MaterialAssist.FocusBrush="Transparent" Margin="0, 0, 5, 0"/>
-            <Button Width="87" BorderBrush="Transparent" Background="#66FFFFFF" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Width="98" BorderBrush="Transparent" Background="#66FFFFFF" Content="Sync" HorizontalAlignment="Right" Command="{Binding SyncCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsSyncEnabled}" mat:MaterialAssist.FocusBrush="Transparent" Margin="0, 0, 5, 0"/>
+            <Button Width="98" BorderBrush="Transparent" Background="#66FFFFFF" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent"/>
         </StackPanel>
     </Grid>
 </Window>

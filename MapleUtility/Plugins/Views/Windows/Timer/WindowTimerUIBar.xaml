@@ -14,7 +14,7 @@
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
         Background="#30ffffff"
-        Title="Timer UI Bar" MinWidth="350" MinHeight="80" MaxHeight="80" MaxWidth="600"
+        Title="Timer UI Bar" MinWidth="350" MinHeight="70" MaxHeight="70" MaxWidth="600"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
 
@@ -29,7 +29,7 @@
     <Border Background="Transparent" MouseDown="Border_MouseDown">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="20"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -55,7 +55,7 @@
                 
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold" Foreground="#44ffffff">
                     <TextBlock.Style>
-                        <Style TargetType="TextBlock">
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
                             <Setter Property="Effect">
                                 <Setter.Value>
                                     <DropShadowEffect
@@ -145,7 +145,7 @@
 
                             <StackPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <StackPanel.Resources>
-                                    <Style TargetType="TextBlock">
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
                                         <Setter Property="Effect">
                                             <Setter.Value>
                                                 <DropShadowEffect
@@ -160,7 +160,7 @@
                                 </StackPanel.Resources>
                                 <TextBlock Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" Foreground="White" FontWeight="DemiBold">
                                     <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
                                             <Setter Property="FontSize" Value="14"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName}" Value="False">

@@ -35,50 +35,58 @@ namespace MapleUtility.Plugins.Common
     // 공격대원 효과
     public enum CharacterPassiveType
     {
-        [Description("STR 증가")]
+        [Description("없음")]
+        None,
+        [Description("STR {0} 증가")]
         STR,
-        [Description("DEX 증가")]
+        [Description("DEX {0} 증가")]
         DEX,
-        [Description("INT 증가")]
+        [Description("INT {0} 증가")]
         INT,
-        [Description("LUK 증가")]
+        [Description("LUK {0} 증가")]
         LUK,
-        [Description("최대 HP 증가 (퍼센트)")]
+        [Description("STR, DEX, LUK {0} 증가")]
+        STR_DEX_LUK,
+        [Description("최대 HP {0}% 증가")]
         HPPercentage,
-        [Description("최대 HP 증가 (수치)")]
+        [Description("최대 HP {0} 증가")]
         HPValue,
-        [Description("최대 MP 증가")]
-        MP,
-        [Description("크리티컬 확률 증가")]
+        [Description("최대 MP {0}% 증가")]
+        MPPercentage,
+        [Description("크리티컬 확률 {0}% 증가")]
         CriticalPercentage,
-        [Description("소환수 지속 시간 증가")]
+        [Description("소환수 지속 시간 {0}% 증가")]
         SummonCreatureTime,
-        [Description("방어율 무시 증가")]
+        [Description("방어율 무시 {0}% 증가")]
         ArmorPenetration,
-        [Description("공격시 20% 확률로 데미지 증가")]
+        [Description("공격시 20% 확률로 데미지 {0}% 증가")]
         AttackDamagePercentageIncrease,
         [Description("상태이상 저항 증가")]
         CrowdControlImmune,
-        [Description("보스 공격력 증가")]
+        [Description("보스 공격력 {0}% 증가")]
         BossDamage,
-        [Description("타격 성공 시 70% 확률로 최대 HP 회복")]
+        [Description("적 공격마다 70% 확률로 순수 HP의 {0}% 회복")]
         AttackHPPercentageHeal,
-        [Description("타격 성공 시 70% 확률로 최대 MP 회복")]
+        [Description("적 공격마다 70% 확률로 순수 MP의 {0}% 회복")]
         AttackMPPercentageHeal,
-        [Description("스킬 재사용 대기시간 감소")]
+        [Description("스킬 재사용 대기시간 {0}% 감소")]
         SkillCoolTime,
-        [Description("메소 획득량 증가")]
+        [Description("메소 획득량 {0}% 증가")]
         MesoIncrease,
-        [Description("크리티컬 데미지 증가")]
+        [Description("크리티컬 데미지 {0}% 증가")]
         CriticalDamage,
-        [Description("경험치 획득량 증가")]
+        [Description("경험치 획득량 {0}% 증가")]
         EXP,
-        [Description("공격력 / 마력 증가")]
+        [Description("공격력/마력 {0}% 증가")]
         AttackAndMagic,
+        [Description("버프 지속시간 {0}% 증가")]
+        BuffTime,
     }
 
     public enum UnionCaptureType
     {
+        [Description("없음")]
+        None,
         [Description("STR 증가")]
         STR,
         [Description("DEX 증가")]

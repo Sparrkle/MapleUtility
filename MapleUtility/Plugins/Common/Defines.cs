@@ -14,7 +14,10 @@ namespace MapleUtility.Plugins.Common
         public static string ChurukoFilePath = AppDomain.CurrentDomain.BaseDirectory + "Churuko.setting";
         public static string ImageFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
 
-        public static int UIBAR_WIDTH = 400;
-        public static int UIBAR_HEIGHT = 110;
+        public static int UIBAR_WIDTH = 350;
+        public static int UIBAR_HEIGHT = 70;
+
+        public static int HILLA_UIBAR_WIDTH = 320;
+        public static int HILLA_UIBAR_HEIGHT = 90;
     }
 }
