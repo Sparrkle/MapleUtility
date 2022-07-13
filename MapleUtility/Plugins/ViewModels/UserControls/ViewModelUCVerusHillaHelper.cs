@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
@@ -212,22 +213,52 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public int UIBarWidth
+        private float uiBarTransparency = 19;
+        public float UIBarTransparency
         {
-            get { return Defines.HILLA_UIBAR_WIDTH; }
+            get { return uiBarTransparency; }
             set
             {
-                Defines.HILLA_UIBAR_WIDTH = value;
+                int intValue = Convert.ToInt32(value);
+
+                if (intValue > 100)
+                    intValue = 100;
+                if (intValue < 1)
+                    intValue = 1;
+
+                uiBarTransparency = intValue;
+                OnPropertyChanged("UIBarTransparency");
+                OnPropertyChanged("UIBarBackground");
+            }
+        }
+
+        public Color UIBarBackground
+        {
+            get
+            {
+                var alpha = Convert.ToByte(Math.Truncate(255 / 100 * UIBarTransparency));
+                return Color.FromArgb(alpha, 39, 20, 30);
+            }
+        }
+
+        private int uiBarWidth;
+        public int UIBarWidth
+        {
+            get { return uiBarWidth; }
+            set
+            {
+                uiBarWidth = value;
                 OnPropertyChanged("UIBarWidth");
             }
         }
 
+        private int uiBarHeight;
         public int UIBarHeight
         {
-            get { return Defines.HILLA_UIBAR_HEIGHT; }
+            get { return uiBarHeight; }
             set
             {
-                Defines.HILLA_UIBAR_HEIGHT = value;
+                uiBarHeight = value;
                 OnPropertyChanged("UIBarHeight");
             }
         }
@@ -273,6 +304,9 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             ScytheModifierKey = settingItem.ScytheModifierKey;
             NextKey = settingItem.NextKey;
             NextModifierKey = settingItem.NextModifierKey;
+            UIBarWidth = settingItem.HILLA_UIBAR_WIDTH;
+            UIBarHeight = settingItem.HILLA_UIBAR_HEIGHT;
+            UIBarTransparency = settingItem.HILLA_UIBAR_TRANSPARENCY;
         }
 
         private void BackKeyEvent()

@@ -116,14 +116,20 @@ namespace MapleUtility.Plugins.Models
                             if (column <= 4) // 크뎀
                                 block.CaptureType = UnionCaptureType.CriticalDamage;
                             else // 마력
+                            {
                                 block.CaptureType = UnionCaptureType.MagicAttack;
+                                block.CentreCaptureType = UnionCaptureType.Variable7;
+                            }
                         }
                         else
                         {
                             if (row <= 4) // 상태이상내성
                                 block.CaptureType = UnionCaptureType.CrowControlImmune;
                             else // STR
+                            {
                                 block.CaptureType = UnionCaptureType.STR;
+                                block.CentreCaptureType = UnionCaptureType.Variable11;
+                            }
                         }
                     }
                     else
@@ -133,14 +139,20 @@ namespace MapleUtility.Plugins.Models
                             if (column >= 17) // 크확
                                 block.CaptureType = UnionCaptureType.CriticalPercentage;
                             else // INT
+                            {
                                 block.CaptureType = UnionCaptureType.INT;
+                                block.CentreCaptureType = UnionCaptureType.Variable2;
+                            }
                         }
                         else
                         {
                             if (row <= 4) // EXP
                                 block.CaptureType = UnionCaptureType.EXP;
                             else // 공격력
+                            {
                                 block.CaptureType = UnionCaptureType.AttackPoint;
+                                block.CentreCaptureType = UnionCaptureType.Variable5;
+                            }
                         }
                     }
                 }
@@ -153,14 +165,20 @@ namespace MapleUtility.Plugins.Models
                             if (column <= 4) // 방무
                                 block.CaptureType = UnionCaptureType.ArmorPenetration;
                             else // HP
+                            {
                                 block.CaptureType = UnionCaptureType.HP;
+                                block.CentreCaptureType = UnionCaptureType.Variable8;
+                            }
                         }
                         else
                         {
                             if (row >= 15) // 벞지
                                 block.CaptureType = UnionCaptureType.BuffTime;
                             else // MP
+                            {
                                 block.CaptureType = UnionCaptureType.MP;
+                                block.CentreCaptureType = UnionCaptureType.Variable10;
+                            }
                         }
                     }
                     else
@@ -169,15 +187,21 @@ namespace MapleUtility.Plugins.Models
                         {
                             if (row >= 15) // 스탠스
                                 block.CaptureType = UnionCaptureType.Stance;
-                            else
+                            else // DEX
+                            {
                                 block.CaptureType = UnionCaptureType.DEX;
+                                block.CentreCaptureType = UnionCaptureType.Variable1;
+                            }
                         }
                         else
                         {
                             if (column >= 17) // 보공
                                 block.CaptureType = UnionCaptureType.BossDamage;
-                            else
+                            else // LUK
+                            {
                                 block.CaptureType = UnionCaptureType.LUK;
+                                block.CentreCaptureType = UnionCaptureType.Variable4;
+                            }
                         }
                     }
                 }

@@ -111,6 +111,11 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        public int BlockCount
+        {
+            get { return CharacterBlockHelper.GetCaptureBlockCount(Type, Job, Level); }
+        }
+
         public CharacterType Type
         {
             get

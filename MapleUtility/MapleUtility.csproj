@@ -167,6 +167,8 @@
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
+    <Compile Include="Plugins\Converters\IsEqualTargetItemConverter.cs" />
+    <Compile Include="Plugins\Converters\MinusValueConverter.cs" />
     <Compile Include="Plugins\Helpers\CharacterBlockHelper.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />
     <Compile Include="Plugins\Helpers\GlobalKeyboardHookHelper.cs" />
@@ -178,6 +180,7 @@
     <Compile Include="Plugins\Converters\MultiParamConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
     <Compile Include="Plugins\Helpers\InitialHelper.cs" />
+    <Compile Include="Plugins\Helpers\UnionPriorityDragDropHelper.cs" />
     <Compile Include="Plugins\Helpers\SettingHelper.cs" />
     <Compile Include="Plugins\Helpers\UnionGridDragDropHelper.cs" />
     <Compile Include="Plugins\Helpers\WindowHelper.cs" />
@@ -186,23 +189,32 @@
     <Compile Include="Plugins\Lib\StockLib.cs" />
     <Compile Include="Plugins\Models\BlockItem.cs" />
     <Compile Include="Plugins\Models\BlockManagerItem.cs" />
+    <Compile Include="Plugins\Models\BlockUnionTargetItem.cs" />
+    <Compile Include="Plugins\Models\CapturePriorityItem.cs" />
     <Compile Include="Plugins\Models\CenterUnionCaptureModel.cs" />
     <Compile Include="Plugins\Models\ColumnItem.cs" />
     <Compile Include="Plugins\Models\ImageItem.cs" />
+    <Compile Include="Plugins\Models\PathfindResultItem.cs" />
     <Compile Include="Plugins\Models\PresetItem.cs" />
     <Compile Include="Plugins\Models\RankItem.cs" />
+    <Compile Include="Plugins\Models\RelocateCaptureItem.cs" />
     <Compile Include="Plugins\Models\RowColumnItem.cs" />
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
     <Compile Include="Plugins\Models\CharacterItem.cs" />
+    <Compile Include="Plugins\UserControls\UCOutlineTextBlock.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCUnionRelocateHelper.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCVerusHillaHelper.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerColumnSetting.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
+    <Compile Include="Plugins\ViewModels\Views\UnionRelocate\ViewModelUnionRelocatePrioritySetting.cs" />
     <Compile Include="Plugins\ViewModels\Views\UnionRelocate\ViewModelUnionRelocateSyncSelect.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelDebug.cs" />
     <Compile Include="Plugins\ViewModels\Views\ViewModelInformation.cs" />
+    <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlUIBarSetting.xaml.cs">
+      <DependentUpon>UserControlUIBarSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlPresetSetting.xaml.cs">
       <DependentUpon>UserControlPresetSetting.xaml</DependentUpon>
     </Compile>
@@ -238,6 +250,9 @@
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml.cs">
       <DependentUpon>WindowTimerUIBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\UnionRelocate\WindowUnionRelocatePrioritySetting.xaml.cs">
+      <DependentUpon>WindowUnionRelocatePrioritySetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\UnionRelocate\WindowUnionRelocateSyncSelect.xaml.cs">
       <DependentUpon>WindowUnionRelocateSyncSelect.xaml</DependentUpon>
@@ -295,6 +310,10 @@
     <Resource Include="Plugins\Icons\UffieIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Plugins\Views\UserControls\Timer\Setting\UserControlUIBarSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Plugins\Views\UserControls\Timer\Setting\UserControlPresetSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -338,6 +357,10 @@
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerUIBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\UnionRelocate\WindowUnionRelocatePrioritySetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\Views\Windows\UnionRelocate\WindowUnionRelocateSyncSelect.xaml">
       <SubType>Designer</SubType>

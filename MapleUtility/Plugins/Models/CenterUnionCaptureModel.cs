@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapleUtility.Plugins.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -39,6 +40,8 @@ namespace MapleUtility.Plugins.Models
             get { return Name + " ▶"; }
         }
 
+        public UnionCaptureType CenterVariableType;
+
         public ObservableCollection<string> ContextMenuItems
         {
             get
@@ -47,9 +50,37 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        public CenterUnionCaptureModel(string name)
+        public CenterUnionCaptureModel(string name, int offset)
         {
             Name = name;
+
+            switch (offset)
+            {
+                case 0:
+                    CenterVariableType = UnionCaptureType.Variable11;
+                    break;
+                case 1:
+                    CenterVariableType = UnionCaptureType.Variable1;
+                    break;
+                case 2:
+                    CenterVariableType = UnionCaptureType.Variable10;
+                    break;
+                case 3:
+                    CenterVariableType = UnionCaptureType.Variable2;
+                    break;
+                case 4:
+                    CenterVariableType = UnionCaptureType.Variable8;
+                    break;
+                case 5:
+                    CenterVariableType = UnionCaptureType.Variable4;
+                    break;
+                case 6:
+                    CenterVariableType = UnionCaptureType.Variable7;
+                    break;
+                case 7:
+                    CenterVariableType = UnionCaptureType.Variable5;
+                    break;
+            }
         }
     }
 }

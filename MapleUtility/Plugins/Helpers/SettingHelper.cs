@@ -91,8 +91,10 @@ namespace MapleUtility.Plugins.Helpers
         public ObservableCollection<SoundItem> SoundList;
         public ObservableCollection<ColumnItem> ColumnList;
         public ObservableCollection<CharacterItem> CharacterList;
+        public ObservableCollection<CapturePriorityItem> CapturePriorityList;
         public BlockManagerItem BlockManager;
         public PresetItem SelectedPreset;
+        public string SelectedUIBarStyle = "스택형";
         public Color RemainSquareColor = Color.FromArgb(88, 0, 50, 100);
         public float RemainBackAlpha = 78;
         public int AlertDuration = 2000;
@@ -113,10 +115,14 @@ namespace MapleUtility.Plugins.Helpers
         public Key? NextKey = null;
         public ModifierKeys? NextModifierKey = null;
 
+        public float UIBAR_TRANSPARENCY = 19;
         public int UIBAR_WIDTH = 400;
         public int UIBAR_HEIGHT = 110;
 
+        public float HILLA_UIBAR_TRANSPARENCY = 19;
         public int HILLA_UIBAR_WIDTH = 320;
         public int HILLA_UIBAR_HEIGHT = 90;
+
+        public RankItem SelectedRank = null;
     }
 }

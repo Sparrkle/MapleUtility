@@ -119,5 +119,21 @@ namespace MapleUtility.Plugins.Common
         ArmorPenetration,
         [Description("크리티컬 데미지 증가")]
         CriticalDamage,
+        [Description("1시 스텟 유니온")]
+        Variable1,
+        [Description("2시 스텟 유니온")]
+        Variable2,
+        [Description("4시 스텟 유니온")]
+        Variable4,
+        [Description("5시 스텟 유니온")]
+        Variable5,
+        [Description("7시 스텟 유니온")]
+        Variable7,
+        [Description("8시 스텟 유니온")]
+        Variable8,
+        [Description("10시 스텟 유니온")]
+        Variable10,
+        [Description("11시 스텟 유니온")]
+        Variable11,
     }
 }

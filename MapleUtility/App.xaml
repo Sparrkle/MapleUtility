@@ -1,5 +1,6 @@
 ﻿<Application x:Class="MapleUtility.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:MapleUtility" StartupUri="Plugins\Views\Windows\WindowMain.xaml"
              xmlns:grid="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView"
+             xmlns:uc="clr-namespace:MapleUtility.Plugins.UserControls"
              xmlns:telerik1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
              xmlns:telerikInput="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
              xmlns:telerikNavigation="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Navigation"
@@ -97,6 +98,12 @@
                     </MultiDataTrigger>
                 </ControlTemplate.Triggers>
             </ControlTemplate>
+
+            <Style x:Key="BaseOutlineTextBlockStyle" TargetType="{x:Type uc:UCOutlineTextBlock}">
+                <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Aliased"/>
+            </Style>
+            <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}"/>
 
             <Style x:Key="BaseRadTimePickerStyle" TargetType="{x:Type telerikInput:RadTimePicker}" BasedOn="{StaticResource RadDateTimePickerStyle}">
                 <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF"/>

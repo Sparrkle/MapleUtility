@@ -25,11 +25,11 @@
                     <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
-            <telerik:RadTabItem Header="Union Helper" Width="140">
+            <!--<telerik:RadTabItem Header="Union Helper" Width="140">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlUnionRelocateHelper x:Name="ucUnionHelper"/>
                 </telerik:RadTabItem.Content>
-            </telerik:RadTabItem>
+            </telerik:RadTabItem>-->
             <telerik:RadTabItem Header="Verus Hilla Helper" Width="140">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlVerusHillaHelper x:Name="ucVerusHillaHelper"/>

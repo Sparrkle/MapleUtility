@@ -95,22 +95,24 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private int uiBarWidth;
         public int UIBarWidth
         {
-            get { return Defines.UIBAR_WIDTH; }
+            get { return uiBarWidth; }
             set
             {
-                Defines.UIBAR_WIDTH = value;
+                uiBarWidth = value;
                 OnPropertyChanged("UIBarWidth");
             }
         }
 
+        private int uiBarHeight;
         public int UIBarHeight
         {
-            get { return Defines.UIBAR_HEIGHT; }
+            get { return uiBarHeight; }
             set
             {
-                Defines.UIBAR_HEIGHT = value;
+                uiBarHeight = value;
                 OnPropertyChanged("UIBarHeight");
             }
         }
@@ -249,6 +251,26 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private float uiBarTransparency;
+        public float UIBarTransparency
+        {
+            get { return uiBarTransparency; }
+            set
+            {
+                uiBarTransparency = value;
+                OnPropertyChanged("UIBarTransparency");
+            }
+        }
+
+        public Color UIBarBackground
+        {
+            get
+            {
+                var alpha = Convert.ToByte(Math.Truncate(255 / 100 * UIBarTransparency));
+                return Color.FromArgb(alpha, 255, 255, 255);
+            }
+        }
+
         private float remainBackAlpha;
         public float RemainBackAlpha
         {
@@ -269,6 +291,18 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 return Color.FromArgb(alpha, 0, 0, 0);
             }
         }
+
+        private string selectedUIBarStyle;
+        public string SelectedUIBarStyle
+        {
+            get { return selectedUIBarStyle; }
+            set
+            {
+                selectedUIBarStyle = value;
+                OnPropertyChanged("SelectedUIBarStyle");
+            }
+        }
+
 
         public Key? TimerOnOffKey = null;
         public ModifierKeys? TimerOnOffModifierKey = null;
@@ -319,6 +353,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 TimerList = settingItem.TimerList;
 
             //구버전 호환!
+            if (settingItem.SelectedUIBarStyle == null)
+                settingItem.SelectedUIBarStyle = "스택형";
+
+            var relocatePrioirty = TimerList.FirstOrDefault()?.Priority == 0;
+            var count = 1;
             foreach (var timer in TimerList)
             {
                 if (!timer.AlertKey.HasValue || timer.ModifierKey.HasValue)
@@ -343,6 +382,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 }
                 else if (inputKey == Key.LWin || inputKey == Key.RWin || inputKey == Key.KanaMode)
                     timer.AlertKey = null;
+
+                if(relocatePrioirty)
+                {
+                    timer.Priority = count;
+                    count++;
+                }
             }
 
             if (settingItem.SoundList == null)
@@ -393,6 +438,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             else
                 ColumnList = settingItem.ColumnList;
 
+            SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
             RemainSquareColor = settingItem.RemainSquareColor;
             RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
@@ -404,6 +450,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             PauseAllModifierKey = settingItem.PauseAllModifierKey;
             TimerLockKey = settingItem.TimerLockKey;
             TimerLockModifierKey = settingItem.TimerLockModifierKey;
+            UIBarWidth = settingItem.UIBAR_WIDTH;
+            UIBarHeight = settingItem.UIBAR_HEIGHT;
+            UIBarTransparency = settingItem.UIBAR_TRANSPARENCY;
+
+            if (TimerList.Count() > 0)
+                TimerList.OrderBy(o => o.Priority).Last().IsLast = true;
         }
 
         public void TickEvent(object sender, EventArgs e)
@@ -456,8 +508,16 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         private void AddTimerEvent()
         {
             var newTimer = new TimerItem();
+            newTimer.Priority = TimerList.Count() + 1;
             newTimer.Preset = SelectedPreset;
+            newTimer.IsLast = true;
+
+            if(TimerList.Count() > 0)
+                TimerList.OrderBy(o => o.Priority).Last().IsLast = false;
             TimerList.Add(newTimer);
+
+            if (TimerList.Count() > 0)
+                TimerList.OrderBy(o => o.Priority).Last().IsLast = true;
 
             OnPropertyChanged("PresetTimerList");
             CheckEvent();
@@ -465,8 +525,19 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         private void RemoveTimerEvent()
         {
+            TimerList.OrderBy(o => o.Priority).Last().IsLast = false;
             foreach (var timer in TimerList.Where(o => o.IsChecked).ToList())
                 TimerList.Remove(timer);
+
+            var count = 1;
+            foreach (var timer in TimerList.OrderBy(o => o.Priority))
+            {
+                timer.Priority = count;
+                count++;
+            }
+
+            if(TimerList.Count() > 0)
+                TimerList.OrderBy(o => o.Priority).Last().IsLast = true;
 
             OnPropertyChanged("PresetTimerList");
             CheckEvent();
@@ -509,6 +580,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.AlertDuration = AlertDuration;
             timerSettingVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
+            timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
+            timerSettingVM.UIBarTransparency = UIBarTransparency;
 
             IsOpenSettingWindow = true;
             timerSettingWindow.ShowDialog();
@@ -528,6 +601,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             AlertDuration = timerSettingVM.AlertDuration;
             IsShowUIBarTimerName = timerSettingVM.IsShowUIBarTimerName;
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
+            UIBarTransparency = timerSettingVM.UIBarTransparency;
+            SelectedUIBarStyle = timerSettingVM.SelectedUIBarStyle;
         }
 
         public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)

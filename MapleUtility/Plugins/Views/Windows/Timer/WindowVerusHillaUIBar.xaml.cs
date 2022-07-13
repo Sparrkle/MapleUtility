@@ -42,11 +42,6 @@ namespace MapleUtility.Plugins.Views.Windows.Timer
         public WindowVerusHillaUIBar()
         {
             InitializeComponent();
-
-            FrameworkElement.StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata
-            {
-                DefaultValue = FindResource(typeof(Window))
-            });
         }
 
         private void Window_Deactivated(object sender, EventArgs e)

@@ -13,7 +13,7 @@
         Topmost="True" 
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
-        Background="#30ffffff"
+        Background="{Binding UIBarBackground, Converter={StaticResource ColorToBrushConverter}}"
         Title="Timer UI Bar" MinWidth="350" MinHeight="70" MaxHeight="70" MaxWidth="600"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
@@ -22,6 +22,11 @@
         <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="RemainTime" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="cvsOrderedPriorityTimerList" Source="{Binding TimerList}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Priority" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </uc:UCUniqueWindow.Resources>
@@ -82,7 +87,17 @@
                 </TextBlock>
             </Grid>
 
-            <telerik:RadListBox Grid.Row="1" Height="50" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Source={StaticResource cvsOrderedRunningTimerList}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
+            <telerik:RadListBox Grid.Row="1" Height="50" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
+                <telerik:RadListBox.Style>
+                    <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">
+                        <Setter Property="ItemsSource" Value="{Binding Source={StaticResource cvsOrderedRunningTimerList}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedUIBarStyle}" Value="고정형">
+                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource cvsOrderedPriorityTimerList}}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </telerik:RadListBox.Style>
                 <telerik:RadListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource RadListBoxItemStyle}">
                         <Setter Property="Padding" Value="0"/>
@@ -122,25 +137,43 @@
                 <telerik:RadListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Width="50" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black">
-                            <Grid Panel.ZIndex="1">
-                                <telerik:Arc
-                                    Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToBrushConverter}}"
-                                    ArcThickness="255"
-                                    Diameter="80"
-                                    StartAngle="0"
-                                    EndAngle="{Binding RemainRadius}"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center">
-                                    <telerik:Arc.RenderTransform>
-                                        <TransformGroup>
-                                            <RotateTransform CenterX="40" CenterY="40" Angle="270" />
-                                            <ScaleTransform ScaleX="-1" ScaleY="1" CenterX="40" CenterY="40"/>
-                                        </TransformGroup>
-                                    </telerik:Arc.RenderTransform>
-                                </telerik:Arc>
-                            </Grid>
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarStyle}" Value="고정형"/>
+                                                    <Condition Binding="{Binding RemainTimeSeconds}" Value=""/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <Grid Panel.ZIndex="1">
+                                    <telerik:Arc
+                                        Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToBrushConverter}}"
+                                        ArcThickness="255"
+                                        Diameter="80"
+                                        StartAngle="0"
+                                        EndAngle="{Binding RemainRadius}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                        <telerik:Arc.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform CenterX="40" CenterY="40" Angle="270" />
+                                                <ScaleTransform ScaleX="-1" ScaleY="1" CenterX="40" CenterY="40"/>
+                                            </TransformGroup>
+                                        </telerik:Arc.RenderTransform>
+                                    </telerik:Arc>
+                                </Grid>
 
-                            <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainBackColor, Converter={StaticResource ColorToBrushConverter}}" Panel.ZIndex="0"/>
+                                <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainBackColor, Converter={StaticResource ColorToBrushConverter}}" Panel.ZIndex="0"/>
+                            </Grid>
                             <Image Source="{Binding ImageItem.DisplayedImage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
 
                             <StackPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -158,19 +191,19 @@
                                         </Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <TextBlock Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" Foreground="White" FontWeight="DemiBold">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
-                                            <Setter Property="FontSize" Value="14"/>
+                                <uc:UCOutlineTextBlock Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold">
+                                    <uc:UCOutlineTextBlock.Style>
+                                        <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}">
+                                            <Setter Property="FontSize" Value="16"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName}" Value="False">
-                                                    <Setter Property="FontSize" Value="16"/>
+                                                    <Setter Property="FontSize" Value="18"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="{Binding Name}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="White" FontWeight="DemiBold"/>
+                                    </uc:UCOutlineTextBlock.Style>
+                                </uc:UCOutlineTextBlock>
+                                <uc:UCOutlineTextBlock Text="{Binding Name}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" FontSize="10"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

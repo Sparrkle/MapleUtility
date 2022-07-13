@@ -8,7 +8,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
         mc:Ignorable="d" ResizeMode="NoResize"
-        Title="Timer Sound Setting" Height="550" Width="600">
+        Title="Timer Setting" Height="550" Width="600">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,6 +20,11 @@
             <telerik:RadTabItem Header="Default Setting" Width="120">
                 <telerik:RadTabItem.Content>
                     <settingControl:UserControlDefaultSetting />
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="UI Bar Setting" Width="120">
+                <telerik:RadTabItem.Content>
+                    <settingControl:UserControlUIBarSetting />
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
             <telerik:RadTabItem Header="Preset Setting" Width="120">

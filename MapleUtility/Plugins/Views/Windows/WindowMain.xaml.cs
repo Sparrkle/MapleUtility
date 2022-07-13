@@ -35,17 +35,11 @@ namespace MapleUtility.Plugins.Views.Windows
             if (settingItem == null)
                 settingItem = new SettingItem();
 
-            Defines.UIBAR_WIDTH = settingItem.UIBAR_WIDTH;
-            Defines.UIBAR_HEIGHT = settingItem.UIBAR_HEIGHT;
-
-            Defines.HILLA_UIBAR_WIDTH = settingItem.HILLA_UIBAR_WIDTH;
-            Defines.HILLA_UIBAR_HEIGHT = settingItem.HILLA_UIBAR_HEIGHT;
-
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
             timerVM.Initialize(settingItem);
 
-            var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
-            unionVM.Initialize(settingItem);
+            //var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
+            //unionVM.Initialize(settingItem);
 
             var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
             hillaVM.Initialize(settingItem);
@@ -59,59 +53,68 @@ namespace MapleUtility.Plugins.Views.Windows
             InitializeTray();
         }
 
+        bool isUped;
         Key prevKeyUp;
         int prevEventTime = 0;
+        int prevEventUpDownTime = -1;
+        int prevEventUpDownTime2 = -1;
 
         private void OnKeyPressed(object sender, GlobalKeyboardHookHelperEventArgs e)
         {
             var inputKey = KeyInterop.KeyFromVirtualKey(e.KeyboardData.VirtualCode);
             var modifierKeys = KeyInputHelper.GetModifierKeys(Control.ModifierKeys);
-            var keyEventTime = e.KeyboardData.TimeStamp - prevEventTime;
-
-            if (prevKeyUp == Key.LeftShift && keyEventTime == 0)
-            {
-                switch(inputKey)
-                {
-                    case Key.Delete:
-                        inputKey = Key.Decimal;
-                        break;
-                    case Key.Insert:
-                        inputKey = Key.NumPad0;
-                        break;
-                    case Key.End:
-                        inputKey = Key.NumPad1;
-                        break;
-                    case Key.Down:
-                        inputKey = Key.NumPad2;
-                        break;
-                    case Key.PageDown:
-                        inputKey = Key.NumPad3;
-                        break;
-                    case Key.Left:
-                        inputKey = Key.NumPad4;
-                        break;
-                    case Key.Clear:
-                        inputKey = Key.NumPad5;
-                        break;
-                    case Key.Right:
-                        inputKey = Key.NumPad6;
-                        break;
-                    case Key.Home:
-                        inputKey = Key.NumPad7;
-                        break;
-                    case Key.Up:
-                        inputKey = Key.NumPad8;
-                        break;
-                    case Key.PageUp:
-                        inputKey = Key.NumPad9;
-                        break;
-                }
-            }
 
             var inputKeyString = inputKey.ToString();
 
             if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyDown)
             {
+                //Console.WriteLine(inputKeyString + " ++ " + e.KeyboardData.TimeStamp);
+                if (isUped)
+                {
+                    prevEventUpDownTime2 = prevEventUpDownTime;
+                    prevEventUpDownTime = e.KeyboardData.TimeStamp - prevEventTime;
+                }
+
+                if (inputKey == Key.LeftShift && prevEventUpDownTime == 0 && prevEventUpDownTime2 == 0)
+                {
+                    switch (prevKeyUp)
+                    {
+                        case Key.Delete:
+                            inputKey = Key.Decimal;
+                            break;
+                        case Key.Insert:
+                            inputKey = Key.NumPad0;
+                            break;
+                        case Key.End:
+                            inputKey = Key.NumPad1;
+                            break;
+                        case Key.Down:
+                            inputKey = Key.NumPad2;
+                            break;
+                        case Key.PageDown:
+                            inputKey = Key.NumPad3;
+                            break;
+                        case Key.Left:
+                            inputKey = Key.NumPad4;
+                            break;
+                        case Key.Clear:
+                            inputKey = Key.NumPad5;
+                            break;
+                        case Key.Right:
+                            inputKey = Key.NumPad6;
+                            break;
+                        case Key.Home:
+                            inputKey = Key.NumPad7;
+                            break;
+                        case Key.Up:
+                            inputKey = Key.NumPad8;
+                            break;
+                        case Key.PageUp:
+                            inputKey = Key.NumPad9;
+                            break;
+                    }
+                }
+                isUped = false;
                 prevEventTime = e.KeyboardData.TimeStamp;
                 DebugLogHelper.Write(inputKeyString + " 키를 눌렀습니다.");
 
@@ -123,6 +126,8 @@ namespace MapleUtility.Plugins.Views.Windows
             }
             else if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp)
             {
+                //Console.WriteLine(inputKeyString + " -- " + e.KeyboardData.TimeStamp);
+                isUped = true;
                 prevKeyUp = inputKey;
                 prevEventTime = e.KeyboardData.TimeStamp;
                 DebugLogHelper.Write(inputKeyString + " 키를 뗐습니다.");
@@ -139,7 +144,7 @@ namespace MapleUtility.Plugins.Views.Windows
             vm.mainTimer.Stop();
 
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
-            var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
+            //var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
             var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
             timerVM.RemoveAllRunningTimer();
 
@@ -153,6 +158,7 @@ namespace MapleUtility.Plugins.Views.Windows
                 PresetList = timerVM.PresetList,
                 ImageList = timerVM.ImageList,
                 ColumnList = timerVM.ColumnList,
+                SelectedUIBarStyle = timerVM.SelectedUIBarStyle,
                 SelectedPreset = timerVM.SelectedPreset,
                 RemainSquareColor = timerVM.RemainSquareColor,
                 RemainBackAlpha = timerVM.RemainBackAlpha,
@@ -173,13 +179,17 @@ namespace MapleUtility.Plugins.Views.Windows
                 NextKey = hillaVM.NextKey,
                 NextModifierKey = hillaVM.NextModifierKey,
 
-                UIBAR_WIDTH = Defines.UIBAR_WIDTH,
-                UIBAR_HEIGHT = Defines.UIBAR_HEIGHT,
-                HILLA_UIBAR_WIDTH = Defines.HILLA_UIBAR_WIDTH,
-                HILLA_UIBAR_HEIGHT = Defines.HILLA_UIBAR_HEIGHT,
+                UIBAR_TRANSPARENCY = timerVM.UIBarTransparency,
+                UIBAR_WIDTH = timerVM.UIBarWidth,
+                UIBAR_HEIGHT = timerVM.UIBarHeight,
+                HILLA_UIBAR_TRANSPARENCY = hillaVM.UIBarTransparency,
+                HILLA_UIBAR_WIDTH = hillaVM.UIBarWidth,
+                HILLA_UIBAR_HEIGHT = hillaVM.UIBarHeight,
 
-                CharacterList = unionVM.CharacterList,
-                BlockManager = unionVM.BlockManager
+                //CharacterList = unionVM.CharacterList,
+                //BlockManager = unionVM.BlockManager,
+                //SelectedRank = unionVM.SelectedRank,
+                //CapturePriorityList = unionVM.CapturePriorityList
             };
             SettingHelper.SaveSettingFile(settingItem);
 
@@ -195,7 +205,7 @@ namespace MapleUtility.Plugins.Views.Windows
             if(lastestTime.HasValue)
             {
                 var now = DateTime.Now;
-                if (now.Year < lastestTime.Value.Year || now.Month < lastestTime.Value.Month || now.Day <= lastestTime.Value.Day)
+                if (now <= lastestTime)
                     return;
             }
 

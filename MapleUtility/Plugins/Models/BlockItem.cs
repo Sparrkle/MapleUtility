@@ -11,6 +11,20 @@ namespace MapleUtility.Plugins.Models
 {
     public class BlockItem : Notifier
     {
+        public int F { get { return G + H; } }
+        public int G
+        {
+            get
+            {
+                if (Parent == null)
+                    return 0;
+
+                return Parent.G + 1 - (CaptureType == PrioirtyItem.CaptureEnum ? 1 : 0);
+            }
+        } // Start ~ Current
+
+        public int H { get; private set; } // Current ~ End
+
         public Color BackgroundColor
         {
             get
@@ -73,6 +87,8 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        public UnionCaptureType CentreCaptureType;
+
         public List<CharacterItem> CapturedCharacters = new List<CharacterItem>();
 
         private CharacterItem mainCharacterItem;
@@ -88,11 +104,46 @@ namespace MapleUtility.Plugins.Models
 
         public int Row;
         public int Column;
+        public BlockItem Parent;
+        public CapturePriorityItem CapturePriorityItem;
+
+        public CapturePriorityItem PrioirtyItem
+        {
+            get
+            {
+                if (Parent == null)
+                    return CapturePriorityItem;
+                else
+                    return Parent.PrioirtyItem;
+            }
+        }
+
+        public IEnumerable<BlockItem> AllBlocks
+        {
+            get
+            {
+                var list = new List<BlockItem>() { this };
+                if (Parent == null)
+                    return list;
+                else
+                {
+                    return Parent.AllBlocks.Concat(list);
+                }
+            }
+        }
 
         public BlockItem(int row, int column)
         {
             Row = row;
             Column = column;
+        }
+
+        public void GenerateH(BlockItem endBlock)
+        {
+            var rowNum = endBlock.Row - Row;
+            var columnNum = endBlock.Column - Column;
+
+            H = (int) Math.Sqrt((rowNum * rowNum) + (columnNum * columnNum));
         }
 
         public void NotifyBackgroundColor()

@@ -271,8 +271,8 @@
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="우선순위 설정" Command="{Binding RelocateSettingCommand}"/>
-                <Button Grid.Column="2" Content="자동배치" Command="{Binding RelocateCommand}"/>
+                <Button Grid.Column="0" Content="우선순위 설정" Command="{Binding RelocateSettingCommand}" mat:MaterialAssist.FocusBrush="Transparent"/>
+                <Button Grid.Column="2" Content="자동배치" Command="{Binding RelocateCommand}" mat:MaterialAssist.FocusBrush="Transparent"/>
             </Grid>
         </Grid>
 

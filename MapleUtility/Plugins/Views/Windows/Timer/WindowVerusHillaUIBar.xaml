@@ -12,7 +12,8 @@
         Topmost="True" 
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
-        Background="#30ffffff" MinWidth="320" MinHeight="90" MaxHeight="300" MaxWidth="600"
+        Background="{Binding UIBarBackground, Converter={StaticResource ColorToBrushConverter}}"
+        MinWidth="320" MinHeight="90" MaxHeight="300" MaxWidth="600"
         Title="Verus Hilla UI Bar" ResizeMode="CanResizeWithGrip"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
 
@@ -66,7 +67,7 @@
                 </TextBlock>
             </Grid>
 
-            <Grid Grid.Row="1" Background="#211d1e">
+            <Grid Grid.Row="1">
                 <Viewbox Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Grid Margin="10">
                         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

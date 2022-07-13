@@ -103,6 +103,55 @@ namespace MapleUtility.Plugins.Helpers
                 return resultItems;
         }
 
+        public static int GetCaptureBlockCount(CharacterType characterType, string job, int level)
+        {
+            switch(characterType)
+            {
+                case CharacterType.MapleMobile:
+                    if (level >= 120)
+                        return 4;
+                    else if (level >= 70)
+                        return 3;
+                    else if (level >= 50)
+                        return 2;
+                    else
+                        return 1;
+                case CharacterType.Warrior:
+                    if (level >= 250)
+                        return 5;
+                    else if (level >= 200)
+                        return 4;
+
+                    if (job == "제로")
+                    {
+                        if (level >= 180)
+                            return 3;
+                        if (level >= 160)
+                            return 2;
+                    }
+                    else
+                    {
+                        if (level >= 140)
+                            return 3;
+                        if (level >= 100)
+                            return 2;
+                    }
+
+                    return 1;
+                default:
+                    if (level >= 250)
+                        return 5;
+                    else if (level >= 200)
+                        return 4;
+                    else if (level >= 140)
+                        return 3;
+                    else if (level >= 100)
+                        return 2;
+                    else
+                        return 1;
+            }
+        }
+
         public static List<BlockItem> GetCapturedBlocks(CharacterType characterType, string job, int level, BlockItem mainBlock, int angle)
         {
             var resultBlocks = new List<BlockItem>();

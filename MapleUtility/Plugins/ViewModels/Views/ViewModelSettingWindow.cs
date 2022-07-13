@@ -57,6 +57,45 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private ObservableCollection<TimerItem> timerList;
+        public ObservableCollection<TimerItem> TimerList
+        {
+            get { return timerList; }
+            set
+            {
+                timerList = value;
+                OnPropertyChanged("TimerList");
+                OnPropertyChanged("OrderedTimerList");
+            }
+        }
+
+        public IEnumerable<TimerItem> OrderedTimerList
+        {
+            get { return TimerList.OrderBy(o => o.Priority); }
+        }
+
+        private List<string> uiBarStyleList;
+        public List<string> UIBarStyleList
+        {
+            get { return uiBarStyleList; }
+            set
+            {
+                uiBarStyleList = value;
+                OnPropertyChanged("UIBarStyleList");
+            }
+        }
+
+        private string selectedUIBarStyle;
+        public string SelectedUIBarStyle
+        {
+            get { return selectedUIBarStyle; }
+            set
+            {
+                selectedUIBarStyle = value;
+                OnPropertyChanged("SelectedUIBarStyle");
+            }
+        }
+
         public bool IsPresetAllChecked
         {
             get
@@ -211,6 +250,24 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private float uiBarTransparency = 19;
+        public float UIBarTransparency
+        {
+            get { return uiBarTransparency; }
+            set
+            {
+                int intValue = Convert.ToInt32(value);
+
+                if (intValue > 100)
+                    intValue = 100;
+                if (intValue < 1)
+                    intValue = 1;
+
+                uiBarTransparency = intValue;
+                OnPropertyChanged("UIBarTransparency");
+            }
+        }
+
         private int alertDuration;
         public int AlertDuration
         {
@@ -329,7 +386,6 @@ namespace MapleUtility.Plugins.ViewModels.Views
         }
 
         public PresetItem CurrentPreset = null;
-        public ObservableCollection<TimerItem> TimerList = null;
 
         #region Button Command Variables
         public ICommand OnOffSettingKeyCommand { get; set; }
@@ -346,6 +402,8 @@ namespace MapleUtility.Plugins.ViewModels.Views
         public ICommand SoundCheckCommand { get; set; }
         public ICommand LoadDefaultSettingCommand { get; set; }
         public ICommand SelectSoundCommand { get; set; }
+        public ICommand PriorityUpCommand { get; set; }
+        public ICommand PriorityDownCommand { get; set; }
         public ICommand CloseCommand { get; set; }
         #endregion
 
@@ -365,7 +423,15 @@ namespace MapleUtility.Plugins.ViewModels.Views
             SoundCheckCommand = new RelayCommand(o => SoundCheckEvent());
             LoadDefaultSettingCommand = new RelayCommand(o => LoadDefaultSettingEvent());
             SelectSoundCommand = new RelayCommand(o => SelectSoundEvent((SoundItem)o));
+            PriorityUpCommand = new RelayCommand(o => PriorityUpEvent((TimerItem)o));
+            PriorityDownCommand = new RelayCommand(o => PriorityDownEvent((TimerItem)o));
             CloseCommand = new RelayCommand(o => CloseEvent((Window)o));
+
+            UIBarStyleList = new List<string>()
+            {
+                "스택형",
+                "고정형",
+            };
         }
 
         private void OnOffSettingKeyEvent(Window window)
@@ -518,6 +584,31 @@ namespace MapleUtility.Plugins.ViewModels.Views
                 return;
 
             item.Path = openFileDialog.FileName;
+        }
+
+        private void PriorityUpEvent(TimerItem item)
+        {
+            PriorityEvent(item, item.Priority - 1);
+        }
+
+        private void PriorityDownEvent(TimerItem item)
+        {
+            PriorityEvent(item, item.Priority + 1);
+        }
+
+        private void PriorityEvent(TimerItem item, int resultPriority)
+        {
+            if(OrderedTimerList.Count() > 0)
+                OrderedTimerList.LastOrDefault().IsLast = false;
+            var targetTimer = TimerList.Where(o => o.Priority == resultPriority).FirstOrDefault();
+            targetTimer.Priority = item.Priority;
+            item.Priority = resultPriority;
+
+            if (OrderedTimerList.Count() > 0)
+                OrderedTimerList.LastOrDefault().IsLast = true;
+
+            OnPropertyChanged("TimerList");
+            OnPropertyChanged("OrderedTimerList");
         }
 
         private void RemovePresetEvent()

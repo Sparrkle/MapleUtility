@@ -15,8 +15,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using Telerik.Windows.Controls;
@@ -56,6 +58,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 rankList = value;
                 OnPropertyChanged("RankList");
                 OnPropertyChanged("VisibleRankList");
+            }
+        }
+
+        private ObservableCollection<CapturePriorityItem> capturePriorityList;
+        public ObservableCollection<CapturePriorityItem> CapturePriorityList
+        {
+            get { return capturePriorityList; }
+            set
+            {
+                capturePriorityList = value;
+                OnPropertyChanged("CapturePriorityList");
             }
         }
 
@@ -243,17 +256,41 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private List<BlockUnionTargetItem> UnionStandardBlocks;
+
         #region Button Command Variables
         public ICommand CenterUnionCaptureChangeCommand { get; set; }
         public ICommand ChangeJobCommand { get; set; }
         public ICommand SyncCharacterCommand { get; set; }
         public ICommand AddCharacterCommand { get; set; }
         public ICommand RemoveCharacterCommand { get; set; }
+        public ICommand RelocateSettingCommand { get; set; }
+        public ICommand RelocateCommand { get; set; }
         public ICommand CheckCommand { get; set; }
         #endregion
 
         public ViewModelUCUnionRelocateHelper()
         {
+            UnionStandardBlocks = new List<BlockUnionTargetItem>()
+            {
+                new BlockUnionTargetItem(UnionCaptureType.CriticalDamage, new List<RowColumnItem>(){ new RowColumnItem(9, 4), new RowColumnItem(4, 4) }),
+                new BlockUnionTargetItem(UnionCaptureType.ArmorPenetration, new List<RowColumnItem>(){ new RowColumnItem(10, 4), new RowColumnItem(15, 4) }),
+                new BlockUnionTargetItem(UnionCaptureType.BuffTime, new List<RowColumnItem>(){ new RowColumnItem(15, 5), new RowColumnItem(15, 10) }),
+                new BlockUnionTargetItem(UnionCaptureType.Stance, new List<RowColumnItem>(){ new RowColumnItem(15, 11), new RowColumnItem(15, 16) }),
+                new BlockUnionTargetItem(UnionCaptureType.BossDamage, new List<RowColumnItem>(){ new RowColumnItem(15, 17), new RowColumnItem(10, 17) }),
+                new BlockUnionTargetItem(UnionCaptureType.CriticalPercentage, new List<RowColumnItem>(){ new RowColumnItem(9, 17), new RowColumnItem(4, 17) }),
+                new BlockUnionTargetItem(UnionCaptureType.EXP, new List<RowColumnItem>(){ new RowColumnItem(4, 16), new RowColumnItem(4, 11) }),
+                new BlockUnionTargetItem(UnionCaptureType.CrowControlImmune, new List<RowColumnItem>(){ new RowColumnItem(4, 10), new RowColumnItem(4, 5) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable10, new List<RowColumnItem>(){ new RowColumnItem(5, 5), new RowColumnItem(9, 9), new RowColumnItem(9, 5) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable11, new List<RowColumnItem>(){ new RowColumnItem(5, 6), new RowColumnItem(5, 10), new RowColumnItem(9, 10) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable1, new List<RowColumnItem>(){ new RowColumnItem(9, 11), new RowColumnItem(5, 11), new RowColumnItem(5, 15) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable2, new List<RowColumnItem>(){ new RowColumnItem(5, 16), new RowColumnItem(9, 12), new RowColumnItem(9, 16) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable4, new List<RowColumnItem>(){ new RowColumnItem(10, 12), new RowColumnItem(10, 16), new RowColumnItem(14, 16) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable5, new List<RowColumnItem>(){ new RowColumnItem(10, 11), new RowColumnItem(14, 11), new RowColumnItem(14, 15) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable7, new List<RowColumnItem>(){ new RowColumnItem(10, 10), new RowColumnItem(14, 10), new RowColumnItem(14, 6) }),
+                new BlockUnionTargetItem(UnionCaptureType.Variable8, new List<RowColumnItem>(){ new RowColumnItem(10, 9), new RowColumnItem(10, 5), new RowColumnItem(14, 5) }),
+            };
+
             CharacterList = new ObservableCollection<CharacterItem>();
             JobList = new ObservableCollection<string>(new List<string>()
             {
@@ -331,7 +368,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach (var centerUnion in CenterUnionCaptureModel.CenterUnionItems)
             {
-                centerUnionCaptureModelList[index] = new CenterUnionCaptureModel(centerUnion);
+                centerUnionCaptureModelList[index] = new CenterUnionCaptureModel(centerUnion, index);
                 index++;
             }
             CenterUnionCaptureModelList = centerUnionCaptureModelList;
@@ -341,6 +378,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             SyncCharacterCommand = new RelayCommand(o => SyncCharacterEvent((Window) o));
             AddCharacterCommand = new RelayCommand(o => AddCharacterEvent());
             RemoveCharacterCommand = new RelayCommand(o => RemoveCharacterEvent());
+            RelocateSettingCommand = new RelayCommand(o => RelocateSettingEvent());
+            RelocateCommand = new RelayCommand(o => RelocateEvent());
             CheckCommand = new RelayCommand(o => CheckEvent());
         }
 
@@ -354,17 +393,47 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if (settingItem.BlockManager != null)
                 BlockManager = settingItem.BlockManager;
 
-            if(CharacterList.Count() >= 5)
-            {
-                CharacterList[0].MainCaptureBlock = BlockManager.GetBlockItem(9, 8);
-                CharacterList[1].MainCaptureBlock = BlockManager.GetBlockItem(9, 10);
-                CharacterList[2].MainCaptureBlock = BlockManager.GetBlockItem(9, 5);
-                CharacterList[3].MainCaptureBlock = BlockManager.GetBlockItem(9, 3);
-                CharacterList[4].MainCaptureBlock = BlockManager.GetBlockItem(9, 1);
-                CharacterList[4].Angle = 90;
+            if (settingItem.SelectedRank != null)
+                SelectedRank = RankList.Where(o => o.Name == settingItem.SelectedRank.Name).FirstOrDefault();
+            else
+                SelectedRank = RankList.First();
 
-                ChangeCharacterEvent();
+            if (settingItem.CapturePriorityList != null)
+                CapturePriorityList = settingItem.CapturePriorityList;
+            else
+            {
+                CapturePriorityList = new ObservableCollection<CapturePriorityItem>()
+                {
+                    new CapturePriorityItem(UnionCaptureType.CriticalDamage, 1, 40),
+                    new CapturePriorityItem(UnionCaptureType.BossDamage, 2, 40),
+                    new CapturePriorityItem(UnionCaptureType.BuffTime, 3, 40),
+                    new CapturePriorityItem(UnionCaptureType.ArmorPenetration, 4, 40),
+                    new CapturePriorityItem(UnionCaptureType.CriticalPercentage, 5, 40),
+                    new CapturePriorityItem(UnionCaptureType.AttackPoint, 6, 15),
+                    new CapturePriorityItem(UnionCaptureType.MagicAttack, 7, 15),
+                    new CapturePriorityItem(UnionCaptureType.INT, 8, 15),
+                    new CapturePriorityItem(UnionCaptureType.DEX, 9, 15),
+                    new CapturePriorityItem(UnionCaptureType.STR, 10, 15),
+                    new CapturePriorityItem(UnionCaptureType.LUK, 11, 15),
+                    new CapturePriorityItem(UnionCaptureType.HP, 12, 15),
+                    new CapturePriorityItem(UnionCaptureType.MP, 13, 15),
+                    new CapturePriorityItem(UnionCaptureType.Stance, 14, 40),
+                    new CapturePriorityItem(UnionCaptureType.CrowControlImmune, 15, 40),
+                    new CapturePriorityItem(UnionCaptureType.EXP, 16, 40),
+                };
             }
+
+            //if(CharacterList.Count() >= 5)
+            //{
+            //    CharacterList[0].MainCaptureBlock = BlockManager.GetBlockItem(9, 8);
+            //    CharacterList[1].MainCaptureBlock = BlockManager.GetBlockItem(9, 10);
+            //    CharacterList[2].MainCaptureBlock = BlockManager.GetBlockItem(9, 5);
+            //    CharacterList[3].MainCaptureBlock = BlockManager.GetBlockItem(9, 3);
+            //    CharacterList[4].MainCaptureBlock = BlockManager.GetBlockItem(9, 1);
+            //    CharacterList[4].Angle = 90;
+
+            //    ChangeCharacterEvent();
+            //}
         }
 
         private void CenterUnionCaptureChangeEvent(object value)
@@ -533,6 +602,193 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             ChangeCharacterEvent();
             CheckEvent();
+        }
+
+        private void RelocateSettingEvent()
+        {
+            var window = new WindowUnionRelocatePrioritySetting();
+            var vm = window.DataContext as ViewModelUnionRelocatePrioritySetting;
+
+            vm.CapturePriorityList = CapturePriorityList;
+            window.ShowDialog();
+            CapturePriorityList = vm.CapturePriorityList;
+        }
+
+        private void RelocateEvent()
+        {
+            // Block Binding 해제
+            foreach (var character in CharacterList.Where(o => o.IsCaptured))
+                character.MainCaptureBlock = null;
+
+            List<RelocateCaptureItem> captureList = new List<RelocateCaptureItem>();
+
+            // 최대 블록들
+            var blockCount = CharacterList.OrderBy(o => o.BlockCount).Take(SelectedRank.CharacterCount).Sum(o => o.BlockCount);
+            foreach(var priorityItem in CapturePriorityList)
+            {
+                if (blockCount <= 0)
+                    break;
+
+                int count;
+                if (priorityItem.CaptureCount >= blockCount)
+                {
+                    count = blockCount;
+                    blockCount = 0;
+                }
+                else
+                {
+                    count = priorityItem.CaptureCount;
+                    blockCount -= priorityItem.CaptureCount;
+                }
+
+                captureList.Add(new RelocateCaptureItem(priorityItem.CaptureEnum, count));
+            }
+
+            var centerBlocks = new List<BlockItem>()
+            {
+                BlockManager.GetBlockItem(9, 10),
+                BlockManager.GetBlockItem(9, 11),
+                BlockManager.GetBlockItem(10, 10),
+                BlockManager.GetBlockItem(10, 11),
+            };
+            foreach (var captureItem in captureList)
+            {
+                //var captureBlocks = UnionStandardBlocks.Where(o => o.CaptureType == captureItem.CaptureType)
+                //var blocks 
+                GeneratePathBlock();
+            }
+
+            ChangeCharacterEvent();
+            CheckEvent();
+        }
+
+        private PathfindResultItem GeneratePathBlock()
+        {
+            //foreach(var )
+            //var centerBlocks = new List<BlockItem>()
+            //{
+            //    BlockManager.GetBlockItem(9, 10),
+            //    BlockManager.GetBlockItem(9, 11),
+            //    BlockManager.GetBlockItem(10, 10),
+            //    BlockManager.GetBlockItem(10, 11),
+            //};
+
+            //var endBlocks = new List<BlockItem>()
+            //{
+            //    BlockManager.GetBlockItem(9, 4),
+            //    BlockManager.GetBlockItem(4, 4),
+            //};
+
+            var centerBlocks = new List<BlockItem>()
+            {
+                BlockManager.GetBlockItem(9, 4),
+                BlockManager.GetBlockItem(4, 4),
+                BlockManager.GetBlockItem(9, 10),
+                BlockManager.GetBlockItem(9, 11),
+                BlockManager.GetBlockItem(10, 10),
+                BlockManager.GetBlockItem(10, 11),
+            };
+
+            var endBlocks = new List<BlockItem>()
+            {
+                BlockManager.GetBlockItem(15, 5),
+                BlockManager.GetBlockItem(15, 10),
+            };
+
+            return PathfindBlockList(CapturePriorityList[1], centerBlocks, endBlocks);
+        }
+
+        private PathfindResultItem PathfindBlockList(CapturePriorityItem priorityItem, IEnumerable<BlockItem> startBlocks, IEnumerable<BlockItem> endBlocks)
+        {
+            PathfindResultItem minResult = null;
+            foreach(var startBlock in startBlocks)
+            {
+                foreach(var endBlock in endBlocks)
+                {
+                    var result = PathfindBlock(priorityItem, startBlock, endBlock);
+                    if (minResult == null || minResult.ResultCost > result.ResultCost)
+                        minResult = result;
+                }
+            }
+
+            return minResult;
+        }
+
+        private PathfindResultItem PathfindBlock(CapturePriorityItem priorityItem, BlockItem startBlock, BlockItem endBlock)
+        {
+            var tempBlockManager = new BlockManagerItem();
+            tempBlockManager.BlockHandicap = BlockManager.BlockHandicap;
+
+            var openBlocks = new List<BlockItem>();
+            var closeBlocks = new List<BlockItem>();
+
+            var startTempBlock = tempBlockManager.GetBlockItem(startBlock.Row, startBlock.Column);
+            startTempBlock.CapturePriorityItem = priorityItem;
+
+            openBlocks.Add(startTempBlock);
+            startTempBlock.GenerateH(endBlock);
+
+            BlockItem resultEndBlock = null;
+
+            while (openBlocks.Count() > 0)
+            {
+                var block = openBlocks.OrderBy(o => o.F).First();
+                openBlocks.Remove(block);
+                closeBlocks.Add(block);
+
+                if (block.Row == endBlock.Row && block.Column == endBlock.Column)
+                {
+                    resultEndBlock = block;
+                    break;
+                }
+
+                var leftBlock = tempBlockManager.GetBlockItem(block.Row, block.Column - 1);
+                if (!closeBlocks.Any(o => o == leftBlock))
+                    CheckBlock(openBlocks, block, leftBlock, endBlock);
+
+                var rightBlock = tempBlockManager.GetBlockItem(block.Row, block.Column + 1);
+                if (!closeBlocks.Any(o => o == rightBlock))
+                    CheckBlock(openBlocks, block, rightBlock, endBlock);
+
+                var topBlock = tempBlockManager.GetBlockItem(block.Row - 1, block.Column);
+                if (!closeBlocks.Any(o => o == topBlock))
+                    CheckBlock(openBlocks, block, topBlock, endBlock);
+
+                var bottomBlock = tempBlockManager.GetBlockItem(block.Row + 1, block.Column);
+                if (!closeBlocks.Any(o => o == bottomBlock))
+                    CheckBlock(openBlocks, block, bottomBlock, endBlock);
+            }
+
+            var result = new PathfindResultItem();
+            var checkBlock = resultEndBlock;
+            while (checkBlock != null)
+            {
+                result.Blocks.Add(checkBlock);
+                checkBlock = checkBlock.Parent;
+            }
+
+            result.Blocks.Reverse();
+            result.ResultCost = endBlock.F;
+
+            return result;
+        }
+
+        private void CheckBlock(List<BlockItem> openBlocks, BlockItem currentBlock, BlockItem checkBlock, BlockItem endBlock)
+        {
+            if (checkBlock == null)
+                return;
+
+            if (openBlocks.Any(o => o == checkBlock))
+            {
+                if (currentBlock.G < checkBlock.G)
+                    checkBlock.Parent = currentBlock;
+            }
+            else
+            {
+                checkBlock.Parent = currentBlock;
+                checkBlock.GenerateH(endBlock);
+                openBlocks.Add(checkBlock);
+            }
         }
 
         private void RemoveCharacterEvent()

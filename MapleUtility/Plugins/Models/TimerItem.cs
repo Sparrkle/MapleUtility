@@ -4,6 +4,7 @@ using MapleUtility.Plugins.Views.Windows.Timer;
 using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -24,6 +25,17 @@ namespace MapleUtility.Plugins.Models
             {
                 name = value;
                 OnPropertyChanged("Name");
+            }
+        }
+
+        private int priority;
+        public int Priority
+        {
+            get { return priority; }
+            set
+            {
+                priority = value;
+                OnPropertyChanged("Prioirty");
             }
         }
 
@@ -53,6 +65,19 @@ namespace MapleUtility.Plugins.Models
 
                 volume = intValue;
                 OnPropertyChanged("Volume");
+            }
+        }
+
+        [JsonIgnore]
+        private bool isLast;
+        [JsonIgnore]
+        public bool IsLast
+        {
+            get { return isLast; }
+            set
+            {
+                isLast = value;
+                OnPropertyChanged("IsLast");
             }
         }
 
@@ -258,6 +283,7 @@ namespace MapleUtility.Plugins.Models
         {
             return new TimerItem()
             {
+                Priority = this.Priority,
                 AlertKey = this.AlertKey,
                 TimerTime = this.TimerTime,
                 Volume = this.Volume,
