@@ -210,7 +210,14 @@ namespace MapleUtility.Plugins.Views.Windows
             }
 
             var windowChurukoLab = new WindowChurukoLab();
-            windowChurukoLab.Show();
+            try
+            {
+                windowChurukoLab.Show();
+            }
+            catch(Exception)
+            {
+                windowChurukoLab.Close();
+            }
         }
 
         private void InitializeTray()

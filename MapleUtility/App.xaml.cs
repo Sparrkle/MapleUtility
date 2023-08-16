@@ -1,7 +1,5 @@
 ﻿using FMUtils.KeyboardHook;
-using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Models;
-using System;
 using System.Windows;
 using System.Windows.Forms;
 

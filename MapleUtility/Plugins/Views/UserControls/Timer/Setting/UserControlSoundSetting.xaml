@@ -20,7 +20,7 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Width="100" Content="Add Sound" Command="{Binding AddSoundCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
-                <telerik:RadButton Width="100" Content="Remove Sound" Command="{Binding RemoveSoundCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                <telerik:RadButton Width="110" Content="Remove Sound" Command="{Binding RemoveSoundCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
                     <telerik:RadButton.Style>
                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                             <Setter Property="IsEnabled" Value="False"/>
