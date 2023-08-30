@@ -19,18 +19,6 @@
                         <ControlTemplate TargetType="telerik:RadListBoxItem">
                             <Grid Background="Transparent">
                                 <Grid Margin="0">
-                                    <mat:FluentControl x:Name="Fluent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ClipToBounds="True">
-                                        <ContentControl x:Name="contentPresenter"
-                                            Margin="{TemplateBinding Padding}"
-                                            Foreground="{TemplateBinding Foreground}"
-                                            IsTabStop="False"
-                                            ContentTemplate="{TemplateBinding ContentTemplate}"
-                                            Content="{TemplateBinding Content}"
-                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                            ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
-                                    </mat:FluentControl>
                                 </Grid>
                             </Grid>
                         </ControlTemplate>

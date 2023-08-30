@@ -6,13 +6,13 @@
         xmlns:uc="clr-namespace:MapleUtility.Plugins.UserControls"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.Timer"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+        xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
         mc:Ignorable="d"
         WindowStyle="None" 
         Topmost="True" 
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
-        Background="{Binding UIBarBackground, Converter={StaticResource ColorToBrushConverter}}"
+        Background="{Binding UIBarBackground, Converter={StaticResource ColorToHSColorBrushConverter}}"
         MinWidth="320" MinHeight="90" MaxHeight="300" MaxWidth="600"
         Title="Verus Hilla UI Bar" ResizeMode="CanResizeWithGrip"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
@@ -30,7 +30,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 5, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Grid.Row="0" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 0, 0" Background="Transparent" helpers:ThemeHelper.PressedBackgroundBrush="Transparent" helpers:ThemeHelper.PressedBrush="Transparent" helpers:ThemeHelper.MouseOverBackgroundBrush="Transparent" helpers:ThemeHelper.MouseOverBrush="Transparent" BorderBrush="Transparent"/>
 
             <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#33000000" Panel.ZIndex="10">
                 <Grid.Style>

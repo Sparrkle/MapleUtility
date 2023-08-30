@@ -4,6 +4,7 @@ using MapleUtility.Plugins.Views.UserControls;
 using MapleUtility.Plugins.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,7 +66,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
         private void DonateEvent()
         {
-            MessageBox.Show("신한은행 (Shinhan Bank) 110-407-241068 ㅅㅇㅊ\n이 프로그램은 여러분의 기부로 먹고 자랍니다!", "후원 정보");
+            Process.Start(new ProcessStartInfo("https://toss.me/churuko"));
         }
 
         private void InformationEvent(Window window)

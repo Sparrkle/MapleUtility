@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -17,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0, 0, 0, 5">
-            <Button Content="Sync Image Files" Command="{Binding SyncImageFilesCommand}" HorizontalAlignment="Left" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Content="Sync Image Files" Command="{Binding SyncImageFilesCommand}" HorizontalAlignment="Left"/>
         </Grid>
 
         <telerik:RadGridView
@@ -33,12 +32,6 @@
             GroupRenderMode="Flat"
             ShowGroupPanel="False"
             EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
-
-            <telerik:RadGridView.Resources>
-                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                </Style>
-            </telerik:RadGridView.Resources>
 
             <telerik:RadGridView.Columns>
 

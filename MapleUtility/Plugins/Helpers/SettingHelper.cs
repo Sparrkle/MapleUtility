@@ -23,8 +23,7 @@ namespace MapleUtility.Plugins.Helpers
             try
             {
                 var jsonString = JsonConvert.SerializeObject(settingItem, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
-                var encryptBytes = AES256EncryptHelper.AESEncrypt256(jsonString, Defines.SETTING_PW);
-                File.WriteAllBytes(Defines.FilePath, encryptBytes);
+                File.WriteAllText(Defines.FilePath, jsonString);
 
                 return true;
             }
@@ -38,15 +37,24 @@ namespace MapleUtility.Plugins.Helpers
         {
             try
             {
-                var encryptByes = File.ReadAllBytes(Defines.FilePath);
-                var decryptString = AES256EncryptHelper.AESDecrypt256(encryptByes, Defines.SETTING_PW);
-
+                var decryptString = File.ReadAllText(Defines.FilePath);
                 var settingObjects = JsonConvert.DeserializeObject<SettingItem>(decryptString, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
                 return settingObjects;
             }
             catch (Exception)
             {
-                return null;
+                try
+                {
+                    var encryptByes = File.ReadAllBytes(Defines.FilePath);
+                    var decryptString = AES256EncryptHelper.AESDecrypt256(encryptByes, Defines.SETTING_PW);
+
+                    var settingObjects = JsonConvert.DeserializeObject<SettingItem>(decryptString, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
+                    return settingObjects;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 
@@ -55,8 +63,7 @@ namespace MapleUtility.Plugins.Helpers
             try
             {
                 var jsonString = JsonConvert.SerializeObject(lastestDate);
-                var encryptBytes = AES256EncryptHelper.AESEncrypt256(jsonString, Defines.SETTING_PW);
-                File.WriteAllBytes(Defines.ChurukoFilePath, encryptBytes);
+                File.WriteAllText(Defines.ChurukoFilePath, jsonString);
 
                 return true;
             }
@@ -70,15 +77,23 @@ namespace MapleUtility.Plugins.Helpers
         {
             try
             {
-                var encryptByes = File.ReadAllBytes(Defines.ChurukoFilePath);
-                var decryptString = AES256EncryptHelper.AESDecrypt256(encryptByes, Defines.SETTING_PW);
-
+                var decryptString = File.ReadAllText(Defines.ChurukoFilePath);
                 var churukoObjects = JsonConvert.DeserializeObject<DateTime?>(decryptString);
                 return churukoObjects;
             }
             catch (Exception)
             {
-                return null;
+                try
+                {
+                    var encryptByes = File.ReadAllBytes(Defines.ChurukoFilePath);
+                    var decryptString = AES256EncryptHelper.AESDecrypt256(encryptByes, Defines.SETTING_PW);
+                    var churukoObjects = JsonConvert.DeserializeObject<DateTime?>(decryptString);
+                    return churukoObjects;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
     }

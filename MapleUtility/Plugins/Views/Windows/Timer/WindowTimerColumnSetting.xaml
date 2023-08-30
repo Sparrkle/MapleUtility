@@ -29,12 +29,6 @@
             ShowGroupPanel="False"
             EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
 
-            <telerik:RadGridView.Resources>
-                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                </Style>
-            </telerik:RadGridView.Resources>
-
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn
                     Width="35"
@@ -72,6 +66,6 @@
 
         </telerik:RadGridView>
 
-        <Button Grid.Row="1" Width="80" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="0, 5, 0, 0"/>
+        <Button Grid.Row="1" Width="80" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"  Margin="0, 5, 0, 0"/>
     </Grid>
 </Window>

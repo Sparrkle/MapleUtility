@@ -30,7 +30,7 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Width="70" Height="70" Margin="0, 0, 0, 220" Background="#01000000" Panel.ZIndex="100" MouseDown="Border_MouseDown"/>
-        <Image Grid.Column="0" Source="/MapleUtility;component/Plugins/Images/churuko.png"/>
+        <Image Grid.Column="0" Source="/MapleUtility;component/Plugins/Images/churuko2.png"/>
 
         <Grid Grid.Column="1" Margin="10, 0, 0, 5">
             <Grid.RowDefinitions>
@@ -40,13 +40,13 @@
 
             <StackPanel Grid.Row="0">
                 <TextBlock Text="개발자" Style="{StaticResource MainTextBlockStyle}"/>
-                <TextBlock Text="이노시스 츄르코" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Text="엘리시움 서버 간짠" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="이메일 (피드백)" Style="{StaticResource MainTextBlockStyle}"/>
                 <TextBlock Text="enosischuruko@gmail.com" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="건의사항이나 버그, 불편한 사항을 보내주시면 감사하겠습니다!" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="도와주신분" Style="{StaticResource MainTextBlockStyle}"/>
-                <TextBlock Text="이노시스 월화견, 이노시스 로빈잉, 이노시스 밑밥깔지마" Style="{StaticResource SubTextBlockStyle}"/>
-                <TextBlock Text="이노시스 샤를로타" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Text="이노시스 월화견, 리부트2 비메시스트, 크로아 밑밥깔지마" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Text="오로라 샤를로타" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="Churuko Lab" Style="{StaticResource MainTextBlockStyle}"/>
                 <TextBlock Style="{StaticResource SubTextBlockStyle}">
                     <Hyperlink

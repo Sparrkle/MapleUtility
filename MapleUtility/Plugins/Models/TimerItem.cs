@@ -50,6 +50,17 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        private int? beforeSoundTime = 0;
+        public int? BeforeSoundTime
+        {
+            get { return beforeSoundTime; }
+            set
+            {
+                beforeSoundTime = value;
+                OnPropertyChanged("BeforeSoundTime");
+            }
+        }
+
         private float volume = 100;
         public float Volume
         {
@@ -231,7 +242,17 @@ namespace MapleUtility.Plugins.Models
             {
                 soundItem = value;
                 OnPropertyChanged("SoundItem");
-                OnPropertyChanged("SoundItemName");
+            }
+        }
+
+        private SoundItem beforeSoundItem;
+        public SoundItem BeforeSoundItem
+        {
+            get { return beforeSoundItem; }
+            set
+            {
+                beforeSoundItem = value;
+                OnPropertyChanged("BeforeSoundItem");
             }
         }
 
@@ -289,6 +310,7 @@ namespace MapleUtility.Plugins.Models
                 Volume = this.Volume,
                 ImageItem = this.ImageItem,
                 SoundItem = this.SoundItem,
+                BeforeSoundItem = this.BeforeSoundItem,
                 Name = this.Name
             };
         }

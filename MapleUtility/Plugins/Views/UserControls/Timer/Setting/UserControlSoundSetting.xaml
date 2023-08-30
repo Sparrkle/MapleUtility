@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -16,11 +15,11 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="0, 0, 0, 5">
-            <Button Content="Load Default Setting" Command="{Binding LoadDefaultSettingCommand}" HorizontalAlignment="Left" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Content="Load Default Setting" Command="{Binding LoadDefaultSettingCommand}" HorizontalAlignment="Left"/>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Width="100" Content="Add Sound" Command="{Binding AddSoundCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
-                <telerik:RadButton Width="110" Content="Remove Sound" Command="{Binding RemoveSoundCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                <Button Width="100" Content="Add Sound" Command="{Binding AddSoundCommand}" Margin="5, 0, 0, 0"/>
+                <telerik:RadButton Width="110" Content="Remove Sound" Command="{Binding RemoveSoundCommand}" Margin="5, 0, 0, 0">
                     <telerik:RadButton.Style>
                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                             <Setter Property="IsEnabled" Value="False"/>
@@ -48,12 +47,6 @@
             GroupRenderMode="Flat"
             ShowGroupPanel="False"
             EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
-
-            <telerik:RadGridView.Resources>
-                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                </Style>
-            </telerik:RadGridView.Resources>
 
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn
@@ -102,10 +95,11 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="34"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" Text="{Binding Path}" VerticalAlignment="Center"/>
-                                <telerik:RadButton Grid.Column="1" Command="{Binding DataContext.SelectSoundCommand, RelativeSource={RelativeSource AncestorType=local:UserControlSoundSetting}}" CommandParameter="{Binding .}" Content="..." BorderBrush="LightGray" Padding="0, 4" Margin="0, 0, 10, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                                <telerik:RadButton Grid.Column="1" Command="{Binding DataContext.SelectSoundCommand, RelativeSource={RelativeSource AncestorType=local:UserControlSoundSetting}}" CommandParameter="{Binding .}" Content="..." BorderBrush="LightGray" Padding="0, 4" Margin="0, 0, 10, 0">
                                     <telerik:RadButton.Style>
                                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -117,6 +111,11 @@
                                         </Style>
                                     </telerik:RadButton.Style>
                                 </telerik:RadButton>
+                                <Button Grid.Column="2" Margin="0, 0, 5, 0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlSoundSetting}}, Path=DataContext.PlayTestSoundCommand}" CommandParameter="{Binding .}" Padding="5, 3, 5, 3" VerticalAlignment="Center" HorizontalContentAlignment="Center">
+                                    <Button.Content>
+                                        <Image Source="/MapleUtility;component/Plugins/Images/sound.png"/>
+                                    </Button.Content>
+                                </Button>
                             </Grid>
                         </DataTemplate>
                     </telerik:GridViewDataColumn.CellTemplate>

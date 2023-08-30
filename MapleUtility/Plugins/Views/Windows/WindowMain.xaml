@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
         xmlns:usercontrol="clr-namespace:MapleUtility.Plugins.Views.UserControls"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+        xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
         Closed="Window_Closed"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Maple Utility" Height="600" Width="1220" MinHeight="600" MinWidth="1220"
+        Title="Maple Utility" Height="600" Width="1400" MinHeight="600" MinWidth="1220"
         Loaded="Window_Loaded" >
 
     <Grid>
@@ -46,8 +46,8 @@
                 </Style>
             </Grid.Resources>
 
-            <Button Command="{Binding DonateCommand}" HorizontalAlignment="Left" Margin="5" Padding="10, 0" Background="Transparent" Foreground="#666666" Content="Donate" BorderThickness="5" mat:MaterialAssist.CornerRadius="15" mat:MaterialAssist.FocusBrush="Transparent"/>
-            <Button Command="{Binding InformationCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" HorizontalAlignment="Right" Margin="7" Padding="0" Background="Transparent" BorderThickness="5" mat:MaterialAssist.CornerRadius="255" mat:MaterialAssist.FocusBrush="Transparent">
+            <Button Command="{Binding DonateCommand}" HorizontalAlignment="Left" Margin="5" Padding="10, 0" Background="Transparent" Foreground="#666666" Content="Donate" BorderThickness="3" helpers:ThemeHelper.CornerRadius="15" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
+            <Button Command="{Binding InformationCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" HorizontalAlignment="Right" Margin="5" Padding="0" Background="Transparent" BorderThickness="3" helpers:ThemeHelper.CornerRadius="15" helpers:ThemeHelper.FocusBackgroundBrush="Transparent">
                 <Button.Content>
                     <Image Source="/MapleUtility;component/Plugins/Images/questionmark.png"/>
                 </Button.Content>

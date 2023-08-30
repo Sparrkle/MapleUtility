@@ -5,6 +5,7 @@ using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
 using MapleUtility.Plugins.Views.Windows.Timer;
 using Microsoft.Win32;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Resources;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
@@ -386,6 +388,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         }
 
         public PresetItem CurrentPreset = null;
+        public IWavePlayer WavePlayer;
 
         #region Button Command Variables
         public ICommand OnOffSettingKeyCommand { get; set; }
@@ -400,6 +403,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         public ICommand RemoveSoundCommand { get; set; }
         public ICommand PresetCheckCommand { get; set; }
         public ICommand SoundCheckCommand { get; set; }
+        public ICommand PlayTestSoundCommand { get; set; }
         public ICommand LoadDefaultSettingCommand { get; set; }
         public ICommand SelectSoundCommand { get; set; }
         public ICommand PriorityUpCommand { get; set; }
@@ -421,6 +425,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
             RemoveSoundCommand = new RelayCommand(o => RemoveSoundEvent());
             PresetCheckCommand = new RelayCommand(o => PresetCheckEvent());
             SoundCheckCommand = new RelayCommand(o => SoundCheckEvent());
+            PlayTestSoundCommand = new RelayCommand(o => PlaySound((SoundItem)o));
             LoadDefaultSettingCommand = new RelayCommand(o => LoadDefaultSettingEvent());
             SelectSoundCommand = new RelayCommand(o => SelectSoundEvent((SoundItem)o));
             PriorityUpCommand = new RelayCommand(o => PriorityUpEvent((TimerItem)o));
@@ -432,6 +437,16 @@ namespace MapleUtility.Plugins.ViewModels.Views
                 "스택형",
                 "고정형",
             };
+        }
+
+        ~ViewModelSettingWindow()
+        {
+            if (WavePlayer != null)
+            {
+                WavePlayer.Stop();
+                WavePlayer.Dispose();
+                WavePlayer = null;
+            }
         }
 
         private void OnOffSettingKeyEvent(Window window)
@@ -645,6 +660,53 @@ namespace MapleUtility.Plugins.ViewModels.Views
         {
             OnPropertyChanged("IsSoundAllChecked");
             OnPropertyChanged("IsRemoveSoundEnabled");
+        }
+
+        private void PlaySound(SoundItem soundItem)
+        {
+            try
+            {
+                if (soundItem == null || soundItem.Path == null)
+                    return;
+
+                if (WavePlayer != null)
+                {
+                    WavePlayer.Stop();
+                    WavePlayer.Dispose();
+                    WavePlayer = null;
+                }
+
+                var wavePlayer = new WaveOut();
+
+                WaveStream waveStream;
+
+                if (soundItem.IsInternalSound)
+                {
+                    StreamResourceInfo resource = System.Windows.Application.GetResourceStream(new Uri("MapleUtility;component/Plugins/Sounds/" + soundItem.Path, UriKind.Relative));
+                    waveStream = new Mp3FileReader(resource.Stream);
+                }
+                else
+                    waveStream = new MediaFoundationReader(soundItem.Path);
+
+                WaveChannel32 inputStream = new WaveChannel32(waveStream);
+                inputStream.PadWithZeroes = false;
+
+                wavePlayer.Volume = 100;
+                wavePlayer.Init(inputStream);
+                wavePlayer.Play();
+
+                wavePlayer.PlaybackStopped += delegate (object sender, StoppedEventArgs e)
+                {
+                    wavePlayer.Dispose();
+                    waveStream.Dispose();
+                };
+
+                WavePlayer = wavePlayer;
+            }
+            catch (Exception)
+            {
+                DebugLogHelper.Write(soundItem.Path + " 타이머 사운드 재생 중 오류가 발생했습니다.");
+            }
         }
 
         private void LoadDefaultSettingEvent()

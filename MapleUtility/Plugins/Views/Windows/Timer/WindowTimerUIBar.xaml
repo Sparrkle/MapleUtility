@@ -6,14 +6,14 @@
         xmlns:uc="clr-namespace:MapleUtility.Plugins.UserControls"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.Timer"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+        xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
         mc:Ignorable="d"
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None" 
         Topmost="True" 
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
-        Background="{Binding UIBarBackground, Converter={StaticResource ColorToBrushConverter}}"
+        Background="{Binding UIBarBackground, Converter={StaticResource ColorToHSColorBrushConverter}}"
         Title="Timer UI Bar" MinWidth="350" MinHeight="70" MaxHeight="70" MaxWidth="600"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
@@ -38,7 +38,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 5, 0" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Grid.Row="0" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type uc:UCUniqueWindow}}}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="✖" FontSize="8" Padding="0" Margin="0, 0, 0, 0" Background="Transparent" helpers:ThemeHelper.PressedBackgroundBrush="Transparent" helpers:ThemeHelper.PressedBrush="Transparent" helpers:ThemeHelper.MouseOverBackgroundBrush="Transparent" helpers:ThemeHelper.MouseOverBrush="Transparent" BorderBrush="Transparent"/>
 
             <Grid Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#33000000" Panel.ZIndex="10">
                 <Grid.Style>
@@ -87,7 +87,7 @@
                 </TextBlock>
             </Grid>
 
-            <telerik:RadListBox Grid.Row="1" Height="50" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
+            <telerik:RadListBox Grid.Row="1" Height="55" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
                 <telerik:RadListBox.Style>
                     <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">
                         <Setter Property="ItemsSource" Value="{Binding Source={StaticResource cvsOrderedRunningTimerList}}"/>
@@ -99,38 +99,15 @@
                     </Style>
                 </telerik:RadListBox.Style>
                 <telerik:RadListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource RadListBoxItemStyle}">
-                        <Setter Property="Padding" Value="0"/>
+                    <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource BaseRadListBoxItemStyle}">
+                        <Setter Property="Padding" Value="0 0 2 0"/>
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="telerik:RadListBoxItem">
-                                    <Grid Background="Transparent">
-                                        <Grid Margin="0">
-                                            <Border x:Name="BorderVisual" BorderBrush="LightGray" BorderThickness="0 0 0 1"/>
-                                            <mat:FluentControl x:Name="Fluent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ClipToBounds="True">
-                                                <ContentControl x:Name="contentPresenter"
-                                                    Margin="{TemplateBinding Padding}"
-                                                    Foreground="{TemplateBinding Foreground}"
-                                                    IsTabStop="False"
-                                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                    Content="{TemplateBinding Content}"
-                                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                                                    ContentStringFormat="{TemplateBinding ContentStringFormat}"/>
-                                            </mat:FluentControl>
-                                        </Grid>
-                                    </Grid>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
                     </Style>
                 </telerik:RadListBox.ItemContainerStyle>
                 <telerik:RadListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
+                        <StackPanel Orientation="Horizontal" CanVerticallyScroll="False" CanHorizontallyScroll="False"/>
                     </ItemsPanelTemplate>
                 </telerik:RadListBox.ItemsPanel>
                 
@@ -156,7 +133,7 @@
                                 </Grid.Style>
                                 <Grid Panel.ZIndex="1">
                                     <telerik:Arc
-                                        Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToBrushConverter}}"
+                                        Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToHSColorBrushConverter}}"
                                         ArcThickness="255"
                                         Diameter="80"
                                         StartAngle="0"
@@ -172,7 +149,7 @@
                                     </telerik:Arc>
                                 </Grid>
 
-                                <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainBackColor, Converter={StaticResource ColorToBrushConverter}}" Panel.ZIndex="0"/>
+                                <Grid Background="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainBackColor, Converter={StaticResource ColorToHSColorBrushConverter}}" Panel.ZIndex="0"/>
                             </Grid>
                             <Image Source="{Binding ImageItem.DisplayedImage}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
 

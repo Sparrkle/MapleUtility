@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
-             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -52,7 +51,7 @@
                 <telerik:RadColorPicker Grid.Row="1" Grid.Column="1" x:Name="cpCoolTime" SelectedColor="{Binding RemainSquareColor, Mode=TwoWay}" IsRecentColorsActive="True" Background="Transparent" VerticalAlignment="Center" HorizontalAlignment="Left">
                     <telerik:RadColorPicker.ContentTemplate>
                         <DataTemplate>
-                            <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToBrushConverter}}"/>
+                            <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToHSColorBrushConverter}}"/>
                         </DataTemplate>
                     </telerik:RadColorPicker.ContentTemplate>
 
@@ -73,7 +72,7 @@
                         <Grid>
                             <Grid Panel.ZIndex="1">
                                 <telerik:Arc
-                                    Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemainSquareResultColor, Converter={StaticResource ColorToBrushConverter}}"
+                                    Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemainSquareResultColor, Converter={StaticResource ColorToHSColorBrushConverter}}"
                                     ArcThickness="255"
                                     Diameter="60"
                                     StartAngle="0"
@@ -91,7 +90,7 @@
                                 </telerik:Arc>
                             </Grid>
 
-                            <Grid Background="{Binding RemainBackColor, Converter={StaticResource ColorToBrushConverter}}" Panel.ZIndex="0"/>
+                            <Grid Background="{Binding RemainBackColor, Converter={StaticResource ColorToHSColorBrushConverter}}" Panel.ZIndex="0"/>
                             <Image Source="/MapleUtility;component/Plugins/Images/churuko_white.jpg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
 
                             <StackPanel Panel.ZIndex="1" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -130,7 +129,7 @@
 
             <StackPanel Orientation="Horizontal" Height="40" Margin="0, 2">
                 <TextBlock Text="UI Bar 스타일 설정" VerticalAlignment="Center" Width="270"/>
-                <telerik:RadComboBox ItemsSource="{Binding UIBarStyleList}" SelectedItem="{Binding SelectedUIBarStyle}" Width="200" VerticalAlignment="Center" mat:MaterialAssist.FocusBrush="Transparent"/>
+                <telerik:RadComboBox ItemsSource="{Binding UIBarStyleList}" SelectedItem="{Binding SelectedUIBarStyle}" Width="200" VerticalAlignment="Center"/>
             </StackPanel>
 
             <TextBlock Text="UI Bar 고정형 설정" VerticalAlignment="Center" HorizontalAlignment="Left" Width="270" Margin="0, 10, 0, 0"/>
@@ -160,12 +159,6 @@
                         </Style.Triggers>
                     </Style>
                 </telerik:RadGridView.Style>
-
-                <telerik:RadGridView.Resources>
-                    <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                        <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                    </Style>
-                </telerik:RadGridView.Resources>
 
                 <telerik:RadGridView.Columns>
                     <telerik:GridViewDataColumn
@@ -201,7 +194,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0, 0, 5, 0" VerticalAlignment="Center"/>
-                                    <telerik:RadButton Grid.Column="1" Content="↑" Command="{Binding DataContext.PriorityUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" mat:MaterialAssist.FocusBrush="Transparent">
+                                    <telerik:RadButton Grid.Column="1" Content="↑" Command="{Binding DataContext.PriorityUpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}">
                                         <telerik:RadButton.Style>
                                             <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                                                 <Setter Property="IsEnabled" Value="True"/>
@@ -213,7 +206,7 @@
                                             </Style>
                                         </telerik:RadButton.Style>
                                     </telerik:RadButton>
-                                    <telerik:RadButton Grid.Column="3" Content="↓" Command="{Binding DataContext.PriorityDownCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" mat:MaterialAssist.FocusBrush="Transparent">
+                                    <telerik:RadButton Grid.Column="3" Content="↓" Command="{Binding DataContext.PriorityDownCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}">
                                         <telerik:RadButton.Style>
                                             <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                                                 <Setter Property="IsEnabled" Value="True"/>

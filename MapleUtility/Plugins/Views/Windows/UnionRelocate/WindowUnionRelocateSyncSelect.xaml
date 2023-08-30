@@ -100,8 +100,8 @@
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
-            <Button Width="98" BorderBrush="Transparent" Background="#66FFFFFF" Content="Sync" HorizontalAlignment="Right" Command="{Binding SyncCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsSyncEnabled}" mat:MaterialAssist.FocusBrush="Transparent" Margin="0, 0, 5, 0"/>
-            <Button Width="98" BorderBrush="Transparent" Background="#66FFFFFF" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent"/>
+            <Button Width="98" BorderBrush="Transparent" Background="#66FFFFFF" Content="Sync" HorizontalAlignment="Right" Command="{Binding SyncCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsSyncEnabled}"  Margin="0, 0, 5, 0"/>
+            <Button Width="98" BorderBrush="Transparent" Background="#66FFFFFF" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
         </StackPanel>
     </Grid>
 </Window>

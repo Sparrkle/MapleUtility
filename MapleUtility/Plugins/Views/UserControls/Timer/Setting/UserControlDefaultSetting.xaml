@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
-             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -25,17 +24,17 @@
 
             <StackPanel Orientation="Horizontal" Margin="0, 2" Height="40">
                 <TextBlock Text="타이머 ON/OFF 단축키" VerticalAlignment="Center" Width="270"/>
-                <Button Width="130" Content="{Binding OnOffKeyString}" Command="{Binding OnOffSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 5"/>
+                <Button Width="130" Content="{Binding OnOffKeyString}" Command="{Binding OnOffSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="5, 5"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0, 2" Height="40">
                 <TextBlock Text="타이머 전체 일시정지 단축키" VerticalAlignment="Center" Width="270"/>
-                <Button Width="130" Content="{Binding PauseAllKeyString}" Command="{Binding PauseAllSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 5"/>
+                <Button Width="130" Content="{Binding PauseAllKeyString}" Command="{Binding PauseAllSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="5, 5"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Margin="0, 2" Height="40">
                 <TextBlock Text="타이머 잠금 단축키" VerticalAlignment="Center" Width="270"/>
-                <Button Width="130" Content="{Binding TimerLockKeyString}" Command="{Binding TimerLockSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 5"/>
+                <Button Width="130" Content="{Binding TimerLockKeyString}" Command="{Binding TimerLockSettingKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="5, 5"/>
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2, 0, 0">

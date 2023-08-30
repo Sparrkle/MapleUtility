@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
-             xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -22,9 +21,9 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Width="140" Content="Copy Current Preset" Command="{Binding CopyCurrentPresetCommand}" Margin="5, 5, 0, 5" mat:MaterialAssist.FocusBrush="Transparent"/>
-            <Button Grid.Column="1" Width="100" Content="New Preset" Command="{Binding AddPresetCommand}" Margin="5, 5, 0, 5" mat:MaterialAssist.FocusBrush="Transparent"/>
-            <telerik:RadButton Grid.Column="2" Width="100" Content="Remove Preset" Command="{Binding RemovePresetCommand}" Margin="5" mat:MaterialAssist.FocusBrush="Transparent">
+            <Button Grid.Column="0" Width="140" Content="Copy Current Preset" Command="{Binding CopyCurrentPresetCommand}" Margin="5, 5, 0, 5"/>
+            <Button Grid.Column="1" Width="100" Content="New Preset" Command="{Binding AddPresetCommand}" Margin="5, 5, 0, 5"/>
+            <telerik:RadButton Grid.Column="2" Width="100" Content="Remove Preset" Command="{Binding RemovePresetCommand}" Margin="5">
                 <telerik:RadButton.Style>
                     <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                         <Setter Property="IsEnabled" Value="False"/>
@@ -51,12 +50,6 @@
             GroupRenderMode="Flat"
             ShowGroupPanel="False"
             EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
-
-            <telerik:RadGridView.Resources>
-                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                </Style>
-            </telerik:RadGridView.Resources>
 
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn

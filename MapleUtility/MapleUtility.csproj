@@ -107,34 +107,33 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls, Version=2020.1.218.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Windows.Controls, Version=2023.2.718.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RCWPF\2020.1.218.45.NoXaml\Telerik.Windows.Controls.dll</HintPath>
+      <HintPath>..\lib\RCWPF\2023.2.718.45.NoXaml\Telerik.Windows.Controls.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.GridView, Version=2020.1.218.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2023.2.718.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RCWPF\2020.1.218.45.NoXaml\Telerik.Windows.Controls.GridView.dll</HintPath>
+      <HintPath>..\lib\RCWPF\2023.2.718.45.NoXaml\Telerik.Windows.Controls.GridView.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.Input, Version=2020.1.218.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2023.2.718.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RCWPF\2020.1.218.45.NoXaml\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\lib\RCWPF\2023.2.718.45.NoXaml\Telerik.Windows.Controls.Input.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2020.1.218.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2023.2.718.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RCWPF\2020.1.218.45.NoXaml\Telerik.Windows.Controls.Navigation.dll</HintPath>
+      <HintPath>..\lib\RCWPF\2023.2.718.45.NoXaml\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Data, Version=2020.1.218.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+    <Reference Include="Telerik.Windows.Data, Version=2023.2.718.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RCWPF\2020.1.218.45.NoXaml\Telerik.Windows.Data.dll</HintPath>
+      <HintPath>..\lib\RCWPF\2023.2.718.45.NoXaml\Telerik.Windows.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.Windows.Themes.Fluent, Version=2020.1.218.45, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\RCWPF\2020.1.218.45.NoXaml\Telerik.Windows.Themes.Fluent.dll</HintPath>
+    <Reference Include="Telerik.Windows.Themes.Windows11">
+      <HintPath>..\lib\RCWPF\2023.2.718.45.NoXaml\Telerik.Windows.Themes.Windows11.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -157,6 +156,7 @@
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
     <Compile Include="Plugins\Converters\IsEqualTargetItemConverter.cs" />
     <Compile Include="Plugins\Converters\MinusValueConverter.cs" />
+    <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
     <Compile Include="Plugins\Helpers\CharacterBlockHelper.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />
     <Compile Include="Plugins\Helpers\GlobalKeyboardHookHelper.cs" />
@@ -166,7 +166,6 @@
     <Compile Include="Plugins\Helpers\MouseCommandHelper.cs" />
     <Compile Include="Plugins\Helpers\RegexHelper.cs" />
     <Compile Include="Plugins\Converters\MultiParamConverter.cs" />
-    <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
     <Compile Include="Plugins\Helpers\InitialHelper.cs" />
     <Compile Include="Plugins\Helpers\UnionPriorityDragDropHelper.cs" />
     <Compile Include="Plugins\Helpers\SettingHelper.cs" />
@@ -649,6 +648,9 @@
     <PackageReference Include="System.Xml.XDocument">
       <Version>4.3.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Plugins\Images\churuko2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

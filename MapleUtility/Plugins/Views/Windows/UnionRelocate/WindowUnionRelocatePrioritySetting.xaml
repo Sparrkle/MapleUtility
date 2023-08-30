@@ -73,9 +73,6 @@
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
-                <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                    <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                </Style>
             </telerik:RadGridView.Resources>
 
             <telerik:RadGridView.RowStyle>
@@ -119,7 +116,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0, 0, 5, 0" VerticalAlignment="Center"/>
-                                <telerik:RadButton Grid.Column="1" Content="↑" Command="{Binding DataContext.UpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" mat:MaterialAssist.FocusBrush="Transparent">
+                                <telerik:RadButton Grid.Column="1" Content="↑" Command="{Binding DataContext.UpCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" >
                                     <telerik:RadButton.Style>
                                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                                             <Setter Property="IsEnabled" Value="True"/>
@@ -131,7 +128,7 @@
                                         </Style>
                                     </telerik:RadButton.Style>
                                 </telerik:RadButton>
-                                <telerik:RadButton Grid.Column="3" Content="↓" Command="{Binding DataContext.DownCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" mat:MaterialAssist.FocusBrush="Transparent">
+                                <telerik:RadButton Grid.Column="3" Content="↓" Command="{Binding DataContext.DownCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}" >
                                     <telerik:RadButton.Style>
                                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                                             <Setter Property="IsEnabled" Value="True"/>
@@ -164,7 +161,7 @@
 
         </telerik:RadGridView>
 
-        <Button Grid.Row="1" Width="80" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="0, 5, 0, 0"/>
+        <Button Grid.Row="1" Width="80" Content="Close" HorizontalAlignment="Right" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"  Margin="0, 5, 0, 0"/>
     </Grid>
 </Window>
 

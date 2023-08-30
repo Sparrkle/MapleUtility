@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
+using Telerik.Windows.Controls;
 
 namespace MapleUtility.Plugins.Views.Windows
 {
@@ -26,6 +28,15 @@ namespace MapleUtility.Plugins.Views.Windows
         {
             if (!Directory.Exists(Defines.ImageFolderPath))
                 Directory.CreateDirectory(Defines.ImageFolderPath);
+
+            Windows11Palette.Palette.UseSystemAccentColor = true;
+            Windows11Palette.Palette.FontSizeS = 10;
+            Windows11Palette.Palette.FontSize = 12;
+            Windows11Palette.Palette.FontSizeM = 16;
+            Windows11Palette.Palette.FontSizeL = 18;
+            Windows11Palette.Palette.FontSizeXL = 26;
+            Windows11Palette.Palette.FocusColor = Colors.Transparent;
+            Windows11ThemeSizeHelper.Helper.IsInCompactMode = true;
 
             var vm = new ViewModelMainWindow();
             this.DataContext = vm;
@@ -205,7 +216,8 @@ namespace MapleUtility.Plugins.Views.Windows
             if(lastestTime.HasValue)
             {
                 var now = DateTime.Now;
-                if (now <= lastestTime)
+                var time = new DateTime(now.Year, now.Month, now.Day);
+                if (time <= lastestTime)
                     return;
             }
 

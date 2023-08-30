@@ -167,7 +167,7 @@
                                     </Rectangle.Fill>
                                 </Rectangle>
 
-                                <Rectangle Fill="{Binding BackgroundColor, Converter={StaticResource ColorToBrushConverter}}" Panel.ZIndex="0" Stroke="Transparent" StrokeThickness="0"/>
+                                <Rectangle Fill="{Binding BackgroundColor, Converter={StaticResource ColorToHSColorBrushConverter}}" Panel.ZIndex="0" Stroke="Transparent" StrokeThickness="0"/>
 
                                 <Image Width="14" Height="14" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="3">
                                     <Image.Style>
@@ -235,7 +235,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="현재 유니온 레벨 : " VerticalAlignment="Center" Margin="0, 0, 5, 0"/>
-                        <telerik:RadComboBox Grid.Column="1" ItemsSource="{Binding VisibleRankList}" SelectedItem="{Binding SelectedRank}" DisplayMemberPath="Name" Margin="0, 5" mat:MaterialAssist.FocusBrush="Transparent"/>
+                        <telerik:RadComboBox Grid.Column="1" ItemsSource="{Binding VisibleRankList}" SelectedItem="{Binding SelectedRank}" DisplayMemberPath="Name" Margin="0, 5" />
                     </Grid>
                 </Grid>
             </Border>
@@ -271,8 +271,8 @@
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="우선순위 설정" Command="{Binding RelocateSettingCommand}" mat:MaterialAssist.FocusBrush="Transparent"/>
-                <Button Grid.Column="2" Content="자동배치" Command="{Binding RelocateCommand}" mat:MaterialAssist.FocusBrush="Transparent"/>
+                <Button Grid.Column="0" Content="우선순위 설정" Command="{Binding RelocateSettingCommand}" />
+                <Button Grid.Column="2" Content="자동배치" Command="{Binding RelocateCommand}" />
             </Grid>
         </Grid>
 
@@ -283,9 +283,9 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5">
-                <Button Width="130" Content="Sync Character" Command="{Binding SyncCharacterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
-                <Button Width="130" Content="Add Character" Command="{Binding AddCharacterCommand}" mat:MaterialAssist.FocusBrush="Transparent" Margin="5, 0, 0, 0"/>
-                <telerik:RadButton Width="130" Content="Remove Character" Command="{Binding RemoveCharacterCommand}" Margin="5, 0, 0, 0" mat:MaterialAssist.FocusBrush="Transparent">
+                <Button Width="130" Content="Sync Character" Command="{Binding SyncCharacterCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"  Margin="5, 0, 0, 0"/>
+                <Button Width="130" Content="Add Character" Command="{Binding AddCharacterCommand}"  Margin="5, 0, 0, 0"/>
+                <telerik:RadButton Width="130" Content="Remove Character" Command="{Binding RemoveCharacterCommand}" Margin="5, 0, 0, 0" >
                     <telerik:RadButton.Style>
                         <Style TargetType="{x:Type telerik:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
                             <Setter Property="IsEnabled" Value="False"/>
@@ -312,12 +312,6 @@
                 GroupRenderMode="Flat"
                 ShowGroupPanel="False"
                 EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
-
-                <telerik:RadGridView.Resources>
-                    <Style TargetType="{x:Type telerik:GridViewCell}" BasedOn="{StaticResource GridViewCellCustomStyle}">
-                        <Setter Property="mat:MaterialAssist.FocusBrush" Value="Transparent"/>
-                    </Style>
-                </telerik:RadGridView.Resources>
 
                 <telerik:RadGridView.Columns>
 
@@ -422,7 +416,7 @@
                                     telerik:TextSearch.TextPath="."
                                     TextSearchMode="StartsWith"
                                     IsTextSearchEnabled="True"
-                                    mat:MaterialAssist.FocusBrush="Transparent"/>
+                                    />
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
                         

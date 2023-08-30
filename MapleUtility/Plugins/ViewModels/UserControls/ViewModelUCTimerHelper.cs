@@ -433,10 +433,20 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     new ColumnItem(4, "시간 초기화"),
                     new ColumnItem(5, "이미지"),
                     new ColumnItem(6, "알림 사운드"),
+                    new ColumnItem(7, "미리 알림 사운드"),
+                    new ColumnItem(8, "음량 조절"),
                 };
             }
             else
+            {
+                // 이전 데이터 호환
+                if (settingItem.ColumnList.Count <= 6)
+                {
+                    settingItem.ColumnList.Add(new ColumnItem(7, "미리 알림 사운드"));
+                    settingItem.ColumnList.Add(new ColumnItem(8, "음량 조절"));
+                }
                 ColumnList = settingItem.ColumnList;
+            }
 
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
             RemainSquareColor = settingItem.RemainSquareColor;
@@ -738,6 +748,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (item.PrevWavePlayer != null)
                 {
                     item.PrevWavePlayer.Stop();
+                    item.PrevWavePlayer.Dispose();
                     item.PrevWavePlayer = null;
                 }
 
