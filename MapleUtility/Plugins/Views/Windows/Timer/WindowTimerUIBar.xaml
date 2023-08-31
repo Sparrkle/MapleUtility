@@ -171,16 +171,12 @@
                                 <uc:UCOutlineTextBlock Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold">
                                     <uc:UCOutlineTextBlock.Style>
                                         <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}">
-                                            <Setter Property="FontSize" Value="16"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName}" Value="False">
-                                                    <Setter Property="FontSize" Value="18"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
+                                            <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarFont}" />
+                                            <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.UIBarFontSize}" />
                                         </Style>
                                     </uc:UCOutlineTextBlock.Style>
                                 </uc:UCOutlineTextBlock>
-                                <uc:UCOutlineTextBlock Text="{Binding Name}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" FontSize="10"/>
+                                <uc:UCOutlineTextBlock Text="{Binding Name}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" FontFamily="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarFont}" FontSize="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.UIBarNameFontSize}"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

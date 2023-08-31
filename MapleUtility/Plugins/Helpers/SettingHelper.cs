@@ -130,6 +130,9 @@ namespace MapleUtility.Plugins.Helpers
         public Key? NextKey = null;
         public ModifierKeys? NextModifierKey = null;
 
+        public int? UIBarFontSize;
+        public string SelectedUIBarFontName;
+
         public float UIBAR_TRANSPARENCY = 19;
         public int UIBAR_WIDTH = 400;
         public int UIBAR_HEIGHT = 110;

@@ -26,7 +26,7 @@ namespace MapleUtility.Plugins.Helpers
         {
             if (modifierKey.HasValue)
             {
-                if ((modifierKey | inputModifierKeys) == 0)
+                if ((modifierKey & inputModifierKeys) != modifierKey)
                     return false;
             }
 

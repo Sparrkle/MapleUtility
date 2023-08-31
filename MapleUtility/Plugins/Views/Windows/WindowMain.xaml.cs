@@ -76,12 +76,23 @@ namespace MapleUtility.Plugins.Views.Windows
         {
             var inputKey = KeyInterop.KeyFromVirtualKey(e.KeyboardData.VirtualCode);
             var modifierKeys = KeyInputHelper.GetModifierKeys(Control.ModifierKeys);
+            switch(inputKey)
+            {
+                case Key.LeftShift:
+                case Key.RightShift:
+                    modifierKeys = modifierKeys | ModifierKeys.Shift; break;
+                case Key.LeftAlt:
+                case Key.RightAlt:
+                    modifierKeys = modifierKeys | ModifierKeys.Alt; break;
+                case Key.LeftCtrl:
+                case Key.RightCtrl:
+                    modifierKeys = modifierKeys | ModifierKeys.Control; break;
+            }
 
             var inputKeyString = inputKey.ToString();
 
             if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyDown)
             {
-                //Console.WriteLine(inputKeyString + " ++ " + e.KeyboardData.TimeStamp);
                 if (isUped)
                 {
                     prevEventUpDownTime2 = prevEventUpDownTime;
@@ -129,6 +140,7 @@ namespace MapleUtility.Plugins.Views.Windows
                 }
                 isUped = false;
                 prevEventTime = e.KeyboardData.TimeStamp;
+
                 DebugLogHelper.Write(inputKeyString + " 키를 눌렀습니다.");
 
                 var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
@@ -191,6 +203,9 @@ namespace MapleUtility.Plugins.Views.Windows
                 ScytheModifierKey = hillaVM.ScytheModifierKey,
                 NextKey = hillaVM.NextKey,
                 NextModifierKey = hillaVM.NextModifierKey,
+
+                UIBarFontSize = timerVM.UIBarFontSize,
+                SelectedUIBarFontName = timerVM.SelectedUIBarFont.Source,
 
                 UIBAR_TRANSPARENCY = timerVM.UIBarTransparency,
                 UIBAR_WIDTH = timerVM.UIBarWidth,

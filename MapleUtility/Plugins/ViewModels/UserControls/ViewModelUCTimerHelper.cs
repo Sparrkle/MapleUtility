@@ -292,6 +292,48 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private FontFamily selectedUIBarFont = null;
+        public FontFamily SelectedUIBarFont
+        {
+            get
+            {
+                if(selectedUIBarFont == null)
+                    return Application.Current.Resources["NEXON_Lv1_Gothic_OTF"] as FontFamily;
+
+                return selectedUIBarFont;
+            }
+            set
+            {
+                selectedUIBarFont = value;
+                OnPropertyChanged("SelectedUIBarFont");
+            }
+        }
+
+        private int uIBarFontSize = 16;
+        public int UIBarFontSize
+        {
+            get { return uIBarFontSize; }
+            set
+            {
+                if (value <= 12)
+                    uIBarFontSize = 12;
+                else if (value >= 26)
+                    uIBarFontSize = 26;
+                else
+                    uIBarFontSize = value;
+                OnPropertyChanged("UIBarFontSize");
+                OnPropertyChanged("UIBarNameFontSize");
+            }
+        }
+
+        public int UIBarNameFontSize
+        {
+            get
+            {
+                return UIBarFontSize - 6;
+            }
+        }
+
 
         public Key? TimerOnOffKey = null;
         public ModifierKeys? TimerOnOffModifierKey = null;
@@ -444,6 +486,18 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             PauseAllModifierKey = settingItem.PauseAllModifierKey;
             TimerLockKey = settingItem.TimerLockKey;
             TimerLockModifierKey = settingItem.TimerLockModifierKey;
+
+            if (settingItem.UIBarFontSize.HasValue)
+                UIBarFontSize = settingItem.UIBarFontSize.Value;
+            else
+                UIBarFontSize = 12;
+
+            if(!string.IsNullOrEmpty(settingItem.SelectedUIBarFontName))
+            {
+                var fontFamily = Fonts.SystemFontFamilies.FirstOrDefault(o => o.Source == settingItem.SelectedUIBarFontName);
+                SelectedUIBarFont = fontFamily;
+            }
+
             UIBarWidth = settingItem.UIBAR_WIDTH;
             UIBarHeight = settingItem.UIBAR_HEIGHT;
             UIBarTransparency = settingItem.UIBAR_TRANSPARENCY;
@@ -579,13 +633,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingWindow.Left = window.Left + (window.ActualWidth - timerSettingWindow.Width) / 2;
             timerSettingWindow.Top = window.Top + (window.ActualHeight - timerSettingWindow.Height) / 2;
 
+            timerSettingVM.SoundList = vm.SoundList;
+            timerSettingVM.SelectedUIBarFont = SelectedUIBarFont;
+            timerSettingVM.UIBarFontSize = UIBarFontSize;
             timerSettingVM.TimerOnOffKey = TimerOnOffKey;
             timerSettingVM.TimerOnOffModifierKey = TimerOnOffModifierKey;
             timerSettingVM.PauseAllKey = PauseAllKey;
             timerSettingVM.PauseAllModifierKey = PauseAllModifierKey;
             timerSettingVM.TimerLockKey = TimerLockKey;
             timerSettingVM.TimerLockModifierKey = TimerLockModifierKey;
-            timerSettingVM.SoundList = vm.SoundList;
             timerSettingVM.PresetList = PresetList;
             timerSettingVM.ImageList = ImageList;
             timerSettingVM.TimerList = TimerList;
@@ -603,6 +659,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsOpenSettingWindow = false;
 
             vm.SoundList = timerSettingVM.SoundList;
+            SelectedUIBarFont = timerSettingVM.SelectedUIBarFont;
+            UIBarFontSize = timerSettingVM.UIBarFontSize;
             TimerOnOffKey = timerSettingVM.TimerOnOffKey;
             TimerOnOffModifierKey = timerSettingVM.TimerOnOffModifierKey;
             PauseAllKey = timerSettingVM.PauseAllKey;

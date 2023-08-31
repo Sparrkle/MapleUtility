@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:MapleUtility.Plugins.UserControls"
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -22,13 +24,13 @@
     <Grid Margin="5">
         <StackPanel Orientation="Vertical" Margin="5, 0">
 
-            <StackPanel Orientation="Horizontal" Height="40" Margin="0, 2">
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
                 <TextBlock Text="UI Bar에 타이머 이름 표시" VerticalAlignment="Center" Width="270"/>
                 <CheckBox IsChecked="{Binding IsShowUIBarTimerName}" Margin="5, 0"/>
             </StackPanel>
 
             <TextBlock Text="UI Bar 색상 변경" VerticalAlignment="Center" HorizontalAlignment="Left" Width="270" Margin="0, 10, 0, 0"/>
-            <Grid Margin="20, 10, 0, 10">
+            <Grid Margin="20, 5, 0, 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="250"/>
                     <ColumnDefinition Width="140"/>
@@ -108,26 +110,58 @@
                                         </Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <TextBlock Text="45" HorizontalAlignment="Center" Foreground="White" FontWeight="DemiBold">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
-                                            <Setter Property="FontSize" Value="14"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsShowUIBarTimerName}" Value="False">
-                                                    <Setter Property="FontSize" Value="16"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
+                                <uc:UCOutlineTextBlock Text="45" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold">
+                                    <uc:UCOutlineTextBlock.Style>
+                                        <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}">
+                                            <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedUIBarFont}" />
+                                            <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.UIBarFontSize}" />
                                         </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBlock Text="Sample" Visibility="{Binding IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Foreground="White" FontWeight="DemiBold" FontSize="10"/>
+                                    </uc:UCOutlineTextBlock.Style>
+                                </uc:UCOutlineTextBlock>
+                                <uc:UCOutlineTextBlock Text="Sample" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" FontFamily="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedUIBarFont}" FontSize="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.UIBarNameFontSize}"/>
                             </StackPanel>
                         </Grid>
                     </Border>
                 </StackPanel>
             </Grid>
 
-            <StackPanel Orientation="Horizontal" Height="40" Margin="0, 2">
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
+                <TextBlock Text="UI Bar 글꼴 설정" VerticalAlignment="Center" Width="270"/>
+                <telerik:RadComboBox IsEditable="True" Width="200" VerticalAlignment="Center" ClearSelectionButtonVisibility="Visible" EmptyText="(기본 글꼴 사용)" ItemTemplate="{DynamicResource FontTemplate}" SelectedItem="{Binding SelectedUIBarFont}">
+                    <telerik:RadComboBox.Resources>
+                        <CollectionViewSource x:Key="myFonts" Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}">
+                            <CollectionViewSource.SortDescriptions>
+                                <ComponentModel:SortDescription PropertyName="Source" />
+                            </CollectionViewSource.SortDescriptions>
+                        </CollectionViewSource>
+
+                        <Style x:Key="FontStyle">
+                            <Setter Property="Control.FontFamily" Value="{Binding Source}" />
+                            <Setter Property="Control.FontSize" Value="12" />
+                        </Style>
+
+                        <DataTemplate x:Key="FontTemplate">
+                            <StackPanel VirtualizingStackPanel.IsVirtualizing="True">
+                                <TextBlock Style="{StaticResource FontStyle}" Text="{Binding Source}" ToolTip="{Binding Source}" />
+                            </StackPanel>
+                        </DataTemplate>
+
+                    </telerik:RadComboBox.Resources>
+
+                    <telerik:RadComboBox.ItemsSource>
+                        <Binding Source="{StaticResource myFonts}" />
+                    </telerik:RadComboBox.ItemsSource>
+                    
+                    <telerik:RadComboBox.ClearSelectionButtonContent>
+                        <Grid Width="120" HorizontalAlignment="Left">
+                            <TextBlock Text="(기본 글꼴 사용)"/>
+                        </Grid>
+                    </telerik:RadComboBox.ClearSelectionButtonContent>
+                </telerik:RadComboBox>
+                <TextBox Width="40" Text="{Binding UIBarFontSize}" Margin="5, 5"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
                 <TextBlock Text="UI Bar 스타일 설정" VerticalAlignment="Center" Width="270"/>
                 <telerik:RadComboBox ItemsSource="{Binding UIBarStyleList}" SelectedItem="{Binding SelectedUIBarStyle}" Width="200" VerticalAlignment="Center"/>
             </StackPanel>

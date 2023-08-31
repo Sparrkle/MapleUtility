@@ -200,12 +200,12 @@
 
                             <telerik:RadComboBox.Resources>
                                 <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
-                                    <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF" />
+                                    <Setter Property="FontFamily" Value="{StaticResource NEXON_Lv1_Gothic_OTF}" />
                                     <Setter Property="FontSize" Value="12" />
                                     <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
                                 </Style>
                                 <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF" />
+                                    <Setter Property="FontFamily" Value="{StaticResource NEXON_Lv1_Gothic_OTF}" />
                                     <Setter Property="FontSize" Value="12" />
                                     <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
                                 </Style>

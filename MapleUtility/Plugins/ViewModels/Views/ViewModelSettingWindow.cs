@@ -270,6 +270,42 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private FontFamily selectedUIBarFont;
+        public FontFamily SelectedUIBarFont
+        {
+            get { return selectedUIBarFont; }
+            set
+            {
+                selectedUIBarFont = value;
+                OnPropertyChanged("SelectedUIBarFont");
+            }
+        }
+
+        private int uIBarFontSize;
+        public int UIBarFontSize
+        {
+            get { return uIBarFontSize; }
+            set
+            {
+                if (value <= 12)
+                    uIBarFontSize = 12;
+                else if (value >= 26)
+                    uIBarFontSize = 26;
+                else
+                    uIBarFontSize = value;
+                OnPropertyChanged("UIBarFontSize");
+                OnPropertyChanged("UIBarNameFontSize");
+            }
+        }
+
+        public int UIBarNameFontSize
+        {
+            get
+            {
+                return UIBarFontSize - 6;
+            }
+        }
+
         private int alertDuration;
         public int AlertDuration
         {
