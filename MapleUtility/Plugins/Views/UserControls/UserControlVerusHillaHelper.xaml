@@ -204,7 +204,7 @@
                             </telerik:RadComboBox.ClearSelectionButtonContent>
 
                             <telerik:RadComboBox.Style>
-                                <Style TargetType="telerik:RadComboBox" BasedOn="{StaticResource BaseRadComboBoxStyle}">
+                                <Style TargetType="telerik:RadComboBox" BasedOn="{StaticResource RadComboBoxStyle}">
                                     <Setter Property="IsEnabled" Value="True"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding BeforeSoundTime}" Value="{x:Null}">
