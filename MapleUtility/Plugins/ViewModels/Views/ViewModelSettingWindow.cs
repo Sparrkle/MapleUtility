@@ -691,7 +691,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
                 WaveChannel32 inputStream = new WaveChannel32(waveStream);
                 inputStream.PadWithZeroes = false;
 
-                wavePlayer.Volume = 100;
+                wavePlayer.Volume = 1.0f;
                 wavePlayer.Init(inputStream);
                 wavePlayer.Play();
 

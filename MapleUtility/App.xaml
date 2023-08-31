@@ -1,7 +1,7 @@
 ﻿<Application x:Class="MapleUtility.App" 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:local="clr-namespace:MapleUtility" 
+             xmlns:behaviors="clr-namespace:MapleUtility.Plugins.Behaviors" 
              StartupUri="Plugins\Views\Windows\WindowMain.xaml" 
              xmlns:grid="clr-namespace:Telerik.Windows.Controls.GridView;assembly=Telerik.Windows.Controls.GridView" 
              xmlns:uc="clr-namespace:MapleUtility.Plugins.UserControls" 
@@ -21,6 +21,9 @@
                 <ResourceDictionary Source="/Telerik.Windows.Themes.Windows11;component/Themes/Telerik.Windows.Controls.Navigation.xaml" />
                 <telerik:Windows11ResourceDictionary />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="telerik:RadGridView" BasedOn="{StaticResource RadGridViewStyle}">
+                <Setter Property="behaviors:GridFocusBehavior.IsEnabled" Value="True"/>
+            </Style>
             <Style x:Key="BaseRadListBoxItemStyle" TargetType="telerik1:RadListBoxItem">
                 <Setter Property="helpers:ThemeHelper.MouseOverBackgroundBrush" Value="{telerik1:Windows11Resource ResourceKey=SubtleBrush}"/>
                 <Setter Property="helpers:ThemeHelper.CheckedBackgroundBrush" Value="{telerik1:Windows11Resource ResourceKey=SelectedBrush}"/>

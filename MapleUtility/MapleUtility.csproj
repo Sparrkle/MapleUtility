@@ -151,6 +151,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Plugins\Behaviors\GridFocusBehavior.cs" />
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
@@ -458,6 +459,9 @@
       <Version>6.5.5</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FontAwesome.WPF">
+      <Version>4.7.0.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.Platforms">
       <Version>1.1.0</Version>

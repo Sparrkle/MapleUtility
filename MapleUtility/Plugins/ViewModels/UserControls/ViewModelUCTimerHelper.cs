@@ -475,6 +475,25 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach(var runningTimer in RunningTimerList.ToList())
             {
+                if(runningTimer.BeforeSoundTime != null)
+                {
+                    if (!runningTimer.IsAlertBeforeTimer && runningTimer.EndTime?.AddSeconds(-runningTimer.BeforeSoundTime.Value) <= DateTime.Now)
+                    {
+                        runningTimer.IsAlertBeforeTimer = true;
+
+                        if (IsAlertShowScreenChecked)
+                        {
+                            AlertManager.ShowAlert(new RadDesktopAlert()
+                            {
+                                Header = "Maple Utility",
+                                Content = $"{runningTimer.Name}의 타이머가 실행되기 {runningTimer.BeforeSoundTime} 초 전입니다.",
+                                ShowDuration = AlertDuration
+                            });
+                        }
+
+                        PlaySound(runningTimer, true);
+                    }
+                }
                 if(runningTimer.EndTime <= DateTime.Now)
                 {
                     if(IsAlertShowScreenChecked)
@@ -737,11 +756,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             item.ModifierKey = vm.ModifierKey;
         }
 
-        private void PlaySound(TimerItem item)
+        private void PlaySound(TimerItem item, bool isBeforeSoundItem = false)
         {
             try
             {
                 var soundItem = item.SoundItem;
+                if (isBeforeSoundItem)
+                    soundItem = item.BeforeSoundItem;
+
                 if (soundItem == null || soundItem.Path == null)
                     return;
 

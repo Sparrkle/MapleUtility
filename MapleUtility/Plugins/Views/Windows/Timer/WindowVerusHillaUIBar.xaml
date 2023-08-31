@@ -100,8 +100,8 @@
                                 <TextBlock Grid.Column="2" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}마지막 패턴 시간 {0:00}:{1:00}">
-                                            <Binding Path="LatestPatternTime.Minutes" />
-                                            <Binding Path="LatestPatternTime.Seconds" />
+                                            <Binding Path="RealPatternTime.Minutes" />
+                                            <Binding Path="RealPatternTime.Seconds" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>

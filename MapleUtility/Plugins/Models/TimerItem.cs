@@ -115,6 +115,7 @@ namespace MapleUtility.Plugins.Models
             {
                 endTime = value;
                 OnPropertyChanged("EndTime");
+                IsAlertBeforeTimer = false;
                 RefreshRemainTime();
             }
         }
@@ -279,6 +280,8 @@ namespace MapleUtility.Plugins.Models
                 OnPropertyChanged("KeyString");
             }
         }
+
+        public bool IsAlertBeforeTimer { get; set; } = false;
 
         public void RefreshRemainTime()
         {

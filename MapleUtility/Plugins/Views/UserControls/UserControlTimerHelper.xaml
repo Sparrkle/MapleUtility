@@ -100,9 +100,9 @@
 
                     <telerik:GridViewDataColumn
                         Width="200"
-					    Header="알림 이름"
+					    Header="이름"
                         HeaderTextAlignment="Center"
-					    DataMemberBinding="{Binding Name}"
+					    DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsSortable="False"/>
@@ -131,7 +131,7 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="120"
+                        Width="140"
 					    Header="타이머 시간"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"

@@ -1,24 +1,53 @@
 ﻿using MapleUtility.Plugin.Lib;
-using MapleUtility.Plugins.Common;
 using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
 using MapleUtility.Plugins.Views.Windows.Timer;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Resources;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
     public class ViewModelUCVerusHillaHelper : Notifier
     {
+        public IWavePlayer PrevWavePlayer;
+        private ModifierKeys? subtractTimeModifierKey = null;
+        public ModifierKeys? SubtractTimeModifierKey
+        {
+            get { return subtractTimeModifierKey; }
+            set
+            {
+                subtractTimeModifierKey = value;
+                OnPropertyChanged("SubtractTimeModifierKey");
+                OnPropertyChanged("SubtractTimeKeyString");
+            }
+        }
+
+        private Key? subtractTimeKey = null;
+        public Key? SubtractTimeKey
+        {
+            get { return subtractTimeKey; }
+            set
+            {
+                subtractTimeKey = value;
+                OnPropertyChanged("SubtractTimeKey");
+                OnPropertyChanged("SubtractTimeKeyString");
+            }
+        }
+
+        public string SubtractTimeKeyString
+        {
+            get
+            {
+                return KeyTextHelper.ConvertKeyText(SubtractTimeModifierKey, SubtractTimeKey, "없음");
+            }
+        }
+
         private ModifierKeys? backModifierKey = null;
         public ModifierKeys? BackModifierKey
         {
@@ -115,6 +144,38 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private ModifierKeys? addTimeModifierKey = null;
+        public ModifierKeys? AddTimeModifierKey
+        {
+            get { return addTimeModifierKey; }
+            set
+            {
+                addTimeModifierKey = value;
+                OnPropertyChanged("AddTimeModifierKey");
+                OnPropertyChanged("AddTimeKeyString");
+            }
+        }
+
+        private Key? addTimeKey = null;
+        public Key? AddTimeKey
+        {
+            get { return addTimeKey; }
+            set
+            {
+                addTimeKey = value;
+                OnPropertyChanged("AddTimeKey");
+                OnPropertyChanged("AddTimeKeyString");
+            }
+        }
+
+        public string AddTimeKeyString
+        {
+            get
+            {
+                return KeyTextHelper.ConvertKeyText(AddTimeModifierKey, AddTimeKey, "없음");
+            }
+        }
+
         private int currentPhase;
         public int CurrentPhase
         {
@@ -125,6 +186,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 OnPropertyChanged("CurrentPhase");
                 OnPropertyChanged("NextPatternTime");
                 OnPropertyChanged("RemainTime");
+            }
+        }
+
+        private TimeSpan? realPatternTime;
+        public TimeSpan? RealPatternTime
+        {
+            get { return realPatternTime; }
+            set
+            {
+                realPatternTime = value;
+                OnPropertyChanged("RealPatternTime");
             }
         }
 
@@ -232,6 +304,28 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private int? beforeSoundTime = 0;
+        public int? BeforeSoundTime
+        {
+            get { return beforeSoundTime; }
+            set
+            {
+                beforeSoundTime = value;
+                OnPropertyChanged("BeforeSoundTime");
+            }
+        }
+
+        private SoundItem beforeSoundItem;
+        public SoundItem BeforeSoundItem
+        {
+            get { return beforeSoundItem; }
+            set
+            {
+                beforeSoundItem = value;
+                OnPropertyChanged("BeforeSoundItem");
+            }
+        }
+
         public Color UIBarBackground
         {
             get
@@ -263,16 +357,39 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public bool IsOpenSettingWindow = false;
-        public List<Key> PressedKeyList = new List<Key>();
+        private float volume = 100;
+        public float Volume
+        {
+            get { return volume; }
+            set
+            {
+                int intValue = Convert.ToInt32(value);
+
+                if (intValue > 100)
+                    intValue = 100;
+                if (intValue < 0)
+                    intValue = 0;
+
+                volume = intValue;
+                OnPropertyChanged("Volume");
+            }
+        }
+
+        public bool IsAlertBeforeTimer { get; set; } = false;
+        public bool IsOpenSettingWindow { get; set; } = false;
+        public List<Key> PressedKeyList { get; set; } = new List<Key>();
 
         #region Button Command Variables
+        public ICommand SubtractTimeKeyCommand { get; set; }
         public ICommand BackKeyCommand { get; set; }
         public ICommand ScytheKeyCommand { get; set; }
         public ICommand NextKeyCommand { get; set; }
+        public ICommand AddTimeKeyCommand { get; set; }
+        public ICommand SubtractTimeKeySettingCommand { get; set; }
         public ICommand BackKeySettingCommand { get; set; }
         public ICommand ScytheKeySettingCommand { get; set; }
         public ICommand NextKeySettingCommand { get; set; }
+        public ICommand AddTimeKeySettingCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand OpenHillaUIBarCommand { get; set; }
         public ICommand CloseCommand { get; set; }
@@ -280,12 +397,16 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         public ViewModelUCVerusHillaHelper()
         {
+            SubtractTimeKeyCommand = new RelayCommand(o => ChangeTime(-5));
             BackKeyCommand = new RelayCommand(o => BackKeyEvent());
             ScytheKeyCommand = new RelayCommand(o => ScytheKeyEvent());
             NextKeyCommand = new RelayCommand(o => NextKeyEvent());
+            AddTimeKeyCommand = new RelayCommand(o => ChangeTime(5));
+            SubtractTimeKeySettingCommand = new RelayCommand(o => SubtractTimeKeySettingEvent((Window)o));
             BackKeySettingCommand = new RelayCommand(o => BackKeySettingEvent((Window)o));
             ScytheKeySettingCommand = new RelayCommand(o => ScytheKeySettingEvent((Window)o));
             NextKeySettingCommand = new RelayCommand(o => NextKeySettingEvent((Window)o));
+            AddTimeKeySettingCommand = new RelayCommand(o => AddTimeKeySettingEvent((Window)o));
             ResetCommand = new RelayCommand(o => ResetEvent());
             OpenHillaUIBarCommand = new RelayCommand(o => OpenHillaUIBarEvent());
             CloseCommand = new RelayCommand(o => CloseEvent((Window)o));
@@ -315,27 +436,103 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 CurrentPhase--;
         }
 
+        private void PlaySound(SoundItem item)
+        {
+            try
+            {
+                if (item == null || item.Path == null)
+                    return;
+
+                if (PrevWavePlayer != null)
+                {
+                    PrevWavePlayer.Stop();
+                    PrevWavePlayer.Dispose();
+                    PrevWavePlayer = null;
+                }
+
+                var wavePlayer = new WaveOut();
+
+                WaveStream waveStream;
+
+                if (item.IsInternalSound)
+                {
+                    StreamResourceInfo resource = Application.GetResourceStream(new Uri("MapleUtility;component/Plugins/Sounds/" + item.Path, UriKind.Relative));
+                    waveStream = new Mp3FileReader(resource.Stream);
+                }
+                else
+                    waveStream = new MediaFoundationReader(item.Path);
+
+                WaveChannel32 inputStream = new WaveChannel32(waveStream);
+                inputStream.PadWithZeroes = false;
+
+                wavePlayer.Volume = Volume / 100;
+                wavePlayer.Init(inputStream);
+                wavePlayer.Play();
+
+                wavePlayer.PlaybackStopped += delegate (object sender, StoppedEventArgs e)
+                {
+                    wavePlayer.Dispose();
+                    waveStream.Dispose();
+                };
+
+                PrevWavePlayer = wavePlayer;
+            }
+            catch (Exception)
+            {
+                DebugLogHelper.Write(item.Name + " 타이머 사운드 재생 중 오류가 발생했습니다.");
+            }
+        }
+
+        private void ChangeTime(int seconds)
+        {
+            if (seconds >= 0)
+                IsAlertBeforeTimer = false;
+
+            LatestPatternTime = LatestPatternTime.Value.Add(new TimeSpan(0, 0, -seconds));
+            InternalLatestPatternTime = InternalLatestPatternTime.Value.Add(new TimeSpan(0, 0, seconds));
+        }
+
         private void ScytheKeyEvent()
         {
             if (LatestPatternTime == null)
             {
-                LatestPatternTime = new TimeSpan(0, 27, 13);
+                RealPatternTime = LatestPatternTime = new TimeSpan(0, 27, 13);
                 InternalLatestPatternTime = DateTime.Now;
             }
             else
             {
-                LatestPatternTime = LatestPatternTime + (InternalLatestPatternTime - DateTime.Now);
+                RealPatternTime = LatestPatternTime = LatestPatternTime + (InternalLatestPatternTime - DateTime.Now);
                 if (LatestPatternTime.Value.TotalSeconds < 0)
                     ResetEvent();
                 else
                     InternalLatestPatternTime = DateTime.Now;
             }
+
+            IsAlertBeforeTimer = false;
         }
 
         private void NextKeyEvent()
         {
             if (CurrentPhase < 3)
                 CurrentPhase++;
+        }
+
+        private void SubtractTimeKeySettingEvent(Window window)
+        {
+            var dialog = new WindowTimerPressKeyboard();
+            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
+
+            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
+            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
+
+            vm.PressedKey = SubtractTimeKey;
+            vm.ModifierKey = SubtractTimeModifierKey;
+            vm.ChangeKeyText();
+
+            dialog.ShowDialog();
+
+            SubtractTimeKey = vm.PressedKey;
+            SubtractTimeModifierKey = vm.ModifierKey;
         }
 
         private void BackKeySettingEvent(Window window)
@@ -392,6 +589,24 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             NextModifierKey = vm.ModifierKey;
         }
 
+        private void AddTimeKeySettingEvent(Window window)
+        {
+            var dialog = new WindowTimerPressKeyboard();
+            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
+
+            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
+            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
+
+            vm.PressedKey = AddTimeKey;
+            vm.ModifierKey = AddTimeModifierKey;
+            vm.ChangeKeyText();
+
+            dialog.ShowDialog();
+
+            AddTimeKey = vm.PressedKey;
+            AddTimeModifierKey = vm.ModifierKey;
+        }
+
         private void ResetEvent()
         {
             CurrentPhase = 1;
@@ -419,6 +634,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             if(RemainTime != null)
             {
+                if (BeforeSoundTime != null)
+                {
+                    if (!IsAlertBeforeTimer && RemainTime.Value.TotalSeconds <= BeforeSoundTime)
+                    {
+                        IsAlertBeforeTimer = true;
+                        PlaySound(BeforeSoundItem);
+                    }
+                }
+
                 if (RemainTime.Value.TotalSeconds <= 0)
                     ScytheKeyEvent();
             }
@@ -437,6 +661,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if (!IsHelperON)
                 return;
 
+            if (!(SubtractTimeModifierKey == null && SubtractTimeKey == null))
+            {
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, SubtractTimeModifierKey, SubtractTimeKey))
+                    ChangeTime(-5);
+            }
+
             if (!(BackModifierKey == null && BackKey == null))
             {
                 if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, BackModifierKey, BackKey))
@@ -453,6 +683,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, NextModifierKey, NextKey))
                     NextKeyEvent();
+            }
+
+            if (!(AddTimeModifierKey == null && AddTimeKey == null))
+            {
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, AddTimeModifierKey, AddTimeKey))
+                    ChangeTime(5);
             }
         }
     }
