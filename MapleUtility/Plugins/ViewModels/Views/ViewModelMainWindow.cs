@@ -1,13 +1,12 @@
 ﻿using MapleUtility.Plugin.Lib;
+using MapleUtility.Plugins.Helpers;
+using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.Views.UserControls;
 using MapleUtility.Plugins.Views.Windows;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -47,6 +46,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private ObservableCollection<SoundItem> soundList;
+        public ObservableCollection<SoundItem> SoundList
+        {
+            get { return soundList; }
+            set
+            {
+                soundList = value;
+                OnPropertyChanged("SoundList");
+            }
+        }
+
         public DispatcherTimer mainTimer = new DispatcherTimer();
 
         #region Button Command Variables
@@ -62,6 +72,14 @@ namespace MapleUtility.Plugins.ViewModels.Views
             mainTimer = new DispatcherTimer(DispatcherPriority.Render);
             mainTimer.Interval = TimeSpan.FromSeconds(0.03);
             mainTimer.Start();
+        }
+
+        public void Initialize(SettingItem settingItem)
+        {
+            if (settingItem.SoundList == null)
+                SoundList = InitialHelper.InitializeSoundList();
+            else
+                SoundList = settingItem.SoundList;
         }
 
         private void DonateEvent()

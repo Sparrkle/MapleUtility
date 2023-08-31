@@ -73,17 +73,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        private ObservableCollection<SoundItem> soundList;
-        public ObservableCollection<SoundItem> SoundList
-        {
-            get { return soundList; }
-            set
-            {
-                soundList = value;
-                OnPropertyChanged("SoundList");
-            }
-        }
-
         private ObservableCollection<ColumnItem> columnList;
         public ObservableCollection<ColumnItem> ColumnList
         {
@@ -390,11 +379,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 }
             }
 
-            if (settingItem.SoundList == null)
-                SoundList = InitialHelper.InitializeSoundList();
-            else
-                SoundList = settingItem.SoundList;
-
             if (settingItem.PresetList == null)
             {
                 PresetList = new ObservableCollection<PresetItem>();
@@ -590,6 +574,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             var timerSettingWindow = new WindowTimerSettingWindow();
             var timerSettingVM = timerSettingWindow.DataContext as ViewModelSettingWindow;
 
+            var vm = window.DataContext as ViewModelMainWindow;
+
             timerSettingWindow.Left = window.Left + (window.ActualWidth - timerSettingWindow.Width) / 2;
             timerSettingWindow.Top = window.Top + (window.ActualHeight - timerSettingWindow.Height) / 2;
 
@@ -599,7 +585,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.PauseAllModifierKey = PauseAllModifierKey;
             timerSettingVM.TimerLockKey = TimerLockKey;
             timerSettingVM.TimerLockModifierKey = TimerLockModifierKey;
-            timerSettingVM.SoundList = SoundList;
+            timerSettingVM.SoundList = vm.SoundList;
             timerSettingVM.PresetList = PresetList;
             timerSettingVM.ImageList = ImageList;
             timerSettingVM.TimerList = TimerList;
@@ -616,7 +602,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingWindow.ShowDialog();
             IsOpenSettingWindow = false;
 
-            SoundList = timerSettingVM.SoundList;
+            vm.SoundList = timerSettingVM.SoundList;
             TimerOnOffKey = timerSettingVM.TimerOnOffKey;
             TimerOnOffModifierKey = timerSettingVM.TimerOnOffModifierKey;
             PauseAllKey = timerSettingVM.PauseAllKey;

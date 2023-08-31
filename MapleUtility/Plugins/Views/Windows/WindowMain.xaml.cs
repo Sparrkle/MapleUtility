@@ -46,6 +46,8 @@ namespace MapleUtility.Plugins.Views.Windows
             if (settingItem == null)
                 settingItem = new SettingItem();
 
+            vm.Initialize(settingItem);
+
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
             timerVM.Initialize(settingItem);
 
@@ -165,7 +167,7 @@ namespace MapleUtility.Plugins.Views.Windows
             var settingItem = new SettingItem
             {
                 TimerList = timerVM.TimerList,
-                SoundList = timerVM.SoundList,
+                SoundList = vm.SoundList,
                 PresetList = timerVM.PresetList,
                 ImageList = timerVM.ImageList,
                 ColumnList = timerVM.ColumnList,

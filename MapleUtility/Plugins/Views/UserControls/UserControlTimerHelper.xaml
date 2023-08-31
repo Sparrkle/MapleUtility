@@ -244,13 +244,12 @@
                                     </Grid.ColumnDefinitions>
 
                                     <telerik:RadComboBox Grid.Column="0"
-                                        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SoundList}"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.SoundList}"
                                         SelectedItem="{Binding SoundItem, Mode=TwoWay}"
                                         ClearSelectionButtonVisibility="Visible" 
                                         EmptyText="(사운드 없음)"
                                         DisplayMemberPath="Name"
-                                        VerticalContentAlignment="Center"
-                                        >
+                                        VerticalContentAlignment="Center">
 
                                         <telerik:RadComboBox.ClearSelectionButtonContent>
                                             <Grid Width="120" HorizontalAlignment="Left">
@@ -283,15 +282,14 @@
                                     </Grid.ColumnDefinitions>
 
                                     <TextBox Grid.Column="0" Text="{Binding BeforeSoundTime, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" MaxLength="3" Margin="10, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                                    <TextBlock Grid.Column="1" Text="초전 재생" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="초전 알림" VerticalAlignment="Center"/>
                                     <telerik:RadComboBox Grid.Column="2"
-                                        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SoundList}"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.SoundList}"
                                         SelectedItem="{Binding BeforeSoundItem, Mode=TwoWay}"
                                         ClearSelectionButtonVisibility="Visible" 
                                         EmptyText="(사운드 없음)"
                                         DisplayMemberPath="Name"
                                         VerticalContentAlignment="Center"
-                                        
                                         Margin="5, 0">
 
                                         <telerik:RadComboBox.ClearSelectionButtonContent>

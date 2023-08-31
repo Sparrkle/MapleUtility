@@ -3,10 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:local="clr-namespace:MapleUtility.Plugins.Views.UserControls"
     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
     xmlns:telerik1="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls"
     xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
+    xmlns:controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     x:Class="MapleUtility.Plugins.Views.UserControls.UserControlVerusHillaHelper"
     mc:Ignorable="d" Background="#211d1e">
@@ -47,7 +47,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="White">
-            <telerik1:RadToggleSwitchButton VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5, 10, 0, 0" IsChecked="{Binding IsHelperON}" ContentPosition="Both" CheckedContent="Helper ON" UncheckedContent="Helper OFF" TrackWidth="40" BorderBrush="#aad900"/>
+            <telerik1:RadToggleSwitchButton VerticalAlignment="Top" Margin="5, 10, 0, 0" IsChecked="{Binding IsHelperON}" ContentPosition="Both" CheckedContent="Helper ON" UncheckedContent="Helper OFF" TrackWidth="40" BorderBrush="#aad900"/>
         </Grid>
 
         <Grid Grid.Row="1" Background="#aa000000" Panel.ZIndex="1">
@@ -174,7 +174,7 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Width="100" Text="UI Bar 배경 투명도" VerticalAlignment="Center" TextAlignment="Right"/>
                     <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 0">
-                        <telerik1:RadSlider Width="140" Value="{Binding UIBarTransparency}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#aad900" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
+                        <telerik1:RadSlider Width="145" Value="{Binding UIBarTransparency}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#aad900" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
                         <Border BorderBrush="#aad900" BorderThickness="1" Margin="5, 0, 0, 0">
                             <TextBox Width="40" Text="{Binding UIBarTransparency, UpdateSourceTrigger=PropertyChanged}" Foreground="#f86475" Background="#211d1e" VerticalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" Padding="2"/>
                         </Border>
@@ -185,17 +185,31 @@
                     <TextBlock Width="100" Text="미리 알림" VerticalAlignment="Center" TextAlignment="Right"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBox Width="30" Grid.Column="0" Text="{Binding BeforeSoundTime, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" MaxLength="3" Margin="10, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="초전 재생" VerticalAlignment="Center"/>
-                        <telerik:RadComboBox 
-                                Grid.Column="2"
-                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SoundList}"
-                                SelectedItem="{Binding BeforeSoundItem, Mode=TwoWay}"
-                                ClearSelectionButtonVisibility="Visible" 
-                                EmptyText="(사운드 없음)"
-                                DisplayMemberPath="Name"
-                                VerticalContentAlignment="Center"
-                                helpers:ThemeHelper.FocusBackgroundBrush="Transparent"
-                                Margin="5, 0">
+                        <TextBlock Grid.Column="1" Text="초전 알림" VerticalAlignment="Center"/>
+                        <telerik:RadComboBox
+                            Width="110"
+                            Grid.Column="2"
+                            ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.SoundList}"
+                            SelectedItem="{Binding BeforeSoundItem, Mode=TwoWay}"
+                            ClearSelectionButtonVisibility="Visible" 
+                            EmptyText="(사운드 없음)"
+                            DisplayMemberPath="Name"
+                            VerticalContentAlignment="Center"
+                            helpers:ThemeHelper.FocusBackgroundBrush="Transparent"
+                            Margin="3, 0, 0, 0">
+
+                            <telerik:RadComboBox.Resources>
+                                <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
+                                    <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF" />
+                                    <Setter Property="FontSize" Value="12" />
+                                    <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
+                                </Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="FontFamily" Value="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF" />
+                                    <Setter Property="FontSize" Value="12" />
+                                    <Setter Property="TextOptions.TextRenderingMode" Value="Aliased" />
+                                </Style>
+                            </telerik:RadComboBox.Resources>
 
                             <telerik:RadComboBox.ClearSelectionButtonContent>
                                 <Grid Width="120" HorizontalAlignment="Left">
@@ -204,8 +218,9 @@
                             </telerik:RadComboBox.ClearSelectionButtonContent>
 
                             <telerik:RadComboBox.Style>
-                                <Style TargetType="telerik:RadComboBox" BasedOn="{StaticResource RadComboBoxStyle}">
+                                <Style TargetType="telerik:RadComboBox" BasedOn="{StaticResource BaseRadComboBoxStyle}">
                                     <Setter Property="IsEnabled" Value="True"/>
+                                    <Setter Property="Foreground" Value="#f86475"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding BeforeSoundTime}" Value="{x:Null}">
                                             <Setter Property="IsEnabled" Value="False"/>
@@ -220,7 +235,7 @@
                 <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Width="100" Text="음량 조절" VerticalAlignment="Center" TextAlignment="Right"/>
                     <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 0">
-                        <telerik1:RadSlider Width="140" Value="{Binding Volume}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#aad900" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
+                        <telerik1:RadSlider Width="145" Value="{Binding Volume}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#aad900" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
                         <Border BorderBrush="#aad900" BorderThickness="1" Margin="5, 0, 0, 0">
                             <TextBox Width="40" Text="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" Foreground="#f86475" Background="#211d1e" VerticalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" Padding="2"/>
                         </Border>
