@@ -95,14 +95,19 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        private int uiBarHeight;
+        public int UIBarTimerSize
+        {
+            get
+            {
+                return 14 + UIBarFontSize * 3;
+            }
+        }
+
         public int UIBarHeight
         {
-            get { return uiBarHeight; }
-            set
+            get
             {
-                uiBarHeight = value;
-                OnPropertyChanged("UIBarHeight");
+                return UIBarTimerSize + 20;
             }
         }
 
@@ -323,6 +328,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     uIBarFontSize = value;
                 OnPropertyChanged("UIBarFontSize");
                 OnPropertyChanged("UIBarNameFontSize");
+                OnPropertyChanged("UIBarHeight");
+                OnPropertyChanged("UIBarTimerSize");
             }
         }
 
@@ -499,7 +506,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
 
             UIBarWidth = settingItem.UIBAR_WIDTH;
-            UIBarHeight = settingItem.UIBAR_HEIGHT;
             UIBarTransparency = settingItem.UIBAR_TRANSPARENCY;
 
             if (TimerList.Count() > 0)

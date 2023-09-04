@@ -14,9 +14,9 @@
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
         Background="{Binding UIBarBackground, Converter={StaticResource ColorToHSColorBrushConverter}}"
-        Title="Timer UI Bar" MinWidth="350" MinHeight="70" MaxHeight="70" MaxWidth="600"
+        Title="Timer UI Bar" MinWidth="350" MinHeight="{Binding UIBarHeight}" MaxHeight="{Binding UIBarHeight}" MaxWidth="600"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-        Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
+        Width="{Binding UIBarWidth}" Height="{Binding UIBarHeight}">
 
     <uc:UCUniqueWindow.Resources>
         <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">
@@ -87,7 +87,7 @@
                 </TextBlock>
             </Grid>
 
-            <telerik:RadListBox Grid.Row="1" Height="55" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
+            <telerik:RadListBox Grid.Row="1" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
                 <telerik:RadListBox.Style>
                     <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">
                         <Setter Property="ItemsSource" Value="{Binding Source={StaticResource cvsOrderedRunningTimerList}}"/>
@@ -113,7 +113,7 @@
                 
                 <telerik:RadListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="50" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black">
+                        <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.UIBarTimerSize}" Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.UIBarTimerSize}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Black">
                             <Grid>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
@@ -135,15 +135,15 @@
                                     <telerik:Arc
                                         Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.RemainSquareColor, Converter={StaticResource ColorToHSColorBrushConverter}}"
                                         ArcThickness="255"
-                                        Diameter="80"
+                                        Diameter="200"
                                         StartAngle="0"
                                         EndAngle="{Binding RemainRadius}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                         <telerik:Arc.RenderTransform>
                                             <TransformGroup>
-                                                <RotateTransform CenterX="40" CenterY="40" Angle="270" />
-                                                <ScaleTransform ScaleX="-1" ScaleY="1" CenterX="40" CenterY="40"/>
+                                                <RotateTransform CenterX="100" CenterY="100" Angle="270" />
+                                                <ScaleTransform ScaleX="-1" ScaleY="1" CenterX="100" CenterY="100"/>
                                             </TransformGroup>
                                         </telerik:Arc.RenderTransform>
                                     </telerik:Arc>

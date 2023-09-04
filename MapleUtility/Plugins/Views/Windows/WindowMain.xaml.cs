@@ -261,7 +261,7 @@ namespace MapleUtility.Plugins.Views.Windows
             {
                 App.Current.Shutdown();
             };
-
+                                           
             menu.MenuItems.Add(closeItem);
 
             App.ni.Icon = Properties.Resources.UffieIcon;    // 아이콘 등록 2번째 방법

@@ -13,7 +13,7 @@
     <UserControl.Resources>
         <DataTemplate x:Key="MoreColorsTemplate">
             <Grid>
-                <telerik:RadButton Height="26" FontWeight="Normal" x:Name="MoreColorsButton" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlDefaultSetting}}, Path=DataContext.OpenColorPickerCommand}" HorizontalContentAlignment="Left" BorderThickness="0">
+                <telerik:RadButton Height="26" FontWeight="Normal" x:Name="MoreColorsButton" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlUIBarSetting}}, Path=DataContext.OpenColorPickerCommand}" HorizontalContentAlignment="Left" BorderThickness="0">
                     <TextBlock Text="More Colors..." Foreground="Gray" Margin="26 0 0 0" FontWeight="Normal" />
                 </telerik:RadButton>
                 <Image Source="/MapleUtility;component/Plugins/Images/colorcircle.png" Margin="4 0 0 0" Height="18" Width="18" HorizontalAlignment="Left" VerticalAlignment="Center" />
