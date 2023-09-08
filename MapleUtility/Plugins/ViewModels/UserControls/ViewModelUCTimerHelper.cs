@@ -99,7 +99,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             get
             {
-                return 14 + UIBarFontSize * 3;
+                return 18 + UIBarFontSize * 2;
             }
         }
 
@@ -314,6 +314,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        public FontFamily ForceSelectedUIBarFont
+        {
+            get { return selectedUIBarFont; }
+        }
+
         private int uIBarFontSize = 16;
         public int UIBarFontSize
         {
@@ -497,7 +502,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if (settingItem.UIBarFontSize.HasValue)
                 UIBarFontSize = settingItem.UIBarFontSize.Value;
             else
-                UIBarFontSize = 12;
+                UIBarFontSize = 16;
 
             if(!string.IsNullOrEmpty(settingItem.SelectedUIBarFontName))
             {
@@ -640,7 +645,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingWindow.Top = window.Top + (window.ActualHeight - timerSettingWindow.Height) / 2;
 
             timerSettingVM.SoundList = vm.SoundList;
-            timerSettingVM.SelectedUIBarFont = SelectedUIBarFont;
+            timerSettingVM.SelectedUIBarFont = ForceSelectedUIBarFont;
             timerSettingVM.UIBarFontSize = UIBarFontSize;
             timerSettingVM.TimerOnOffKey = TimerOnOffKey;
             timerSettingVM.TimerOnOffModifierKey = TimerOnOffModifierKey;

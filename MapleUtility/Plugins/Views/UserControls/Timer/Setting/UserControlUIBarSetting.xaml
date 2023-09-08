@@ -110,11 +110,10 @@
                                         </Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <uc:UCOutlineTextBlock Text="45" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold">
+                                <uc:UCOutlineTextBlock Text="45" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" FontSize="16">
                                     <uc:UCOutlineTextBlock.Style>
                                         <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}">
                                             <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SelectedUIBarFont}" />
-                                            <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.UIBarFontSize}" />
                                         </Style>
                                     </uc:UCOutlineTextBlock.Style>
                                 </uc:UCOutlineTextBlock>
