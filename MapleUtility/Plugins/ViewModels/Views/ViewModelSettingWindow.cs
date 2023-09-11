@@ -9,6 +9,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,12 +20,13 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Resources;
+using Telerik.Windows.Controls;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace MapleUtility.Plugins.ViewModels.Views
 {
-    public class ViewModelSettingWindow : Notifier
+    public class ViewModelSettingWindow : Notifier, IDisposable
     {
         private ObservableCollection<SoundItem> soundList;
         public ObservableCollection<SoundItem> SoundList
@@ -423,8 +425,18 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        public RadTabItem SelectedTab
+        {
+            set
+            {
+                if(WavePlayer != null)
+                    WavePlayer.Stop();
+            }
+        }
+
         public PresetItem CurrentPreset = null;
         public IWavePlayer WavePlayer;
+        private bool disposedValue;
 
         #region Button Command Variables
         public ICommand OnOffSettingKeyCommand { get; set; }
@@ -475,14 +487,32 @@ namespace MapleUtility.Plugins.ViewModels.Views
             };
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (WavePlayer != null)
+                    {
+                        WavePlayer.Stop();
+                        WavePlayer.Dispose();
+                        WavePlayer = null;
+                    }
+                }
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
         ~ViewModelSettingWindow()
         {
-            if (WavePlayer != null)
-            {
-                WavePlayer.Stop();
-                WavePlayer.Dispose();
-                WavePlayer = null;
-            }
+            Dispose();
         }
 
         private void OnOffSettingKeyEvent(Window window)
@@ -613,10 +643,13 @@ namespace MapleUtility.Plugins.ViewModels.Views
             if (!result.HasValue || !result.Value)
                 return;
 
+            var currentPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var filePath = openFileDialog.FileName.Replace(currentPath, ".");
+
             var soundItem = new SoundItem()
             {
-                Name = Path.GetFileNameWithoutExtension(openFileDialog.FileName),
-                Path = openFileDialog.FileName,
+                Name = Path.GetFileNameWithoutExtension(filePath),
+                Path = filePath,
                 IsInternalSound = false
             };
 
@@ -634,7 +667,10 @@ namespace MapleUtility.Plugins.ViewModels.Views
             if (!result.HasValue || !result.Value)
                 return;
 
-            item.Path = openFileDialog.FileName;
+            var currentPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+            var filePath = openFileDialog.FileName.Replace(currentPath, ".");
+
+            item.Path = filePath;
         }
 
         private void PriorityUpEvent(TimerItem item)
@@ -754,6 +790,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         private void CloseEvent(Window window)
         {
             window.Close();
+            Dispose();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MapleUtility.Plugins.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        [JsonIgnore]
         public string DisplayedImage
         {
             get { return Defines.ImageFolderPath + FileName; }

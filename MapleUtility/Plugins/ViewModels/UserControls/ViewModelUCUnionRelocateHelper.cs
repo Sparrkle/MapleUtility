@@ -385,43 +385,43 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         public void Initialize(SettingItem settingItem)
         {
-            if (settingItem.CharacterList == null)
-                CharacterList = new ObservableCollection<CharacterItem>();
-            else
-                CharacterList = new ObservableCollection<CharacterItem>(settingItem.CharacterList.Where(o => o != null).ToList());
+            //if (settingItem.CharacterList == null)
+            //    CharacterList = new ObservableCollection<CharacterItem>();
+            //else
+            //    CharacterList = new ObservableCollection<CharacterItem>(settingItem.CharacterList.Where(o => o != null).ToList());
 
-            if (settingItem.BlockManager != null)
-                BlockManager = settingItem.BlockManager;
+            //if (settingItem.BlockManager != null)
+            //    BlockManager = settingItem.BlockManager;
 
-            if (settingItem.SelectedRank != null)
-                SelectedRank = RankList.Where(o => o.Name == settingItem.SelectedRank.Name).FirstOrDefault();
-            else
-                SelectedRank = RankList.First();
+            //if (settingItem.SelectedRank != null)
+            //    SelectedRank = RankList.Where(o => o.Name == settingItem.SelectedRank.Name).FirstOrDefault();
+            //else
+            //    SelectedRank = RankList.First();
 
-            if (settingItem.CapturePriorityList != null)
-                CapturePriorityList = settingItem.CapturePriorityList;
-            else
-            {
-                CapturePriorityList = new ObservableCollection<CapturePriorityItem>()
-                {
-                    new CapturePriorityItem(UnionCaptureType.CriticalDamage, 1, 40),
-                    new CapturePriorityItem(UnionCaptureType.BossDamage, 2, 40),
-                    new CapturePriorityItem(UnionCaptureType.BuffTime, 3, 40),
-                    new CapturePriorityItem(UnionCaptureType.ArmorPenetration, 4, 40),
-                    new CapturePriorityItem(UnionCaptureType.CriticalPercentage, 5, 40),
-                    new CapturePriorityItem(UnionCaptureType.AttackPoint, 6, 15),
-                    new CapturePriorityItem(UnionCaptureType.MagicAttack, 7, 15),
-                    new CapturePriorityItem(UnionCaptureType.INT, 8, 15),
-                    new CapturePriorityItem(UnionCaptureType.DEX, 9, 15),
-                    new CapturePriorityItem(UnionCaptureType.STR, 10, 15),
-                    new CapturePriorityItem(UnionCaptureType.LUK, 11, 15),
-                    new CapturePriorityItem(UnionCaptureType.HP, 12, 15),
-                    new CapturePriorityItem(UnionCaptureType.MP, 13, 15),
-                    new CapturePriorityItem(UnionCaptureType.Stance, 14, 40),
-                    new CapturePriorityItem(UnionCaptureType.CrowControlImmune, 15, 40),
-                    new CapturePriorityItem(UnionCaptureType.EXP, 16, 40),
-                };
-            }
+            //if (settingItem.CapturePriorityList != null)
+            //    CapturePriorityList = settingItem.CapturePriorityList;
+            //else
+            //{
+            //    CapturePriorityList = new ObservableCollection<CapturePriorityItem>()
+            //    {
+            //        new CapturePriorityItem(UnionCaptureType.CriticalDamage, 1, 40),
+            //        new CapturePriorityItem(UnionCaptureType.BossDamage, 2, 40),
+            //        new CapturePriorityItem(UnionCaptureType.BuffTime, 3, 40),
+            //        new CapturePriorityItem(UnionCaptureType.ArmorPenetration, 4, 40),
+            //        new CapturePriorityItem(UnionCaptureType.CriticalPercentage, 5, 40),
+            //        new CapturePriorityItem(UnionCaptureType.AttackPoint, 6, 15),
+            //        new CapturePriorityItem(UnionCaptureType.MagicAttack, 7, 15),
+            //        new CapturePriorityItem(UnionCaptureType.INT, 8, 15),
+            //        new CapturePriorityItem(UnionCaptureType.DEX, 9, 15),
+            //        new CapturePriorityItem(UnionCaptureType.STR, 10, 15),
+            //        new CapturePriorityItem(UnionCaptureType.LUK, 11, 15),
+            //        new CapturePriorityItem(UnionCaptureType.HP, 12, 15),
+            //        new CapturePriorityItem(UnionCaptureType.MP, 13, 15),
+            //        new CapturePriorityItem(UnionCaptureType.Stance, 14, 40),
+            //        new CapturePriorityItem(UnionCaptureType.CrowControlImmune, 15, 40),
+            //        new CapturePriorityItem(UnionCaptureType.EXP, 16, 40),
+            //    };
+            //}
 
             //if(CharacterList.Count() >= 5)
             //{

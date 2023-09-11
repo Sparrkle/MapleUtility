@@ -16,8 +16,8 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <telerik:RadTabControl Grid.Row="0">
-            <telerik:RadTabItem Header="Default Setting" Width="120">
+        <telerik:RadTabControl Grid.Row="0" SelectedItem="{Binding SelectedTab, Mode=OneWayToSource}">
+            <telerik:RadTabItem Header="Default Setting" Width="120" IsSelected="True">
                 <telerik:RadTabItem.Content>
                     <settingControl:UserControlDefaultSetting />
                 </telerik:RadTabItem.Content>

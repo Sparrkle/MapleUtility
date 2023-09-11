@@ -50,7 +50,9 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        [JsonIgnore]
         private int? beforeSoundTime = 0;
+        [JsonIgnore]
         public int? BeforeSoundTime
         {
             get { return beforeSoundTime; }
@@ -193,7 +195,9 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        [JsonIgnore]
         private bool isTimerResetTimeChecked;
+        [JsonIgnore]
         public bool IsTimerResetTimeChecked
         {
             get { return isTimerResetTimeChecked; }
@@ -204,7 +208,9 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        [JsonIgnore]
         private bool isTimerLoopChecked;
+        [JsonIgnore]
         public bool IsTimerLoopChecked
         {
             get { return isTimerLoopChecked; }
@@ -281,6 +287,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        [JsonIgnore]
         public bool IsAlertBeforeTimer { get; set; } = false;
 
         public void RefreshRemainTime()
