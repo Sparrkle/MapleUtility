@@ -195,9 +195,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        [JsonIgnore]
         private bool isTimerResetTimeChecked;
-        [JsonIgnore]
         public bool IsTimerResetTimeChecked
         {
             get { return isTimerResetTimeChecked; }
