@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Behaviors\GridFocusBehavior.cs" />
+    <Compile Include="Plugins\Behaviors\TimerItemReorderBehavior.cs" />
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />

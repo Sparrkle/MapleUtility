@@ -325,5 +325,10 @@ namespace MapleUtility.Plugins.Models
                 Name = this.Name
             };
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

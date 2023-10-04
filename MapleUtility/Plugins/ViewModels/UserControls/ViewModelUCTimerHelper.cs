@@ -621,6 +621,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             CheckEvent();
         }
 
+        public void RefreshTimerList()
+        {
+            OnPropertyChanged("TimerList");
+            OnPropertyChanged("PresetTimerList");
+        }
+
         public void RemoveAllRunningTimer()
         {
             foreach (var runningTimer in RunningTimerList)
