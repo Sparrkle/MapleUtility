@@ -314,6 +314,9 @@ namespace MapleUtility.Plugins.Models
             {
                 Priority = this.Priority,
                 AlertKey = this.AlertKey,
+                ModifierKey = this.ModifierKey,
+                IsTimerLoopChecked = this.IsTimerLoopChecked,
+                IsTimerResetTimeChecked = this.IsTimerResetTimeChecked,
                 TimerTime = this.TimerTime,
                 Volume = this.Volume,
                 ImageItem = this.ImageItem,
