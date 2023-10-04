@@ -621,6 +621,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             CheckEvent();
         }
 
+        public void RefreshTimerList()
+        {
+            OnPropertyChanged("TimerList");
+            OnPropertyChanged("PresetTimerList");
+        }
+
         public void RemoveAllRunningTimer()
         {
             foreach (var runningTimer in RunningTimerList)
@@ -779,7 +785,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             var window = WindowTimerUIBar.Instance;
             window.DataContext = this;
 
-            window.Show();
+            if (window.IsVisible)
+                window.Hide();
+            else
+                window.Show();
         }
 
         private void CloseEvent(Window window)

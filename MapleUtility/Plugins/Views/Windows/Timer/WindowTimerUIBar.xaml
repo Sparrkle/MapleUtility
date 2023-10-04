@@ -24,7 +24,7 @@
                 <scm:SortDescription PropertyName="RemainTime" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="cvsOrderedPriorityTimerList" Source="{Binding TimerList}">
+        <CollectionViewSource x:Key="cvsOrderedPriorityTimerList" Source="{Binding PresetTimerList}">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="Priority" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace MapleUtility.Plugins.Common
 {
@@ -13,5 +11,15 @@ namespace MapleUtility.Plugins.Common
         public static string FilePath = AppDomain.CurrentDomain.BaseDirectory + "MapleUtility.setting";
         public static string ChurukoFilePath = AppDomain.CurrentDomain.BaseDirectory + "Churuko.setting";
         public static string ImageFolderPath = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
+
+        public static string Version
+        {
+            get
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                return fvi.FileVersion.ToString();
+            }
+        }
     }
 }
