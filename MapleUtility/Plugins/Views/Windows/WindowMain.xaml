@@ -7,10 +7,11 @@
         xmlns:usercontrol="clr-namespace:MapleUtility.Plugins.Views.UserControls"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
+        xmlns:common="clr-namespace:MapleUtility.Plugins.Common"
         Closed="Window_Closed"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="Maple Utility" Height="600" Width="1400" MinHeight="600" MinWidth="1220"
+        Title="{Binding Source={x:Static common:Defines.Version}, StringFormat={}Maple Utility {0}}" Height="600" Width="1400" MinHeight="600" MinWidth="1220"
         Loaded="Window_Loaded" >
 
     <Grid>
