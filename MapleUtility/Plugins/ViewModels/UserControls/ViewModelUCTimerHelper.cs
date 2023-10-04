@@ -785,7 +785,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             var window = WindowTimerUIBar.Instance;
             window.DataContext = this;
 
-            window.Show();
+            if (window.IsVisible)
+                window.Hide();
+            else
+                window.Show();
         }
 
         private void CloseEvent(Window window)
