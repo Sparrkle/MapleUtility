@@ -245,6 +245,28 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private int uiBarTop;
+        public int UIBarTop
+        {
+            get { return uiBarTop; }
+            set
+            {
+                uiBarTop = value;
+                OnPropertyChanged("UIBarTop");
+            }
+        }
+
+        private int uiBarLeft;
+        public int UIBarLeft
+        {
+            get { return uiBarLeft; }
+            set
+            {
+                uiBarLeft = value;
+                OnPropertyChanged("UIBarLeft");
+            }
+        }
+
         private float uiBarTransparency;
         public float UIBarTransparency
         {
@@ -510,6 +532,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 SelectedUIBarFont = fontFamily;
             }
 
+            UIBarTop = settingItem.UIBAR_TOP;
+            UIBarLeft = settingItem.UIBAR_LEFT;
             UIBarWidth = settingItem.UIBAR_WIDTH;
             UIBarTransparency = settingItem.UIBAR_TRANSPARENCY;
 

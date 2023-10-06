@@ -137,9 +137,15 @@ namespace MapleUtility.Plugins.Helpers
         public int UIBAR_WIDTH = 400;
         public int UIBAR_HEIGHT = 110;
 
+        public int UIBAR_TOP;
+        public int UIBAR_LEFT;
+
         public float HILLA_UIBAR_TRANSPARENCY = 19;
         public int HILLA_UIBAR_WIDTH = 320;
         public int HILLA_UIBAR_HEIGHT = 90;
+
+        public int HILLA_UIBAR_TOP;
+        public int HILLA_UIBAR_LEFT;
 
         //public RankItem SelectedRank = null;
     }
