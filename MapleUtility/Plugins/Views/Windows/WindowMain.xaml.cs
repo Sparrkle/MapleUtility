@@ -91,7 +91,7 @@ namespace MapleUtility.Plugins.Views.Windows
 
             var inputKeyString = inputKey.ToString();
 
-            if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyDown)
+            if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyDown || e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.SysKeyDown)
             {
                 if (isUped)
                 {
