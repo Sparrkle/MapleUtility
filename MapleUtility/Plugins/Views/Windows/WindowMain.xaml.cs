@@ -207,9 +207,13 @@ namespace MapleUtility.Plugins.Views.Windows
                 UIBarFontSize = timerVM.UIBarFontSize,
                 SelectedUIBarFontName = timerVM.SelectedUIBarFont.Source,
 
+                UIBAR_TOP = timerVM.UIBarTop,
+                UIBAR_LEFT = timerVM.UIBarLeft,
                 UIBAR_TRANSPARENCY = timerVM.UIBarTransparency,
                 UIBAR_WIDTH = timerVM.UIBarWidth,
                 UIBAR_HEIGHT = timerVM.UIBarHeight,
+                HILLA_UIBAR_TOP = hillaVM.UIBarTop,
+                HILLA_UIBAR_LEFT = hillaVM.UIBarLeft,
                 HILLA_UIBAR_TRANSPARENCY = hillaVM.UIBarTransparency,
                 HILLA_UIBAR_WIDTH = hillaVM.UIBarWidth,
                 HILLA_UIBAR_HEIGHT = hillaVM.UIBarHeight,

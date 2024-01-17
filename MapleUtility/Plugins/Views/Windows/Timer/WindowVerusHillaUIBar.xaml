@@ -15,6 +15,7 @@
         Background="{Binding UIBarBackground, Converter={StaticResource ColorToHSColorBrushConverter}}"
         MinWidth="320" MinHeight="90" MaxHeight="300" MaxWidth="600"
         Title="Verus Hilla UI Bar" ResizeMode="CanResizeWithGrip"
+        Top="{Binding UIBarTop, Mode=TwoWay}"  Left="{Binding UIBarLeft, Mode=TwoWay}"
         Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight, Mode=TwoWay}">
 
     <uc:UCUniqueWindow.Resources>

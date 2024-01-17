@@ -286,6 +286,28 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private int uiBarTop;
+        public int UIBarTop
+        {
+            get { return uiBarTop; }
+            set
+            {
+                uiBarTop = value;
+                OnPropertyChanged("UIBarTop");
+            }
+        }
+
+        private int uiBarLeft;
+        public int UIBarLeft
+        {
+            get { return uiBarLeft; }
+            set
+            {
+                uiBarLeft = value;
+                OnPropertyChanged("UIBarLeft");
+            }
+        }
+
         private float uiBarTransparency = 19;
         public float UIBarTransparency
         {
@@ -426,6 +448,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             ScytheModifierKey = settingItem.ScytheModifierKey;
             NextKey = settingItem.NextKey;
             NextModifierKey = settingItem.NextModifierKey;
+            UIBarTop = settingItem.HILLA_UIBAR_TOP;
+            UIBarLeft = settingItem.HILLA_UIBAR_LEFT;
             UIBarWidth = settingItem.HILLA_UIBAR_WIDTH;
             UIBarHeight = settingItem.HILLA_UIBAR_HEIGHT;
             UIBarTransparency = settingItem.HILLA_UIBAR_TRANSPARENCY;
