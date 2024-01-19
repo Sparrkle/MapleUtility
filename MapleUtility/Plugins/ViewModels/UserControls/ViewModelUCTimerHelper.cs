@@ -386,6 +386,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand RemoveTimerCommand { get; set; }
         public ICommand RemoveRunningTimerCommand { get; set; }
         public ICommand PlayTestSoundCommand { get; set; }
+        public ICommand PlayTestBeforeSoundCommand { get; set; }
         public ICommand OpenSettingCommand { get; set; }
         public ICommand CheckCommand { get; set; }
         public ICommand OpenUIBarCommand { get; set; }
@@ -403,6 +404,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             RemoveTimerCommand = new RelayCommand(o => RemoveTimerEvent());
             RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((TimerItem) o));
             PlayTestSoundCommand = new RelayCommand(o => PlaySound((TimerItem) o));
+            PlayTestBeforeSoundCommand = new RelayCommand(o => PlaySound((TimerItem) o, true));
             OpenSettingCommand = new RelayCommand(o => OpenSettingEvent((Window) o));
             CheckCommand = new RelayCommand(o => CheckEvent());
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());

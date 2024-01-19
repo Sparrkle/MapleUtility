@@ -5,6 +5,7 @@ using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.ViewModels.Views;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -45,6 +46,17 @@ namespace MapleUtility.Plugins.Views.Windows
             var settingItem = SettingHelper.LoadSettingFile();
             if (settingItem == null)
                 settingItem = new SettingItem();
+
+            // 사운드 경로 체크
+            var errorSounds = new List<string>();
+            foreach (var soundItem in settingItem.SoundList)
+            {
+                if(!File.Exists(soundItem.Path))
+                    errorSounds.Add(soundItem.Path);
+            }
+
+            if(errorSounds.Count() > 0)
+                System.Windows.MessageBox.Show($"경고 : 다음 사운드 파일을 읽을 수 없습니다. 파일을 다시 설정해주세요.\n{string.Join("\n", errorSounds)}", "Maple Utility");
 
             vm.Initialize(settingItem);
 

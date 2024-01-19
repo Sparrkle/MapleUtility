@@ -250,7 +250,7 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="150"
+                        Width="180"
 					    Header="알림 사운드"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"
@@ -263,6 +263,7 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="35"/>
                                     </Grid.ColumnDefinitions>
 
                                     <telerik:RadComboBox Grid.Column="0"
@@ -279,6 +280,11 @@
                                             </Grid>
                                         </telerik:RadComboBox.ClearSelectionButtonContent>
                                     </telerik:RadComboBox>
+                                    <Button Grid.Column="1" Margin="0, 0, 5, 0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.PlayTestSoundCommand}" CommandParameter="{Binding .}" Padding="5, 3, 5, 3" VerticalAlignment="Center" HorizontalContentAlignment="Center">
+                                        <Button.Content>
+                                            <Image Source="/MapleUtility;component/Plugins/Images/sound.png"/>
+                                        </Button.Content>
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
@@ -286,7 +292,7 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="230"
+                        Width="280"
 					    Header="미리 알림 사운드"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"
@@ -301,6 +307,7 @@
                                         <ColumnDefinition Width="50"/>
                                         <ColumnDefinition Width="50"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="35"/>
                                     </Grid.ColumnDefinitions>
 
                                     <TextBox Grid.Column="0" Text="{Binding BeforeSoundTime, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" MaxLength="3" Margin="10, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -331,6 +338,11 @@
                                             </Style>
                                         </telerik:RadComboBox.Style>
                                     </telerik:RadComboBox>
+                                    <Button Grid.Column="3" Margin="0, 0, 5, 0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.PlayTestBeforeSoundCommand}" CommandParameter="{Binding .}" Padding="5, 3, 5, 3" VerticalAlignment="Center" HorizontalContentAlignment="Center">
+                                        <Button.Content>
+                                            <Image Source="/MapleUtility;component/Plugins/Images/sound.png"/>
+                                        </Button.Content>
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
