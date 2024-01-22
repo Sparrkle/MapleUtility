@@ -51,8 +51,11 @@ namespace MapleUtility.Plugins.Views.Windows
             var errorSounds = new List<string>();
             foreach (var soundItem in settingItem.SoundList)
             {
-                if(!File.Exists(soundItem.Path))
-                    errorSounds.Add(soundItem.Path);
+                if(!soundItem.IsInternalSound)
+                {
+                    if (!File.Exists(soundItem.Path))
+                        errorSounds.Add(soundItem.Path);
+                }
             }
 
             if(errorSounds.Count() > 0)
