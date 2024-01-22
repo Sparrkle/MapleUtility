@@ -5,6 +5,7 @@ using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.ViewModels.Views;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
