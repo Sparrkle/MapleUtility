@@ -50,9 +50,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        [JsonIgnore]
         private int? beforeSoundTime = 0;
-        [JsonIgnore]
         public int? BeforeSoundTime
         {
             get { return beforeSoundTime; }

@@ -49,12 +49,15 @@ namespace MapleUtility.Plugins.Views.Windows
 
             // 사운드 경로 체크
             var errorSounds = new List<string>();
-            foreach (var soundItem in settingItem.SoundList)
+            if(settingItem.SoundList != null)
             {
-                if(!soundItem.IsInternalSound)
+                foreach (var soundItem in settingItem.SoundList)
                 {
-                    if (!File.Exists(soundItem.Path))
-                        errorSounds.Add(soundItem.Path);
+                    if (!soundItem.IsInternalSound)
+                    {
+                        if (!File.Exists(soundItem.Path))
+                            errorSounds.Add(soundItem.Path);
+                    }
                 }
             }
 
