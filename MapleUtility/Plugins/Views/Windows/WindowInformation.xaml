@@ -46,7 +46,7 @@
                 <TextBlock Text="건의사항이나 버그, 불편한 사항을 보내주시면 감사하겠습니다!" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="도와주신분" Style="{StaticResource MainTextBlockStyle}"/>
                 <TextBlock Text="이노시스 월화견, 리부트2 비메시스트, 크로아 밑밥깔지마" Style="{StaticResource SubTextBlockStyle}"/>
-                <TextBlock Text="오로라 샤를로타" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Text="오로라 샤를로타, 제니스 실피언" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="Churuko Lab" Style="{StaticResource MainTextBlockStyle}"/>
                 <TextBlock Style="{StaticResource SubTextBlockStyle}">
                     <Hyperlink
