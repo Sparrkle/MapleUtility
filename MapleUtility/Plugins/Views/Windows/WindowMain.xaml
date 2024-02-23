@@ -36,6 +36,11 @@
                     <usercontrol:UserControlVerusHillaHelper x:Name="ucVerusHillaHelper"/>
                 </telerik:RadTabItem.Content>
             </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Kalos Helper (Beta)" Width="140">
+                <telerik:RadTabItem.Content>
+                    <usercontrol:UserControlKalosHelper x:Name="ucKalosHelper"/>
+                </telerik:RadTabItem.Content>
+            </telerik:RadTabItem>
         </telerik:RadTabControl>
 
         <Grid Grid.Row="1" Background="#dddddd">
