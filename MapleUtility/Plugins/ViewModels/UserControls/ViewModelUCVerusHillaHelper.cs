@@ -453,6 +453,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             UIBarWidth = settingItem.HILLA_UIBAR_WIDTH;
             UIBarHeight = settingItem.HILLA_UIBAR_HEIGHT;
             UIBarTransparency = settingItem.HILLA_UIBAR_TRANSPARENCY;
+            Volume = settingItem.HILLA_VOLUME;
         }
 
         private void BackKeyEvent()

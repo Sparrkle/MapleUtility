@@ -187,9 +187,11 @@
     <Compile Include="Plugins\Models\SoundItem.cs" />
     <Compile Include="Plugins\Models\TimerItem.cs" />
     <Compile Include="Plugins\Models\CharacterItem.cs" />
+    <Compile Include="Plugins\Models\TimerKeyItem.cs" />
     <Compile Include="Plugins\UserControls\UCOutlineTextBlock.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCUnionRelocateHelper.cs" />
+    <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCKalosHelper.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCVerusHillaHelper.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerColumnSetting.cs" />
     <Compile Include="Plugins\ViewModels\Views\Timer\ViewModelTimerPressKeyboard.cs" />
@@ -205,6 +207,9 @@
     </Compile>
     <Compile Include="Plugins\Views\UserControls\Timer\Setting\UserControlImageSetting.xaml.cs">
       <DependentUpon>UserControlImageSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\UserControls\UserControlKalosHelper.xaml.cs">
+      <DependentUpon>UserControlKalosHelper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\UserControls\UserControlVerusHillaHelper.xaml.cs">
       <DependentUpon>UserControlVerusHillaHelper.xaml</DependentUpon>
@@ -229,6 +234,9 @@
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowTimerColumnSetting.xaml.cs">
       <DependentUpon>WindowTimerColumnSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Views\Windows\Timer\WindowKalosUIBar.xaml.cs">
+      <DependentUpon>WindowKalosUIBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Views\Windows\Timer\WindowVerusHillaUIBar.xaml.cs">
       <DependentUpon>WindowVerusHillaUIBar.xaml</DependentUpon>
@@ -306,6 +314,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Plugins\Views\UserControls\UserControlKalosHelper.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Plugins\Views\UserControls\UserControlVerusHillaHelper.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -333,6 +345,10 @@
     <Page Include="Plugins\Views\Windows\Timer\WindowTimerColumnSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Plugins\Views\Windows\Timer\WindowKalosUIBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Plugins\Views\Windows\Timer\WindowVerusHillaUIBar.xaml">
       <Generator>MSBuild:Compile</Generator>

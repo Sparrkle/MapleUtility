@@ -75,8 +75,12 @@ namespace MapleUtility.Plugins.Views.Windows
             var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
             hillaVM.Initialize(settingItem);
 
+            var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
+            kalosVM.Initialize(settingItem);
+
             vm.mainTimer.Tick += timerVM.TickEvent;
             vm.mainTimer.Tick += hillaVM.TickEvent;
+            vm.mainTimer.Tick += kalosVM.TickEvent;
 
             _globalKeyboardHook = new GlobalKeyboardHookHelper();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
@@ -166,6 +170,9 @@ namespace MapleUtility.Plugins.Views.Windows
 
                 var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
                 hillaVM.KeyDownEvent(modifierKeys, inputKey);
+
+                var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
+                kalosVM.KeyDownEvent(modifierKeys, inputKey);
             }
             else if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp)
             {
@@ -189,6 +196,7 @@ namespace MapleUtility.Plugins.Views.Windows
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
             //var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
             var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
+            var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
             timerVM.RemoveAllRunningTimer();
 
             foreach (var timer in timerVM.TimerList)
@@ -235,6 +243,14 @@ namespace MapleUtility.Plugins.Views.Windows
                 HILLA_UIBAR_TRANSPARENCY = hillaVM.UIBarTransparency,
                 HILLA_UIBAR_WIDTH = hillaVM.UIBarWidth,
                 HILLA_UIBAR_HEIGHT = hillaVM.UIBarHeight,
+                HILLA_VOLUME = hillaVM.Volume,
+                KALOS_UIBAR_TOP = kalosVM.UIBarTop,
+                KALOS_UIBAR_LEFT = kalosVM.UIBarLeft,
+                KALOS_UIBAR_TRANSPARENCY = kalosVM.UIBarTransparency,
+                KALOS_UIBAR_WIDTH = kalosVM.UIBarWidth,
+                KALOS_UIBAR_HEIGHT = kalosVM.UIBarHeight,
+                KALOS_INSTANT_VOLUME = kalosVM.InstantVolume,
+                KALOS_InstanceKeyItems = kalosVM.InstanceKeyItems,
 
                 //CharacterList = unionVM.CharacterList,
                 //BlockManager = unionVM.BlockManager,

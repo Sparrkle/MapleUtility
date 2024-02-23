@@ -130,6 +130,8 @@ namespace MapleUtility.Plugins.Helpers
         public Key? NextKey = null;
         public ModifierKeys? NextModifierKey = null;
 
+        public List<TimerKeyItem> KALOS_InstanceKeyItems { get; set; } = null;
+
         public int? UIBarFontSize;
         public string SelectedUIBarFontName;
 
@@ -146,6 +148,15 @@ namespace MapleUtility.Plugins.Helpers
 
         public int HILLA_UIBAR_TOP;
         public int HILLA_UIBAR_LEFT;
+        public float HILLA_VOLUME = 100;
+
+        public float KALOS_UIBAR_TRANSPARENCY = 19;
+        public int KALOS_UIBAR_WIDTH = 320;
+        public int KALOS_UIBAR_HEIGHT = 90;
+
+        public int KALOS_UIBAR_TOP;
+        public int KALOS_UIBAR_LEFT;
+        public float KALOS_INSTANT_VOLUME = 100;
 
         //public RankItem SelectedRank = null;
     }
