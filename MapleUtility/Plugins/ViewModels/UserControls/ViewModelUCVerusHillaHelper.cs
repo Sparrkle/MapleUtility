@@ -1,5 +1,6 @@
 ﻿using MapleUtility.Plugin.Lib;
 using MapleUtility.Plugins.Helpers;
+using MapleUtility.Plugins.Lib;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
 using MapleUtility.Plugins.Views.Windows.Timer;
@@ -641,10 +642,27 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         private void OpenHillaUIBarEvent()
         {
-            var window = WindowVerusHillaUIBar.Instance;
+            var window = WindowVerusHillaUIBar.Instance as WindowVerusHillaUIBar;
             window.DataContext = this;
 
-            window.Show();
+            if (window.IsVisible)
+                window.Hide();
+            else
+            {
+                window.Show();
+
+                var screen = window.GetCurrentScreenWorkArea();
+
+                if (window.Left + window.Width / 2 < 0)
+                    window.Left = 0;
+                else if (window.Left + window.Width / 2 > screen.Width)
+                    window.Left = screen.Width - window.Width;
+
+                if (window.Top + window.Height / 2 < 0)
+                    window.Top = 0;
+                else if (window.Top + window.Height / 2 > screen.Height)
+                    window.Top = screen.Height - window.Height;
+            }
         }
 
         private void CloseEvent(Window window)

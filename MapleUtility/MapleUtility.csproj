@@ -172,6 +172,7 @@
     <Compile Include="Plugins\Lib\Notifier.cs" />
     <Compile Include="Plugins\Lib\RelayCommand.cs" />
     <Compile Include="Plugins\Lib\StockLib.cs" />
+    <Compile Include="Plugins\Lib\WindowExtensions.cs" />
     <Compile Include="Plugins\Models\BlockItem.cs" />
     <Compile Include="Plugins\Models\BlockManagerItem.cs" />
     <Compile Include="Plugins\Models\BlockUnionTargetItem.cs" />
