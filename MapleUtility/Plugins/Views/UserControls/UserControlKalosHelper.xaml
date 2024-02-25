@@ -13,14 +13,14 @@
 
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockType}">
-            <Setter Property="Foreground" Value="#F92400"/>
+            <Setter Property="Foreground" Value="#1482E5"/>
         </Style>
         <Style x:Key="RadButtonKalosStyle" TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonStyle}">
-            <Setter Property="BorderBrush" Value="#1482E5"/>
-            <Setter Property="helpers:ThemeHelper.DisabledBrush" Value="#1482E5"/>
+            <Setter Property="BorderBrush" Value="#F92400"/>
+            <Setter Property="helpers:ThemeHelper.DisabledBrush" Value="#F92400"/>
             <Setter Property="helpers:ThemeHelper.FocusBrush" Value="Transparent"/>
-            <Setter Property="helpers:ThemeHelper.MouseOverBrush" Value="#1482E5"/>
-            <Setter Property="helpers:ThemeHelper.PressedBrush" Value="#1482E5"/>
+            <Setter Property="helpers:ThemeHelper.MouseOverBrush" Value="#F92400"/>
+            <Setter Property="helpers:ThemeHelper.PressedBrush" Value="#F92400"/>
             <Setter Property="helpers:ThemeHelper.FocusBackgroundBrush" Value="Transparent"/>
             <Setter Property="helpers:ThemeHelper.MouseOverBackgroundBrush" Value="#D6C3C3"/>
             <Setter Property="helpers:ThemeHelper.PressedBackgroundBrush" Value="#BAA8A8"/>
@@ -47,7 +47,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="White">
-            <telerik1:RadToggleSwitchButton VerticalAlignment="Top" Margin="5, 10, 0, 0" IsChecked="{Binding IsHelperON}" ContentPosition="Both" CheckedContent="Helper ON" UncheckedContent="Helper OFF" TrackWidth="40" BorderBrush="#1482E5"/>
+            <telerik1:RadToggleSwitchButton VerticalAlignment="Top" Margin="5, 10, 0, 0" IsChecked="{Binding IsHelperON}" ContentPosition="Both" CheckedContent="Helper ON" UncheckedContent="Helper OFF" TrackWidth="40" BorderBrush="#F92400"/>
         </Grid>
 
         <Grid Grid.Row="1" Background="#aa000000" Panel.ZIndex="1">
@@ -71,8 +71,8 @@
                 <RowDefinition Height="250"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="#1482E5" BorderThickness="1">
-                <Grid Margin="200, 20">
+            <Border Grid.Row="0" BorderBrush="#F92400" BorderThickness="1">
+                <Grid Margin="100, 20" HorizontalAlignment="Center">
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="{x:Type Grid}">
@@ -95,7 +95,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" FontSize="42" Text="다음 즉사까지 남은 시간" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" FontSize="42" Text="남은 시간" VerticalAlignment="Center"/>
                             <TextBlock Grid.Column="1" FontSize="42" Text="{Binding RemainInstantTimeSeconds, StringFormat=\{0\}초}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10, 0, 0, 0"/>
                         </Grid>
                     </Grid>
@@ -129,17 +129,17 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Width="105" Text="UI Bar 배경 투명도" VerticalAlignment="Center" TextAlignment="Right"/>
                     <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 0">
-                        <telerik1:RadSlider Width="145" Value="{Binding UIBarTransparency}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#1482E5" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
-                        <Border BorderBrush="#1482E5" BorderThickness="1" Margin="5, 0, 0, 0">
-                            <TextBox Width="40" Text="{Binding UIBarTransparency, UpdateSourceTrigger=PropertyChanged}" Foreground="#F92400" Background="#F2DFDF" VerticalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" Padding="2"/>
+                        <telerik1:RadSlider Width="145" Value="{Binding UIBarTransparency}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#F92400" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
+                        <Border BorderBrush="#F92400" BorderThickness="1" Margin="5, 0, 0, 0">
+                            <TextBox Width="40" Text="{Binding UIBarTransparency, UpdateSourceTrigger=PropertyChanged}" Foreground="#1482E5" Background="#F2DFDF" VerticalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" Padding="2"/>
                         </Border>
                     </StackPanel>
                 </StackPanel>
             </Grid>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0, 10, 0, 0">
-                <telerik1:RadButton Width="70" Content="초기화" Command="{Binding ResetCommand}" Foreground="#F92400" Margin="0, 0, 0, 0" Padding="10, 2, 10, 0" VerticalContentAlignment="Center"/>
-                <telerik1:RadButton Width="70" Content="UI Bar" Command="{Binding OpenKalosUIBarCommand}" Foreground="#F92400" Padding="10, 2, 10, 0" VerticalContentAlignment="Center"/>
+                <telerik1:RadButton Width="70" Content="초기화" Command="{Binding ResetCommand}" Foreground="#1482E5" Margin="0, 0, 0, 0" Padding="10, 2, 10, 0" VerticalContentAlignment="Center"/>
+                <telerik1:RadButton Width="70" Content="UI Bar" Command="{Binding OpenKalosUIBarCommand}" Foreground="#1482E5" Padding="10, 2, 10, 0" VerticalContentAlignment="Center"/>
             </StackPanel>
 
             <Grid Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center">
@@ -168,7 +168,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </telerik1:RadButton.Style>
-                                        <fa:FontAwesome Icon="MinusCircle" FontSize="18" Foreground="#1482E5"/>
+                                        <fa:FontAwesome Icon="MinusCircle" FontSize="18" Foreground="#F92400"/>
                                     </telerik1:RadButton>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
@@ -187,7 +187,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </telerik1:RadButton.Style>
-                                        <fa:FontAwesome Icon="MinusCircle" FontSize="18" Foreground="#1482E5"/>
+                                        <fa:FontAwesome Icon="MinusCircle" FontSize="18" Foreground="#F92400"/>
                                     </telerik1:RadButton>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
@@ -206,7 +206,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </telerik1:RadButton.Style>
-                                        <fa:FontAwesome Icon="MinusCircle" FontSize="18" Foreground="#1482E5"/>
+                                        <fa:FontAwesome Icon="MinusCircle" FontSize="18" Foreground="#F92400"/>
                                     </telerik1:RadButton>
                                 </StackPanel>
                             </StackPanel>
@@ -215,7 +215,7 @@
                         <StackPanel Orientation="Vertical" Margin="10, 10, 10, 0">
                             <TextBlock Text="즉사 시간 체크" HorizontalAlignment="Center" Margin="0, 0, 0, 5"/>
                             <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding InstanceKeyItems[0].KeyCommand}">
-                                <fa:FontAwesome Icon="ExclamationTriangle" FontSize="36" Foreground="#1482E5"/>
+                                <fa:FontAwesome Icon="ExclamationTriangle" FontSize="36" Foreground="#F92400"/>
                             </telerik1:RadButton>
                             <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding InstanceKeyItems[0].KeyString}" Command="{Binding InstanceKeyItems[0].KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                         </StackPanel>
@@ -234,7 +234,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </telerik1:RadButton.Style>
-                                        <fa:FontAwesome Icon="PlusCircle" FontSize="18" Foreground="#1482E5"/>
+                                        <fa:FontAwesome Icon="PlusCircle" FontSize="18" Foreground="#F92400"/>
                                     </telerik1:RadButton>
                                     <telerik1:RadButton Width="80" Height="30" Foreground="#f86475" Content="{Binding InstanceKeyItems[1].KeyString}" Command="{Binding InstanceKeyItems[1].KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                                     <TextBlock Text="남은시간 +" VerticalAlignment="Center" Margin="5, 0, 0, 0"/>
@@ -253,7 +253,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </telerik1:RadButton.Style>
-                                        <fa:FontAwesome Icon="PlusCircle" FontSize="18" Foreground="#1482E5"/>
+                                        <fa:FontAwesome Icon="PlusCircle" FontSize="18" Foreground="#F92400"/>
                                     </telerik1:RadButton>
                                     <telerik1:RadButton Width="80" Height="30" Foreground="#f86475" Content="{Binding InstanceKeyItems[2].KeyString}" Command="{Binding InstanceKeyItems[2].KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                                     <TextBlock Text="남은시간 +" VerticalAlignment="Center" Margin="5, 0, 0, 0"/>
@@ -272,7 +272,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </telerik1:RadButton.Style>
-                                        <fa:FontAwesome Icon="PlusCircle" FontSize="18" Foreground="#1482E5"/>
+                                        <fa:FontAwesome Icon="PlusCircle" FontSize="18" Foreground="#F92400"/>
                                     </telerik1:RadButton>
                                     <telerik1:RadButton Width="80" Height="30" Foreground="#f86475" Content="{Binding InstanceKeyItems[3].KeyString}" Command="{Binding InstanceKeyItems[3].KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                                     <TextBlock Text="남은시간 +" VerticalAlignment="Center" Margin="5, 0, 0, 0"/>
@@ -322,7 +322,7 @@
                                 <telerik:RadComboBox.Style>
                                     <Style TargetType="telerik:RadComboBox" BasedOn="{StaticResource BaseRadComboBoxStyle}">
                                         <Setter Property="IsEnabled" Value="True"/>
-                                        <Setter Property="Foreground" Value="#F92400"/>
+                                        <Setter Property="Foreground" Value="#1482E5"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding BeforeInstantSoundTime}" Value="{x:Null}">
                                                 <Setter Property="IsEnabled" Value="False"/>
@@ -337,9 +337,9 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
                         <TextBlock Width="Auto" Text="음량 조절" VerticalAlignment="Center" TextAlignment="Right"/>
                         <StackPanel Orientation="Horizontal" Margin="10, 0, 0, 0" VerticalAlignment="Center">
-                            <telerik1:RadSlider Width="145" Value="{Binding InstantVolume}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#1482E5" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
-                            <Border BorderBrush="#1482E5" BorderThickness="1" Margin="5, 0, 0, 0">
-                                <TextBox Width="40" Text="{Binding InstantVolume, UpdateSourceTrigger=PropertyChanged}" Foreground="#F92400" Background="#F2DFDF" VerticalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" Padding="2"/>
+                            <telerik1:RadSlider Width="145" Value="{Binding InstantVolume}" TickFrequency="10" TickPlacement="None" Minimum="0" Maximum="100" VerticalAlignment="Center" Background="#F92400" helpers:ThemeHelper.FocusBackgroundBrush="Transparent"/>
+                            <Border BorderBrush="#F92400" BorderThickness="1" Margin="5, 0, 0, 0">
+                                <TextBox Width="40" Text="{Binding InstantVolume, UpdateSourceTrigger=PropertyChanged}" Foreground="#1482E5" Background="#F2DFDF" VerticalAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0" Padding="2"/>
                             </Border>
                         </StackPanel>
                     </StackPanel>
