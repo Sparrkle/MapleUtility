@@ -20,7 +20,7 @@
 
     <uc:UCUniqueWindow.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
-            <Setter Property="Foreground" Value="#F92400"/>
+            <Setter Property="Foreground" Value="#1482E5"/>
         </Style>
     </uc:UCUniqueWindow.Resources>
 
@@ -70,7 +70,7 @@
 
             <Grid Grid.Row="1">
                 <Viewbox Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <Grid Margin="200, 20">
+                    <Grid Margin="100, 20">
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="{x:Type Grid}">
@@ -93,7 +93,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" FontSize="42" Text="다음 즉사까지 남은 시간" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="0" FontSize="42" Text="남은 시간" VerticalAlignment="Center"/>
                                 <TextBlock Grid.Column="1" FontSize="42" Text="{Binding RemainInstantTimeSeconds, StringFormat=\{0\}초}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10, 0, 0, 0"/>
                             </Grid>
                         </Grid>
