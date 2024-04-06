@@ -551,7 +551,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach(var runningTimer in RunningTimerList.ToList())
             {
-                if(runningTimer.BeforeSoundTime != null)
+                if(runningTimer.BeforeSoundTime != null && runningTimer.BeforeSoundTime.Value > 0)
                 {
                     if (!runningTimer.IsAlertBeforeTimer && runningTimer.EndTime?.AddSeconds(-runningTimer.BeforeSoundTime.Value) <= DateTime.Now)
                     {
