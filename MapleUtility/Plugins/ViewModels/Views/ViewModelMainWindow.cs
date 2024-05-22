@@ -5,8 +5,11 @@ using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.Views.UserControls;
 using MapleUtility.Plugins.Views.Windows;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -58,7 +61,13 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        public IEnumerable<SoundItem> OrderedSoundList
+        {
+            get { return SoundList.OrderBy(o => o.Priority); }
+        }
+
         public DispatcherTimer mainTimer = new DispatcherTimer();
+        public List<RadTabItem> TabItems { get; set; }
 
         #region Button Command Variables
         public ICommand DonateCommand { get; set; }
@@ -80,7 +89,15 @@ namespace MapleUtility.Plugins.ViewModels.Views
             if (settingItem.SoundList == null)
                 SoundList = InitialHelper.InitializeSoundList();
             else
+            {
+                if(settingItem.SoundList.FirstOrDefault()?.Priority == -1)
+                {
+                    var priority = 1;
+                    foreach (var sound in settingItem.SoundList)
+                        sound.Priority = priority++;
+                }
                 SoundList = settingItem.SoundList;
+            }
         }
 
         private void DonateEvent()
@@ -95,6 +112,25 @@ namespace MapleUtility.Plugins.ViewModels.Views
             informationWindow.Top = window.Top + (window.ActualHeight - informationWindow.Height) / 2;
 
             informationWindow.ShowDialog();
+        }
+
+        public void ChangeSoundList()
+        {
+            OnPropertyChanged("SoundList");
+            OnPropertyChanged("OrderedSoundList");
+            ItemCheckInViewModels();
+        }
+
+        public void ItemCheckInViewModels()
+        {
+            foreach(var tab in TabItems)
+            {
+                var vm = tab.DataContext as IViewModelItemAvailable;
+                if (vm == null)
+                    continue;
+
+                vm.ItemCheckEvent();
+            }
         }
     }
 }

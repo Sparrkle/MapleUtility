@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace MapleUtility.Plugins.Models
 {
-    public class SoundItem : Notifier
+    public class SoundItem : Notifier, IDisposable
     {
         [JsonIgnore]
         private bool isChecked;
@@ -20,6 +20,17 @@ namespace MapleUtility.Plugins.Models
             {
                 isChecked = value;
                 OnPropertyChanged("IsChecked");
+            }
+        }
+
+        private int priority = -1;
+        public int Priority
+        {
+            get { return priority; }
+            set
+            {
+                priority = value;
+                OnPropertyChanged("Priority");
             }
         }
 
@@ -54,6 +65,27 @@ namespace MapleUtility.Plugins.Models
                 isInternalSound = value;
                 OnPropertyChanged("IsInternalSound");
             }
+        }
+
+        private bool isDisposed = false;
+        public bool IsDisposed
+        {
+            get { return isDisposed; }
+            set
+            {
+                isDisposed = value;
+                OnPropertyChanged("IsDisposed");
+            }
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public void Dispose()
+        {
+            IsDisposed = true;
         }
     }
 }

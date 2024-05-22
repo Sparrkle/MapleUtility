@@ -15,7 +15,7 @@ using System.Windows.Resources;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
-    public class ViewModelUCKalosHelper : Notifier
+    public class ViewModelUCKalosHelper : Notifier, IViewModelItemAvailable
     {
         public IWavePlayer PrevWavePlayer;
 
@@ -393,6 +393,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                         keyItem.KeyCommand.Execute(true);
                 }
             }
+        }
+
+        public void ItemCheckEvent()
+        {
+            if (BeforeInstantSoundItem?.IsDisposed == true)
+                BeforeInstantSoundItem = null;
         }
     }
 }

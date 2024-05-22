@@ -78,6 +78,11 @@ namespace MapleUtility.Plugins.ViewModels.Views
             get { return TimerList.OrderBy(o => o.Priority); }
         }
 
+        public IEnumerable<SoundItem> OrderedSoundList
+        {
+            get { return SoundList.OrderBy(o => o.Priority); }
+        }
+
         private List<string> uiBarStyleList;
         public List<string> UIBarStyleList
         {
@@ -648,6 +653,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
             var soundItem = new SoundItem()
             {
+                Priority = SoundList.Count() > 0 ? SoundList.Max(o => o.Priority) + 1 : 1,
                 Name = Path.GetFileNameWithoutExtension(filePath),
                 Path = filePath,
                 IsInternalSound = false
@@ -716,8 +722,12 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
         private void RemoveSoundEvent()
         {
-            foreach (var timer in SoundList.Where(o => o.IsChecked).ToList())
-                SoundList.Remove(timer);
+            foreach (var sound in SoundList.Where(o => o.IsChecked).ToList())
+                SoundList.Remove(sound);
+
+            var priority = 1;
+            foreach (var sound in OrderedSoundList.ToList())
+                sound.Priority = priority++;
 
             SoundCheckEvent();
         }
@@ -732,6 +742,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
         {
             OnPropertyChanged("IsSoundAllChecked");
             OnPropertyChanged("IsRemoveSoundEnabled");
+            RefreshSoundList();
         }
 
         private void PlaySound(SoundItem soundItem)
@@ -785,6 +796,11 @@ namespace MapleUtility.Plugins.ViewModels.Views
         {
             if (MessageBox.Show("알림 사운드 리스트가 기본값으로 설정되며, 타이머에 설정된 알림 사운드가 모두 초기화됩니다. 정말 하시겠습니까?", "Load Default Setting", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 SoundList = InitialHelper.InitializeSoundList();
+        }
+
+        public void RefreshSoundList()
+        {
+            OnPropertyChanged("OrderedSoundList");
         }
 
         private void CloseEvent(Window window)
