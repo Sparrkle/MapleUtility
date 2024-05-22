@@ -321,7 +321,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             NextInstantPatternTime = null;
         }
 
-        private void OpenKalosUIBarEvent()
+        public void OpenKalosUIBarEvent()
         {
             var window = WindowKalosUIBar.Instance;
             window.DataContext = this;

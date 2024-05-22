@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -157,6 +158,11 @@ namespace MapleUtility.Plugins.Helpers
         public int KALOS_UIBAR_TOP;
         public int KALOS_UIBAR_LEFT;
         public float KALOS_INSTANT_VOLUME = 100;
+
+        public bool IsTray = false;
+        public bool IsShowUIBar = false;
+        public bool IsShowHillaUIBar = false;
+        public bool IsShowKalosUIBar = false;
 
         //public RankItem SelectedRank = null;
     }

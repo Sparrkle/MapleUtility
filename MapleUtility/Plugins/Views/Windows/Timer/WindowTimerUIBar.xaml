@@ -17,7 +17,7 @@
         Title="Timer UI Bar" MinWidth="350" MinHeight="{Binding UIBarHeight}" MaxHeight="{Binding UIBarHeight}" MaxWidth="600"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Top="{Binding UIBarTop, Mode=TwoWay}"  Left="{Binding UIBarLeft, Mode=TwoWay}"
-        Width="{Binding UIBarWidth}" Height="{Binding UIBarHeight}">
+        Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight}">
 
     <uc:UCUniqueWindow.Resources>
         <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">

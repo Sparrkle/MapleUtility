@@ -641,7 +641,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             InternalLatestPatternTime = null;
         }
 
-        private void OpenHillaUIBarEvent()
+        public void OpenHillaUIBarEvent()
         {
             var window = WindowVerusHillaUIBar.Instance as WindowVerusHillaUIBar;
             window.DataContext = this;
