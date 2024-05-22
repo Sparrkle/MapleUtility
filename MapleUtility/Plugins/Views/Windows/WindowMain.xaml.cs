@@ -4,6 +4,7 @@ using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.UserControls;
 using MapleUtility.Plugins.ViewModels.Views;
+using MapleUtility.Plugins.Views.Windows.Timer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -86,6 +87,19 @@ namespace MapleUtility.Plugins.Views.Windows
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
 
             InitializeTray();
+
+            if (settingItem.IsTray)
+            {
+                WindowState = System.Windows.WindowState.Minimized;
+                this.Hide();
+            }
+
+            if (settingItem.IsShowUIBar)
+                timerVM.OpenUIBarEvent();
+            if (settingItem.IsShowHillaUIBar)
+                hillaVM.OpenHillaUIBarEvent();
+            if (settingItem.IsShowKalosUIBar)
+                kalosVM.OpenKalosUIBarEvent();
         }
 
         bool isUped;
@@ -251,6 +265,11 @@ namespace MapleUtility.Plugins.Views.Windows
                 KALOS_UIBAR_HEIGHT = kalosVM.UIBarHeight,
                 KALOS_INSTANT_VOLUME = kalosVM.InstantVolume,
                 KALOS_InstanceKeyItems = kalosVM.InstanceKeyItems,
+
+                IsTray = WindowState == WindowState.Minimized,
+                IsShowUIBar = (WindowTimerUIBar.Instance as WindowTimerUIBar).IsVisible,
+                IsShowHillaUIBar = (WindowVerusHillaUIBar.Instance as WindowVerusHillaUIBar).IsVisible,
+                IsShowKalosUIBar = (WindowKalosUIBar.Instance as WindowKalosUIBar).IsVisible,
 
                 //CharacterList = unionVM.CharacterList,
                 //BlockManager = unionVM.BlockManager,

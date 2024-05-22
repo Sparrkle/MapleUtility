@@ -807,7 +807,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        private void OpenUIBarEvent()
+        public void OpenUIBarEvent()
         {
             var window = WindowTimerUIBar.Instance as WindowTimerUIBar;
             window.DataContext = this;
