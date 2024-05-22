@@ -28,7 +28,7 @@ using Application = System.Windows.Application;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
-    public class ViewModelUCTimerHelper : Notifier
+    public class ViewModelUCTimerHelper : Notifier, IViewModelItemAvailable
     {
         private ObservableCollection<TimerItem> timerList;
         public ObservableCollection<TimerItem> TimerList
@@ -702,6 +702,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingWindow.ShowDialog();
             IsOpenSettingWindow = false;
 
+            foreach(var sound in vm.SoundList)
+            {
+                if (!timerSettingVM.SoundList.Contains(sound))
+                    sound.Dispose();
+            }
+
             vm.SoundList = timerSettingVM.SoundList;
             SelectedUIBarFont = timerSettingVM.SelectedUIBarFont;
             UIBarFontSize = timerSettingVM.UIBarFontSize;
@@ -720,6 +726,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
             UIBarTransparency = timerSettingVM.UIBarTransparency;
             SelectedUIBarStyle = timerSettingVM.SelectedUIBarStyle;
+
+            vm.ChangeSoundList();
         }
 
         public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)
@@ -916,6 +924,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             OnPropertyChanged("IsTimerAllChecked");
             OnPropertyChanged("IsRemoveTimerEnabled");
+        }
+
+        public void ItemCheckEvent()
+        {
+            foreach(var timer in TimerList)
+            {
+                if (timer.SoundItem?.IsDisposed == true)
+                    timer.SoundItem = null;
+            }
         }
     }
 }

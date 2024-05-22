@@ -267,7 +267,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <telerik:RadComboBox Grid.Column="0"
-                                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.SoundList}"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.OrderedSoundList}"
                                         SelectedItem="{Binding SoundItem, Mode=TwoWay}"
                                         ClearSelectionButtonVisibility="Visible" 
                                         EmptyText="(사운드 없음)"
@@ -313,7 +313,7 @@
                                     <TextBox Grid.Column="0" Text="{Binding BeforeSoundTime, UpdateSourceTrigger=PropertyChanged, TargetNullValue=''}" MaxLength="3" Margin="10, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
                                     <TextBlock Grid.Column="1" Text="초전 알림" VerticalAlignment="Center"/>
                                     <telerik:RadComboBox Grid.Column="2"
-                                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.SoundList}"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.OrderedSoundList}"
                                         SelectedItem="{Binding BeforeSoundItem, Mode=TwoWay}"
                                         ClearSelectionButtonVisibility="Visible" 
                                         EmptyText="(사운드 없음)"

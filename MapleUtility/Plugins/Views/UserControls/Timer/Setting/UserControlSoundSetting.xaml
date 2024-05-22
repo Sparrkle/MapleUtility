@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:behaviors="clr-namespace:MapleUtility.Plugins.Behaviors"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -37,7 +39,7 @@
         <telerik:RadGridView
             Grid.Row="1"
             RowHeight="36"
-            ItemsSource="{Binding SoundList, Mode=TwoWay}"
+            ItemsSource="{Binding OrderedSoundList}"
             HorizontalAlignment="Stretch"
             AutoGenerateColumns="False"
             CanUserFreezeColumns="False"
@@ -46,7 +48,25 @@
             RowIndicatorVisibility="Collapsed"
             GroupRenderMode="Flat"
             ShowGroupPanel="False"
-            EnableColumnVirtualization="True" EnableRowVirtualization="True" VirtualizingPanel.IsVirtualizing="True">
+            AllowDrop="True"
+            EnableColumnVirtualization="True"
+            EnableRowVirtualization="True"
+            VirtualizingPanel.IsVirtualizing="True"
+            behaviors:SoundItemReorderBehavior.IsEnabled="True">
+            
+            <telerik:RadGridView.Resources>
+                <DataTemplate x:Key="DraggedItemTemplate">
+                    <StackPanel>
+                        <TextBlock Text="{Binding CurrentDraggedItem}" FontWeight="Bold" />
+                    </StackPanel>
+                </DataTemplate>
+            </telerik:RadGridView.Resources>
+            <telerik:RadGridView.RowStyle>
+                <Style TargetType="telerik:GridViewRow" BasedOn="{StaticResource GridViewRowStyle}">
+                    <Setter Property="telerik:DragDropManager.AllowDrag" Value="True" />
+                    <Setter Property="telerik:DragDropManager.TouchDragTrigger" Value="TapAndHold"/>
+                </Style>
+            </telerik:RadGridView.RowStyle>
 
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn

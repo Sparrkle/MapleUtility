@@ -25,7 +25,7 @@ using Telerik.Windows.Controls;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
-    public class ViewModelUCUnionRelocateHelper : Notifier
+    public class ViewModelUCUnionRelocateHelper : Notifier, IViewModelItemAvailable
     {
         private ObservableCollection<CharacterItem> characterList;
         public ObservableCollection<CharacterItem> CharacterList
@@ -814,6 +814,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             OnPropertyChanged("IsCharacterAllChecked");
             OnPropertyChanged("IsRemoveCharacterEnabled");
+        }
+
+        public void ItemCheckEvent()
+        {
         }
     }
 }

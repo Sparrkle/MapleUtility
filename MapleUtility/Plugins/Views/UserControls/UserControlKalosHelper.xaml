@@ -291,7 +291,7 @@
                             <telerik:RadComboBox
                                 Width="110"
                                 Grid.Column="2"
-                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.SoundList}"
+                                ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.OrderedSoundList}"
                                 SelectedItem="{Binding BeforeInstantSoundItem, Mode=TwoWay}"
                                 ClearSelectionButtonVisibility="Visible" 
                                 EmptyText="(사운드 없음)"

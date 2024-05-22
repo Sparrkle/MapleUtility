@@ -20,7 +20,7 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <telerik:RadTabControl Grid.Row="0" SelectedItem="{Binding SelectedTab}">
+        <telerik:RadTabControl x:Name="tcMain" Grid.Row="0" SelectedItem="{Binding SelectedTab}">
             <telerik:RadTabItem Header="Timer Helper" Width="140" Selector.IsSelected="True">
                 <telerik:RadTabItem.Content>
                     <usercontrol:UserControlTimerHelper x:Name="ucTimerHelper"/>

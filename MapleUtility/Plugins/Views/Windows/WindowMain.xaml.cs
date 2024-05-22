@@ -65,6 +65,7 @@ namespace MapleUtility.Plugins.Views.Windows
                 System.Windows.MessageBox.Show($"경고 : 다음 사운드 파일을 읽을 수 없습니다. 파일을 다시 설정해주세요.\n{string.Join("\n", errorSounds)}", "Maple Utility");
 
             vm.Initialize(settingItem);
+            vm.TabItems = tcMain.Items.Cast<RadTabItem>().ToList();
 
             var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
             timerVM.Initialize(settingItem);

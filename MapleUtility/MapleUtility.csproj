@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugins\Behaviors\GridFocusBehavior.cs" />
+    <Compile Include="Plugins\Behaviors\SoundItemReorderBehavior.cs" />
     <Compile Include="Plugins\Behaviors\TimerItemReorderBehavior.cs" />
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Plugins\Models\TimerKeyItem.cs" />
     <Compile Include="Plugins\UserControls\UCOutlineTextBlock.cs" />
     <Compile Include="Plugins\UserControls\UCUniqueWindow.cs" />
+    <Compile Include="Plugins\ViewModels\UserControls\IViewModelItemAvailable.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCUnionRelocateHelper.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCKalosHelper.cs" />
     <Compile Include="Plugins\ViewModels\UserControls\ViewModelUCVerusHillaHelper.cs" />

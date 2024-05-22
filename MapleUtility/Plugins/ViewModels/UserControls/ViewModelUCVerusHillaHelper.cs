@@ -15,7 +15,7 @@ using System.Windows.Resources;
 
 namespace MapleUtility.Plugins.ViewModels.UserControls
 {
-    public class ViewModelUCVerusHillaHelper : Notifier
+    public class ViewModelUCVerusHillaHelper : Notifier, IViewModelItemAvailable
     {
         public IWavePlayer PrevWavePlayer;
         private ModifierKeys? subtractTimeModifierKey = null;
@@ -734,6 +734,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, AddTimeModifierKey, AddTimeKey))
                     ChangeTime(5);
             }
+        }
+
+        public void ItemCheckEvent()
+        {
+            if (BeforeSoundItem?.IsDisposed == true)
+                BeforeSoundItem = null;
         }
     }
 }
