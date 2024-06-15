@@ -769,7 +769,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach (var timer in PresetTimerList)
             {
-                if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds < 1)
+                if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
                     continue;
 
                 if (!KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, timer.ModifierKey, timer.AlertKey))
