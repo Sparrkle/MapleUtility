@@ -153,7 +153,7 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
-                        Width="140"
+                        Width="145"
 					    Header="타이머 시간"
                         HeaderTextAlignment="Center"
 					    IsGroupable="False"
@@ -163,11 +163,12 @@
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <telerik:RadTimeSpanPicker Margin="5, 0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding TimerTime, Mode=TwoWay}" StringFormat="hh\:mm\:ss" TimeSpanWatermarkContent="Select Time.."  FontFamily="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF">
+                                <telerik:RadTimeSpanPicker Margin="5, 0" HorizontalAlignment="Stretch" VerticalAlignment="Center" EditMode="TextAndDropDown" Value="{Binding TimerTime, Mode=TwoWay}" TimeSpanWatermarkContent="Select Time.." StringFormat="hh\:mm\:ss\.fff" FontFamily="/MapleUtility;component/Plugins/Fonts/#NEXON Lv1 Gothic OTF">
                                     <telerik:RadTimeSpanPicker.TimeSpanComponents>
                                         <telerik:HourTimeSpanComponent Minimum="0" Maximum="23"/>
                                         <telerik:MinuteTimeSpanComponent Step="1"/>
                                         <telerik:SecondTimeSpanComponent Step="1"/>
+                                        <telerik:MillisecondTimeSpanComponent Maximum="900"/>
                                     </telerik:RadTimeSpanPicker.TimeSpanComponents>
                                 </telerik:RadTimeSpanPicker>
                             </DataTemplate>
