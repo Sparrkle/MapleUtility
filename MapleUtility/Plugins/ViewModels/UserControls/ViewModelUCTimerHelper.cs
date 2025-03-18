@@ -30,6 +30,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 {
     public class ViewModelUCTimerHelper : Notifier, IViewModelItemAvailable
     {
+        private List<TimerKeyItem> keyItems = new List<TimerKeyItem>();
+        public List<TimerKeyItem> KeyItems
+        {
+            get { return keyItems; }
+            set
+            {
+                keyItems = value;
+                OnPropertyChanged("KeyItems");
+            }
+        }
+
         private ObservableCollection<TimerItem> timerList;
         public ObservableCollection<TimerItem> TimerList
         {
@@ -369,13 +380,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-
-        public Key? TimerOnOffKey = null;
-        public ModifierKeys? TimerOnOffModifierKey = null;
-        public Key? PauseAllKey = null;
-        public ModifierKeys? PauseAllModifierKey = null;
-        public Key? TimerLockKey = null;
-        public ModifierKeys? TimerLockModifierKey = null;
         public bool IsOpenSettingWindow = false;
         public int AlertDuration;
         public bool IsAlertShowScreenChecked;
@@ -411,6 +415,21 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
             CloseCommand = new RelayCommand(o => CloseEvent((Window) o));
             SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
+
+            KeyItems.Add(new TimerKeyItem("TimerPausedKey", delegate ()
+            {
+                if(!IsTimerLocked)
+                    IsTimerPaused = !IsTimerPaused;
+            }));
+            KeyItems.Add(new TimerKeyItem("TimerLockedKey", delegate ()
+            {
+                if (!IsTimerPaused)
+                    IsTimerLocked = !IsTimerLocked;
+            }));
+            KeyItems.Add(new TimerKeyItem("TimerOnOffKey", delegate()
+            {
+                IsTimerON = !IsTimerON;
+            }));
         }
 
         public void Initialize(SettingItem settingItem)
@@ -511,18 +530,38 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 ColumnList = settingItem.ColumnList;
             }
 
+            if (settingItem.MainTimer_KeyItems != null)
+            {
+                foreach(var keyItem in settingItem.MainTimer_KeyItems)
+                {
+                    var matchKeyItem = KeyItems.FirstOrDefault(o => o.Name == keyItem.Name);
+                    if (matchKeyItem == null)
+                        continue;
+
+                    matchKeyItem.CopyItem(keyItem);
+                }
+            }
+            else // 이전 데이터 호환
+            {
+                var timerPausedKey = KeyItems.FirstOrDefault(o => o.Name == "TimerPausedKey");
+                timerPausedKey.Key = settingItem.PauseAllKey;
+                timerPausedKey.ModifierKey = settingItem.PauseAllModifierKey;
+
+                var timerLockedKey = KeyItems.FirstOrDefault(o => o.Name == "TimerLockedKey");
+                timerLockedKey.Key = settingItem.TimerLockKey;
+                timerLockedKey.ModifierKey = settingItem.TimerLockModifierKey;
+
+                var timerOnOffKey = KeyItems.FirstOrDefault(o => o.Name == "TimerOnOffKey");
+                timerPausedKey.Key = settingItem.TimerOnOffKey;
+                timerPausedKey.ModifierKey = settingItem.TimerOnOffModifierKey;
+            }
+
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
             RemainSquareColor = settingItem.RemainSquareColor;
             RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
             IsShowUIBarTimerName = settingItem.IsShowUIBarTimerName;
             IsAlertShowScreenChecked = settingItem.IsAlertShowScreenChecked;
-            TimerOnOffKey = settingItem.TimerOnOffKey;
-            TimerOnOffModifierKey = settingItem.TimerOnOffModifierKey;
-            PauseAllKey = settingItem.PauseAllKey;
-            PauseAllModifierKey = settingItem.PauseAllModifierKey;
-            TimerLockKey = settingItem.TimerLockKey;
-            TimerLockModifierKey = settingItem.TimerLockModifierKey;
 
             if (settingItem.UIBarFontSize.HasValue)
                 UIBarFontSize = settingItem.UIBarFontSize.Value;
@@ -680,12 +719,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.SoundList = vm.SoundList;
             timerSettingVM.SelectedUIBarFont = ForceSelectedUIBarFont;
             timerSettingVM.UIBarFontSize = UIBarFontSize;
-            timerSettingVM.TimerOnOffKey = TimerOnOffKey;
-            timerSettingVM.TimerOnOffModifierKey = TimerOnOffModifierKey;
-            timerSettingVM.PauseAllKey = PauseAllKey;
-            timerSettingVM.PauseAllModifierKey = PauseAllModifierKey;
-            timerSettingVM.TimerLockKey = TimerLockKey;
-            timerSettingVM.TimerLockModifierKey = TimerLockModifierKey;
             timerSettingVM.PresetList = PresetList;
             timerSettingVM.ImageList = ImageList;
             timerSettingVM.TimerList = TimerList;
@@ -697,6 +730,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
             timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
             timerSettingVM.UIBarTransparency = UIBarTransparency;
+            timerSettingVM.KeyItems = KeyItems.Select(o => new TimerKeyItem(o)).ToList();
 
             IsOpenSettingWindow = true;
             timerSettingWindow.ShowDialog();
@@ -708,15 +742,18 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     sound.Dispose();
             }
 
+            foreach (var keyItem in timerSettingVM.KeyItems)
+            {
+                var matchKeyItem = KeyItems.FirstOrDefault(o => o.Name == keyItem.Name);
+                if (matchKeyItem == null)
+                    continue;
+
+                matchKeyItem.CopyItem(keyItem);
+            }
+
             vm.SoundList = timerSettingVM.SoundList;
             SelectedUIBarFont = timerSettingVM.SelectedUIBarFont;
             UIBarFontSize = timerSettingVM.UIBarFontSize;
-            TimerOnOffKey = timerSettingVM.TimerOnOffKey;
-            TimerOnOffModifierKey = timerSettingVM.TimerOnOffModifierKey;
-            PauseAllKey = timerSettingVM.PauseAllKey;
-            PauseAllModifierKey = timerSettingVM.PauseAllModifierKey;
-            TimerLockKey = timerSettingVM.TimerLockKey;
-            TimerLockModifierKey = timerSettingVM.TimerLockModifierKey;
             PresetList = timerSettingVM.PresetList;
             ImageList = timerSettingVM.ImageList;
             RemainSquareColor = timerSettingVM.RemainSquareResultColor;
@@ -730,44 +767,31 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             vm.ChangeSoundList();
         }
 
-        public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)
+        public void KeyEvent(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckTimerKey(modifierKeys, inputKey);
+            CheckTimerKey(modifierKeys, inputKey, keyboardState);
         }
 
-        private void CheckTimerKey(ModifierKeys modifierKeys, Key inputKey)
+        private void CheckTimerKey(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
-            if(!IsTimerLocked)
-            {
-                if (!(PauseAllModifierKey == null && PauseAllKey == null))
-                {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, PauseAllModifierKey, PauseAllKey))
-                        IsTimerPaused = !IsTimerPaused;
-                }
-            }
+            var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
 
-            if(!IsTimerPaused)
+            foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (!(TimerLockKey == null && TimerLockModifierKey == null))
+                if (!(keyItem.ModifierKey == null && keyItem.Key == null))
                 {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, TimerLockModifierKey, TimerLockKey))
-                        IsTimerLocked = !IsTimerLocked;
+                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, keyItem.ModifierKey, keyItem.Key))
+                        keyItem.KeyCommand.Execute(true);
                 }
-            }
-
-            if (!(TimerOnOffModifierKey == null && TimerOnOffKey == null))
-            {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, TimerOnOffModifierKey, TimerOnOffKey))
-                    IsTimerON = !IsTimerON;
             }
 
             if (!IsTimerON || IsTimerPaused || IsTimerLocked)
                 return;
 
-            foreach (var timer in PresetTimerList)
+            foreach (var timer in PresetTimerList.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
                 if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
                     continue;
@@ -859,6 +883,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             vm.PressedKey = item.AlertKey;
             vm.ModifierKey = item.ModifierKey;
+            vm.IsKeyupEvent = item.IsKeyupEvent;
             vm.ChangeKeyText();
 
             IsOpenSettingWindow = true;
@@ -867,6 +892,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             item.AlertKey = vm.PressedKey;
             item.ModifierKey = vm.ModifierKey;
+            item.IsKeyupEvent = vm.IsKeyupEvent;
         }
 
         private void PlaySound(TimerItem item, bool isBeforeSoundItem = false)

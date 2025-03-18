@@ -283,6 +283,17 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        private bool isKeyupEvent;
+        public bool IsKeyupEvent
+        {
+            get { return isKeyupEvent; }
+            set
+            {
+                isKeyupEvent = value;
+                OnPropertyChanged("IsKeyupEvent");
+            }
+        }
+
         [JsonIgnore]
         public bool IsAlertBeforeTimer { get; set; } = false;
 

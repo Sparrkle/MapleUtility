@@ -18,6 +18,17 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
         public ModifierKeys? ModifierKey = null;
         public Key? PressedKey = null;
 
+        private bool isKeyupEvent;
+        public bool IsKeyupEvent
+        {
+            get { return isKeyupEvent; }
+            set
+            {
+                isKeyupEvent = value;
+                OnPropertyChanged("IsKeyupEvent");
+            }
+        }
+
         #region Button Command Variables
         public ICommand KeyClearCommand { get; set; }
         public ICommand KeySaveCommand { get; set; }

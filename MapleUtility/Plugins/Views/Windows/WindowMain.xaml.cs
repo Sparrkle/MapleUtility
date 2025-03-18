@@ -181,13 +181,13 @@ namespace MapleUtility.Plugins.Views.Windows
                 DebugLogHelper.Write(inputKeyString + " 키를 눌렀습니다.");
 
                 var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
-                timerVM.KeyDownEvent(modifierKeys, inputKey);
+                timerVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
 
                 var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
-                hillaVM.KeyDownEvent(modifierKeys, inputKey);
+                hillaVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
 
                 var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
-                kalosVM.KeyDownEvent(modifierKeys, inputKey);
+                kalosVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
             }
             else if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp)
             {
@@ -196,6 +196,15 @@ namespace MapleUtility.Plugins.Views.Windows
                 prevKeyUp = inputKey;
                 prevEventTime = e.KeyboardData.TimeStamp;
                 DebugLogHelper.Write(inputKeyString + " 키를 뗐습니다.");
+
+                var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
+                timerVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+
+                var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
+                hillaVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+
+                var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
+                kalosVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
             }
             else if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.SysKeyDown)
                 DebugLogHelper.Write(inputKeyString + " 시스템키를 눌렀습니다.");
@@ -231,19 +240,9 @@ namespace MapleUtility.Plugins.Views.Windows
                 AlertDuration = timerVM.AlertDuration,
                 IsShowUIBarTimerName = timerVM.IsShowUIBarTimerName,
                 IsAlertShowScreenChecked = timerVM.IsAlertShowScreenChecked,
-                TimerOnOffKey = timerVM.TimerOnOffKey,
-                TimerOnOffModifierKey = timerVM.TimerOnOffModifierKey,
-                PauseAllKey = timerVM.PauseAllKey,
-                PauseAllModifierKey = timerVM.PauseAllModifierKey,
-                TimerLockKey = timerVM.TimerLockKey,
-                TimerLockModifierKey = timerVM.TimerLockModifierKey,
+                MainTimer_KeyItems = timerVM.KeyItems,
 
-                BackKey = hillaVM.BackKey,
-                BackModifierKey = hillaVM.BackModifierKey,
-                ScytheKey = hillaVM.ScytheKey,
-                ScytheModifierKey = hillaVM.ScytheModifierKey,
-                NextKey = hillaVM.NextKey,
-                NextModifierKey = hillaVM.NextModifierKey,
+                HillaTimer_KeyItems = hillaVM.KeyItems,
 
                 UIBarFontSize = timerVM.UIBarFontSize,
                 SelectedUIBarFontName = timerVM.SelectedUIBarFont.Source,

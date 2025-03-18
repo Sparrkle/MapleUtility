@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace MapleUtility.Plugins.Models
 {
     public class TimerKeyItem : Notifier
     {
+        public string Name { get; set; }
+
         private float time = 0;
         public float Time
         {
@@ -24,6 +27,17 @@ namespace MapleUtility.Plugins.Models
             {
                 time = Math.Abs(value);
                 OnPropertyChanged("Time");
+            }
+        }
+
+        private bool isKeyupEvent;
+        public bool IsKeyupEvent
+        {
+            get { return isKeyupEvent; }
+            set
+            {
+                isKeyupEvent = value;
+                OnPropertyChanged("IsKeyupEvent");
             }
         }
 
@@ -69,14 +83,32 @@ namespace MapleUtility.Plugins.Models
         {
         }
 
-        public TimerKeyItem(Action action)
+        // 세팅 전용 키 복사
+        public TimerKeyItem(TimerKeyItem settingKeyItem)
         {
+            Name = settingKeyItem.Name;
+            CopyItem(settingKeyItem);
+            KeySettingCommand = new RelayCommand(o => KeySettingEvent((Window)o));
+        }
+
+        public TimerKeyItem(string name, Action action)
+        {
+            Name = name;
             KeyCommand = new RelayCommand(o => action());
             KeySettingCommand = new RelayCommand(o => KeySettingEvent((Window)o));
         }
 
-        public TimerKeyItem(Action<float> action, bool isSubtract = false)
+        public TimerKeyItem(string name, Action<int> action, int time)
         {
+            Name = name;
+            KeyCommand = new RelayCommand(o => action(time));
+            KeySettingCommand = new RelayCommand(o => KeySettingEvent((Window)o));
+        }
+
+        // 칼로스 타이머 전용
+        public TimerKeyItem(string name, Action<float> action, bool isSubtract = false)
+        {
+            Name = name;
             KeyCommand = new RelayCommand(o => action(isSubtract ? -Time : Time));
             KeySettingCommand = new RelayCommand(o => KeySettingEvent((Window)o));
         }
@@ -91,12 +123,22 @@ namespace MapleUtility.Plugins.Models
 
             vm.PressedKey = Key;
             vm.ModifierKey = ModifierKey;
+            vm.IsKeyupEvent = IsKeyupEvent;
             vm.ChangeKeyText();
 
             dialog.ShowDialog();
 
             Key = vm.PressedKey;
             ModifierKey = vm.ModifierKey;
+            IsKeyupEvent = vm.IsKeyupEvent;
+        }
+
+        public void CopyItem(TimerKeyItem target)
+        {
+            Time = target.Time;
+            ModifierKey = target.ModifierKey;
+            Key = target.Key;
+            IsKeyupEvent = target.IsKeyupEvent;
         }
     }
 }

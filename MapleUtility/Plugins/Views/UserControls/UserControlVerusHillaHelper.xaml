@@ -251,7 +251,7 @@
             <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20, 0, 0, 0">
                 <StackPanel Orientation="Vertical" Margin="0, 15, 20, 0">
                     <TextBlock Text="남은시간 -5초" HorizontalAlignment="Center" Margin="0, 0, 0, 0"/>
-                    <telerik1:RadButton Width="80" Height="80" Grid.Column="0" Command="{Binding SubtractTimeKeyCommand}">
+                    <telerik1:RadButton Width="80" Height="80" Grid.Column="0" Command="{Binding SubtractTimeKey.KeyCommand}">
 
                         <telerik1:RadButton.Style>
                             <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonHillaStyle}">
@@ -266,12 +266,12 @@
                         <fa:FontAwesome Icon="MinusCircle" FontSize="36" Foreground="#aad900"/>
 
                     </telerik1:RadButton>
-                    <telerik1:RadButton Width="80" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding SubtractTimeKeyString}" Command="{Binding SubtractTimeKeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    <telerik1:RadButton Width="80" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding SubtractTimeKey.KeyString}" Command="{Binding SubtractTimeKey.KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="이전 페이즈" HorizontalAlignment="Center" Margin="0, 0, 0, 5"/>
-                    <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding BackKeyCommand}">
+                    <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding BackKey.KeyCommand}">
 
                         <telerik1:RadButton.Style>
                             <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonHillaStyle}">
@@ -289,20 +289,20 @@
                         <Image Source="/MapleUtility;component/Plugins/Images/Back.png" Margin="20"/>
 
                     </telerik1:RadButton>
-                    <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding BackKeyString}" Command="{Binding BackKeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding BackKey.KeyString}" Command="{Binding BackKey.KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Margin="20, 10, 20, 0">
                     <TextBlock Text="패턴 시간 체크" HorizontalAlignment="Center" Margin="0, 0, 0, 5"/>
-                    <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding ScytheKeyCommand}">
+                    <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding ScytheKey.KeyCommand}">
                         <Image Source="/MapleUtility;component/Plugins/Images/Scythe.png" Margin="20"/>
                     </telerik1:RadButton>
-                    <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding ScytheKeyString}" Command="{Binding ScytheKeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding ScytheKey.KeyString}" Command="{Binding ScytheKey.KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="다음 페이즈" HorizontalAlignment="Center" Margin="0, 0, 0, 5"/>
-                    <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding NextKeyCommand}">
+                    <telerik1:RadButton Width="100" Height="100" Grid.Column="0" Command="{Binding NextKey.KeyCommand}">
 
                         <telerik1:RadButton.Style>
                             <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonHillaStyle}">
@@ -320,12 +320,12 @@
                         <Image Source="/MapleUtility;component/Plugins/Images/Next.png" Margin="20"/>
 
                     </telerik1:RadButton>
-                    <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding NextKeyString}" Command="{Binding NextKeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    <telerik1:RadButton Width="100" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding NextKey.KeyString}" Command="{Binding NextKey.KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Margin="20, 15, 0, 0">
                     <TextBlock Text="남은시간 +5초" HorizontalAlignment="Center" Margin="0, 0, 0, 0"/>
-                    <telerik1:RadButton Width="80" Height="80" Grid.Column="0" Command="{Binding AddTimeKeyCommand}">
+                    <telerik1:RadButton Width="80" Height="80" Grid.Column="0" Command="{Binding AddTimeKey.KeyCommand}">
 
                         <telerik1:RadButton.Style>
                             <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonHillaStyle}">
@@ -340,7 +340,7 @@
                         <fa:FontAwesome Icon="PlusCircle" FontSize="36" Foreground="#aad900"/>
 
                     </telerik1:RadButton>
-                    <telerik1:RadButton Width="80" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding AddTimeKeyString}" Command="{Binding AddTimeKeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+                    <telerik1:RadButton Width="80" Height="30" Margin="0, 5, 0, 0" Foreground="#f86475" Content="{Binding AddTimeKey.KeyString}" Command="{Binding AddTimeKey.KeySettingCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
