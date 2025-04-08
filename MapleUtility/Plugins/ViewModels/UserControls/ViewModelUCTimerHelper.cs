@@ -85,30 +85,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        private int uiBarWidth;
-        public int UIBarWidth
-        {
-            get { return uiBarWidth; }
-            set
-            {
-                uiBarWidth = value;
-                OnPropertyChanged("UIBarWidth");
-            }
-        }
-
         public int UIBarTimerSize
         {
             get
             {
                 return 18 + UIBarFontSize * 2;
-            }
-        }
-
-        public int UIBarHeight
-        {
-            get
-            {
-                return UIBarTimerSize + 20;
             }
         }
 
@@ -268,6 +249,99 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private int uiBarSize;
+        public int UIBarSize
+        {
+            get { return uiBarSize; }
+            set
+            {
+                uiBarSize = value;
+                OnPropertyChanged("UIBarSize");
+                OnPropertyChanged("UIBarWidthSize");
+                OnPropertyChanged("UIBarHeightSize");
+            }
+        }
+
+        public int UIBarWidthSize
+        {
+            get
+            {
+                if (UIBarVertical)
+                    return UIBarTimerSize + 5;
+                else
+                    return UIBarSize;
+            }
+            set
+            {
+                if (UIBarVertical)
+                    return;
+
+                UIBarSize = value;
+            }
+        }
+
+        public int UIBarHeightSize
+        {
+            get
+            {
+                if (!UIBarVertical)
+                    return UIBarTimerSize + 20;
+                else
+                    return UIBarSize;
+            }
+            set
+            {
+                if (!UIBarVertical)
+                    return;
+
+                UIBarSize = value;
+            }
+        }
+
+        public int UIBarMaxWidthSize
+        {
+            get
+            {
+                if (!UIBarVertical)
+                    return 600;
+                else
+                    return UIBarWidthSize;
+            }
+        }
+
+        public int UIBarMinWidthSize
+        {
+            get
+            {
+                if (!UIBarVertical)
+                    return 350;
+                else
+                    return UIBarWidthSize;
+            }
+        }
+
+        public int UIBarMaxHeightSize
+        {
+            get
+            {
+                if (UIBarVertical)
+                    return 600;
+                else
+                    return UIBarHeightSize;
+            }
+        }
+
+        public int UIBarMinHeightSize
+        {
+            get
+            {
+                if (UIBarVertical)
+                    return 350;
+                else
+                    return UIBarHeightSize;
+            }
+        }
+
         private float uiBarTransparency;
         public float UIBarTransparency
         {
@@ -276,6 +350,24 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 uiBarTransparency = value;
                 OnPropertyChanged("UIBarTransparency");
+            }
+        }
+
+        private bool uiBarVertical;
+        public bool UIBarVertical
+        {
+            get { return uiBarVertical; }
+            set
+            {
+                uiBarVertical = value;
+                OnPropertyChanged("UIBarVertical");
+                OnPropertyChanged("UIBarSize");
+                OnPropertyChanged("UIBarWidthSize");
+                OnPropertyChanged("UIBarHeightSize");
+                OnPropertyChanged("UIBarMaxWidthSize");
+                OnPropertyChanged("UIBarMinWidthSize");
+                OnPropertyChanged("UIBarMaxHeightSize");
+                OnPropertyChanged("UIBarMinHeightSize");
             }
         }
 
@@ -537,8 +629,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             UIBarTop = settingItem.UIBAR_TOP;
             UIBarLeft = settingItem.UIBAR_LEFT;
-            UIBarWidth = settingItem.UIBAR_WIDTH;
+
+            if(settingItem.UIBAR_WIDTH > 0)
+                UIBarSize = settingItem.UIBAR_WIDTH;
+            else
+                UIBarSize = settingItem.UIBAR_SIZE;
+
             UIBarTransparency = settingItem.UIBAR_TRANSPARENCY;
+            UIBarVertical = settingItem.UIBAR_VERTICAL;
 
             if (TimerList.Count() > 0)
                 TimerList.OrderBy(o => o.Priority).Last().IsLast = true;
@@ -697,6 +795,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
             timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
             timerSettingVM.UIBarTransparency = UIBarTransparency;
+            timerSettingVM.UIBarVertical = UIBarVertical;
 
             IsOpenSettingWindow = true;
             timerSettingWindow.ShowDialog();
@@ -726,6 +825,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
             UIBarTransparency = timerSettingVM.UIBarTransparency;
             SelectedUIBarStyle = timerSettingVM.SelectedUIBarStyle;
+            UIBarVertical = timerSettingVM.UIBarVertical;
 
             vm.ChangeSoundList();
         }

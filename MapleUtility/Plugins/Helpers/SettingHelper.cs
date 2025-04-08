@@ -137,8 +137,9 @@ namespace MapleUtility.Plugins.Helpers
         public string SelectedUIBarFontName;
 
         public float UIBAR_TRANSPARENCY = 19;
-        public int UIBAR_WIDTH = 400;
-        public int UIBAR_HEIGHT = 110;
+        public int UIBAR_WIDTH = 400; // 구버전 호환
+        public int UIBAR_SIZE = 400;
+        public bool UIBAR_VERTICAL = false;
 
         public int UIBAR_TOP;
         public int UIBAR_LEFT;

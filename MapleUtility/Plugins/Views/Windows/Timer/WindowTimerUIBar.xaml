@@ -14,10 +14,10 @@
         Deactivated="Window_Deactivated"
         AllowsTransparency="True" 
         Background="{Binding UIBarBackground, Converter={StaticResource ColorToHSColorBrushConverter}}"
-        Title="Timer UI Bar" MinWidth="350" MinHeight="{Binding UIBarHeight}" MaxHeight="{Binding UIBarHeight}" MaxWidth="600"
+        Title="Timer UI Bar" MinWidth="{Binding UIBarMinWidthSize}" MinHeight="{Binding UIBarMinHeightSize}" MaxHeight="{Binding UIBarMaxHeightSize}" MaxWidth="{Binding UIBarMaxWidthSize}"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Top="{Binding UIBarTop, Mode=TwoWay}"  Left="{Binding UIBarLeft, Mode=TwoWay}"
-        Width="{Binding UIBarWidth, Mode=TwoWay}" Height="{Binding UIBarHeight}">
+        Width="{Binding UIBarWidthSize, Mode=TwoWay}" Height="{Binding UIBarHeightSize, Mode=TwoWay}">
 
     <uc:UCUniqueWindow.Resources>
         <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">
@@ -101,14 +101,25 @@
                 </telerik:RadListBox.Style>
                 <telerik:RadListBox.ItemContainerStyle>
                     <Style TargetType="{x:Type telerik:RadListBoxItem}" BasedOn="{StaticResource BaseRadListBoxItemStyle}">
-                        <Setter Property="Padding" Value="0 0 2 0"/>
+                        <Setter Property="Padding" Value="0 0 2 2"/>
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="BorderThickness" Value="0"/>
                     </Style>
                 </telerik:RadListBox.ItemContainerStyle>
                 <telerik:RadListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" CanVerticallyScroll="False" CanHorizontallyScroll="False"/>
+                        <StackPanel CanVerticallyScroll="False" CanHorizontallyScroll="False">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Orientation" Value="Horizontal"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding UIBarVertical}" Value="True">
+                                            <Setter Property="Orientation" Value="Vertical"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                        </StackPanel>
                     </ItemsPanelTemplate>
                 </telerik:RadListBox.ItemsPanel>
                 

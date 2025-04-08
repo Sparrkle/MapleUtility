@@ -165,6 +165,11 @@
                 <telerik:RadComboBox ItemsSource="{Binding UIBarStyleList}" SelectedItem="{Binding SelectedUIBarStyle}" Width="200" VerticalAlignment="Center"/>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
+                <TextBlock Text="UI Bar 세로표시" VerticalAlignment="Center" Width="270"/>
+                <CheckBox IsChecked="{Binding UIBarVertical}" Margin="5, 0"/>
+            </StackPanel>
+
         </StackPanel>        
     </Grid>
 </UserControl>
