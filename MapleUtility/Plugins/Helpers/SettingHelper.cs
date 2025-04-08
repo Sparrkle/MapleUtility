@@ -101,7 +101,7 @@ namespace MapleUtility.Plugins.Helpers
 
     public class SettingItem
     {
-        public ObservableCollection<TimerItem> TimerList;
+        public ObservableCollection<SoundTimerItem> TimerList;
         public ObservableCollection<PresetItem> PresetList;
         public ObservableCollection<ImageItem> ImageList;
         public ObservableCollection<SoundItem> SoundList;

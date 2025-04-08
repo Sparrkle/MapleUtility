@@ -61,8 +61,8 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
-        private ObservableCollection<TimerItem> timerList;
-        public ObservableCollection<TimerItem> TimerList
+        private ObservableCollection<SoundTimerItem> timerList;
+        public ObservableCollection<SoundTimerItem> TimerList
         {
             get { return timerList; }
             set
@@ -73,7 +73,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
-        public IEnumerable<TimerItem> OrderedTimerList
+        public IEnumerable<SoundTimerItem> OrderedTimerList
         {
             get { return TimerList.OrderBy(o => o.Priority); }
         }
@@ -342,6 +342,9 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 keyItems = value;
                 OnPropertyChanged("KeyItems");
+                OnPropertyChanged("PausedSettingKey");
+                OnPropertyChanged("LockSettingKey");
+                OnPropertyChanged("OnOffSettingKey");
             }
         }
 
@@ -405,8 +408,8 @@ namespace MapleUtility.Plugins.ViewModels.Views
             PlayTestSoundCommand = new RelayCommand(o => PlaySound((SoundItem)o));
             LoadDefaultSettingCommand = new RelayCommand(o => LoadDefaultSettingEvent());
             SelectSoundCommand = new RelayCommand(o => SelectSoundEvent((SoundItem)o));
-            PriorityUpCommand = new RelayCommand(o => PriorityUpEvent((TimerItem)o));
-            PriorityDownCommand = new RelayCommand(o => PriorityDownEvent((TimerItem)o));
+            PriorityUpCommand = new RelayCommand(o => PriorityUpEvent((SoundTimerItem)o));
+            PriorityDownCommand = new RelayCommand(o => PriorityDownEvent((SoundTimerItem)o));
             CloseCommand = new RelayCommand(o => CloseEvent((Window)o));
 
             UIBarStyleList = new List<string>()
@@ -549,17 +552,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             item.Path = filePath;
         }
 
-        private void PriorityUpEvent(TimerItem item)
+        private void PriorityUpEvent(SoundTimerItem item)
         {
             PriorityEvent(item, item.Priority - 1);
         }
 
-        private void PriorityDownEvent(TimerItem item)
+        private void PriorityDownEvent(SoundTimerItem item)
         {
             PriorityEvent(item, item.Priority + 1);
         }
 
-        private void PriorityEvent(TimerItem item, int resultPriority)
+        private void PriorityEvent(SoundTimerItem item, int resultPriority)
         {
             if(OrderedTimerList.Count() > 0)
                 OrderedTimerList.LastOrDefault().IsLast = false;

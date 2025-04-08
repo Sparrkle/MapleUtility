@@ -250,7 +250,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if(settingItem.KALOS_InstanceKeyItems != null)
             {
                 for(int i=0; i<settingItem.KALOS_InstanceKeyItems.Count; i++)
-                    InstanceKeyItems[i].CopyItem(settingItem.KALOS_InstanceKeyItems[i]);
+                    InstanceKeyItems[i] = settingItem.KALOS_InstanceKeyItems[i].Copy() as TimerKeyItem;
             }
             else
             {
@@ -369,15 +369,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyEvent(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckKalosKey(modifierKeys, inputKey, keyboardState);
+            CheckKalosKey(commandArrowQueueItem, modifierKeys, inputKey, keyboardState);
         }
 
-        private void CheckKalosKey(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckKalosKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (!IsHelperON)
                 return;
@@ -385,11 +385,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
             foreach (var keyItem in instantKeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (!(keyItem.ModifierKey == null && keyItem.Key == null))
-                {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, keyItem.ModifierKey, keyItem.Key))
-                        keyItem.KeyCommand.Execute(true);
-                }
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                    keyItem.KeyCommand.Execute(true);
             }
         }
 

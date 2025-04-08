@@ -337,22 +337,22 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     if (matchKeyItem == null)
                         continue;
 
-                    matchKeyItem.CopyItem(keyItem);
+                    matchKeyItem.KeyItems = keyItem.KeyItems.Select(o => o.Clone()).ToList();
                 }
             }
             else // 이전 데이터 호환
             {
                 var timerPausedKey = KeyItems.FirstOrDefault(o => o.Name == "BackKey");
-                timerPausedKey.Key = settingItem.BackKey;
-                timerPausedKey.ModifierKey = settingItem.BackModifierKey;
+                if(settingItem.BackModifierKey != null || settingItem.BackKey != null)
+                    timerPausedKey.KeyItems.Add(new KeyItem(settingItem.BackModifierKey, settingItem.BackKey));
 
                 var timerLockedKey = KeyItems.FirstOrDefault(o => o.Name == "ScytheKey");
-                timerLockedKey.Key = settingItem.ScytheKey;
-                timerLockedKey.ModifierKey = settingItem.ScytheModifierKey;
+                if (settingItem.ScytheModifierKey != null || settingItem.ScytheKey != null)
+                    timerLockedKey.KeyItems.Add(new KeyItem(settingItem.ScytheModifierKey, settingItem.ScytheKey));
 
                 var timerOnOffKey = KeyItems.FirstOrDefault(o => o.Name == "NextKey");
-                timerPausedKey.Key = settingItem.NextKey;
-                timerPausedKey.ModifierKey = settingItem.NextModifierKey;
+                if (settingItem.NextModifierKey != null || settingItem.NextKey != null)
+                    timerOnOffKey.KeyItems.Add(new KeyItem(settingItem.NextModifierKey, settingItem.NextKey));
             }
         }
 
@@ -501,15 +501,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyEvent(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckHillaKey(modifierKeys, inputKey, keyboardState);
+            CheckHillaKey(commandArrowQueueItem,modifierKeys, inputKey, keyboardState);
         }
 
-        private void CheckHillaKey(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckHillaKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (!IsHelperON)
                 return;
@@ -518,11 +518,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (!(keyItem.ModifierKey == null && keyItem.Key == null))
-                {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, keyItem.ModifierKey, keyItem.Key))
-                        keyItem.KeyCommand.Execute(true);
-                }
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                    keyItem.KeyCommand.Execute(true);
             }
         }
 

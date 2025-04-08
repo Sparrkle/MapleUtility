@@ -25,6 +25,7 @@ namespace MapleUtility.Plugins.Views.Windows
     public partial class WindowMain : Window
     {
         private GlobalKeyboardHookHelper _globalKeyboardHook;
+        private CommandArrowQueueItem CommandArrowQueueItem = new CommandArrowQueueItem();
 
         public WindowMain()
         {
@@ -178,16 +179,20 @@ namespace MapleUtility.Plugins.Views.Windows
                 isUped = false;
                 prevEventTime = e.KeyboardData.TimeStamp;
 
+                if(inputKey == Key.Up || inputKey == Key.Down || inputKey == Key.Left || inputKey == Key.Right)
+                    CommandArrowQueueItem.Push(inputKey);
+                CommandArrowQueueItem.Update();
+
                 DebugLogHelper.Write(inputKeyString + " 키를 눌렀습니다.");
 
                 var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
-                timerVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+                timerVM.KeyEvent(CommandArrowQueueItem, modifierKeys, inputKey, e.KeyboardState);
 
                 var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
-                hillaVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+                hillaVM.KeyEvent(CommandArrowQueueItem, modifierKeys, inputKey, e.KeyboardState);
 
                 var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
-                kalosVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+                kalosVM.KeyEvent(CommandArrowQueueItem, modifierKeys, inputKey, e.KeyboardState);
             }
             else if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp)
             {
@@ -198,13 +203,13 @@ namespace MapleUtility.Plugins.Views.Windows
                 DebugLogHelper.Write(inputKeyString + " 키를 뗐습니다.");
 
                 var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
-                timerVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+                timerVM.KeyEvent(CommandArrowQueueItem, modifierKeys, inputKey, e.KeyboardState);
 
                 var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
-                hillaVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+                hillaVM.KeyEvent(CommandArrowQueueItem, modifierKeys, inputKey, e.KeyboardState);
 
                 var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
-                kalosVM.KeyEvent(modifierKeys, inputKey, e.KeyboardState);
+                kalosVM.KeyEvent(CommandArrowQueueItem, modifierKeys, inputKey, e.KeyboardState);
             }
             else if (e.KeyboardState == GlobalKeyboardHookHelper.KeyboardState.SysKeyDown)
                 DebugLogHelper.Write(inputKeyString + " 시스템키를 눌렀습니다.");

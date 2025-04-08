@@ -41,8 +41,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        private ObservableCollection<TimerItem> timerList;
-        public ObservableCollection<TimerItem> TimerList
+        private ObservableCollection<SoundTimerItem> timerList;
+        public ObservableCollection<SoundTimerItem> TimerList
         {
             get { return timerList; }
             set
@@ -52,7 +52,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public IEnumerable<TimerItem> PresetTimerList
+        public IEnumerable<SoundTimerItem> PresetTimerList
         {
             get
             {
@@ -166,8 +166,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        private ObservableCollection<TimerItem> runningTimerList;
-        public ObservableCollection<TimerItem> RunningTimerList
+        private ObservableCollection<SoundTimerItem> runningTimerList;
+        public ObservableCollection<SoundTimerItem> RunningTimerList
         {
             get { return runningTimerList; }
             set
@@ -401,15 +401,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         public ViewModelUCTimerHelper()
         {
-            TimerList = new ObservableCollection<TimerItem>();
-            RunningTimerList = new ObservableCollection<TimerItem>();
+            TimerList = new ObservableCollection<SoundTimerItem>();
+            RunningTimerList = new ObservableCollection<SoundTimerItem>();
 
             ColumnSettingCommand = new RelayCommand(o => ColumnSettingEvent());
             AddTimerCommand = new RelayCommand(o => AddTimerEvent());
             RemoveTimerCommand = new RelayCommand(o => RemoveTimerEvent());
-            RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((TimerItem) o));
-            PlayTestSoundCommand = new RelayCommand(o => PlaySound((TimerItem) o));
-            PlayTestBeforeSoundCommand = new RelayCommand(o => PlaySound((TimerItem) o, true));
+            RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((SoundTimerItem) o));
+            PlayTestSoundCommand = new RelayCommand(o => PlaySound((SoundTimerItem) o));
+            PlayTestBeforeSoundCommand = new RelayCommand(o => PlaySound((SoundTimerItem) o, true));
             OpenSettingCommand = new RelayCommand(o => OpenSettingEvent((Window) o));
             CheckCommand = new RelayCommand(o => CheckEvent());
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
@@ -435,7 +435,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public void Initialize(SettingItem settingItem)
         {
             if (settingItem.TimerList == null)
-                TimerList = new ObservableCollection<TimerItem>();
+                TimerList = new ObservableCollection<SoundTimerItem>();
             else
                 TimerList = settingItem.TimerList;
 
@@ -447,34 +447,34 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             var count = 1;
             foreach (var timer in TimerList)
             {
-                if (!timer.AlertKey.HasValue || timer.ModifierKey.HasValue)
-                    continue;
+                if (relocatePrioirty)
+                {
+                    timer.Priority = count;
+                    count++;
+                }
 
-                var inputKey = timer.AlertKey.Value;
-
+                var inputKey = timer.AlertKey;
                 if (inputKey == Key.LeftCtrl || inputKey == Key.RightCtrl)
                 {
-                    timer.AlertKey = null;
                     timer.ModifierKey = ModifierKeys.Control;
                 }
                 else if (inputKey == Key.LeftAlt || inputKey == Key.RightAlt)
                 {
-                    timer.AlertKey = null;
                     timer.ModifierKey = ModifierKeys.Alt;
                 }
                 else if (inputKey == Key.LeftShift || inputKey == Key.RightShift)
                 {
-                    timer.AlertKey = null;
                     timer.ModifierKey = ModifierKeys.Shift;
                 }
                 else if (inputKey == Key.LWin || inputKey == Key.RWin || inputKey == Key.KanaMode)
                     timer.AlertKey = null;
 
-                if(relocatePrioirty)
-                {
-                    timer.Priority = count;
-                    count++;
-                }
+                if (!timer.AlertKey.HasValue && !timer.ModifierKey.HasValue)
+                    continue;
+
+                timer.KeyItems.Add(new KeyItem(timer.ModifierKey, timer.AlertKey));
+                timer.ModifierKey = null;
+                timer.AlertKey = null;
             }
 
             if (settingItem.PresetList == null)
@@ -538,22 +538,22 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     if (matchKeyItem == null)
                         continue;
 
-                    matchKeyItem.CopyItem(keyItem);
+                    matchKeyItem.KeyItems = keyItem.KeyItems.Select(o => o.Clone()).ToList();
                 }
             }
             else // 이전 데이터 호환
             {
                 var timerPausedKey = KeyItems.FirstOrDefault(o => o.Name == "TimerPausedKey");
-                timerPausedKey.Key = settingItem.PauseAllKey;
-                timerPausedKey.ModifierKey = settingItem.PauseAllModifierKey;
+                if (settingItem.PauseAllModifierKey != null || settingItem.PauseAllKey != null)
+                    timerPausedKey.KeyItems.Add(new KeyItem(settingItem.PauseAllModifierKey, settingItem.PauseAllKey));
 
                 var timerLockedKey = KeyItems.FirstOrDefault(o => o.Name == "TimerLockedKey");
-                timerLockedKey.Key = settingItem.TimerLockKey;
-                timerLockedKey.ModifierKey = settingItem.TimerLockModifierKey;
+                if (settingItem.TimerLockModifierKey != null || settingItem.TimerLockKey != null)
+                    timerLockedKey.KeyItems.Add(new KeyItem(settingItem.TimerLockModifierKey, settingItem.TimerLockKey));
 
                 var timerOnOffKey = KeyItems.FirstOrDefault(o => o.Name == "TimerOnOffKey");
-                timerPausedKey.Key = settingItem.TimerOnOffKey;
-                timerPausedKey.ModifierKey = settingItem.TimerOnOffModifierKey;
+                if (settingItem.TimerOnOffModifierKey != null || settingItem.TimerOnOffKey != null)
+                    timerOnOffKey.KeyItems.Add(new KeyItem(settingItem.TimerOnOffModifierKey, settingItem.TimerOnOffKey));
             }
 
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
@@ -651,7 +651,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         private void AddTimerEvent()
         {
-            var newTimer = new TimerItem();
+            var newTimer = new SoundTimerItem();
             newTimer.Priority = TimerList.Count() + 1;
             newTimer.Preset = SelectedPreset;
             newTimer.IsLast = true;
@@ -700,7 +700,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             RunningTimerList.Clear();
         }
 
-        private void RemoveRunningTimerEvent(TimerItem item)
+        private void RemoveRunningTimerEvent(SoundTimerItem item)
         {
             item.EndTime = null;
             RunningTimerList.Remove(item);
@@ -730,7 +730,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
             timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
             timerSettingVM.UIBarTransparency = UIBarTransparency;
-            timerSettingVM.KeyItems = KeyItems.Select(o => new TimerKeyItem(o)).ToList();
+            timerSettingVM.KeyItems = KeyItems.Select(o => o.Copy() as TimerKeyItem).ToList();
 
             IsOpenSettingWindow = true;
             timerSettingWindow.ShowDialog();
@@ -748,7 +748,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (matchKeyItem == null)
                     continue;
 
-                matchKeyItem.CopyItem(keyItem);
+                matchKeyItem.KeyItems = keyItem.KeyItems.Select(o => o.Clone()).ToList();
             }
 
             vm.SoundList = timerSettingVM.SoundList;
@@ -767,25 +767,22 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             vm.ChangeSoundList();
         }
 
-        public void KeyEvent(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckTimerKey(modifierKeys, inputKey, keyboardState);
+            CheckTimerKey(commandArrowQueueItem, modifierKeys, inputKey, keyboardState);
         }
 
-        private void CheckTimerKey(ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckTimerKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
 
             foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (!(keyItem.ModifierKey == null && keyItem.Key == null))
-                {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, keyItem.ModifierKey, keyItem.Key))
-                        keyItem.KeyCommand.Execute(true);
-                }
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                    keyItem.KeyCommand.Execute(true);
             }
 
             if (!IsTimerON || IsTimerPaused || IsTimerLocked)
@@ -793,10 +790,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach (var timer in PresetTimerList.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if ((!timer.ModifierKey.HasValue && !timer.AlertKey.HasValue) || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
+                if (timer.KeyItems.Count() == 0 || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
                     continue;
 
-                if (!KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, timer.ModifierKey, timer.AlertKey))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, timer))
                     continue;
 
                 if (timer.SoundItem != null)
@@ -873,7 +870,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             var values = (object[])parameter;
             var window = values[0] as Window;
-            var item = values[1] as TimerItem;
+            var item = values[1] as SoundTimerItem;
 
             var dialog = new WindowTimerPressKeyboard();
             var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
@@ -881,21 +878,32 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
             dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
 
-            vm.PressedKey = item.AlertKey;
-            vm.ModifierKey = item.ModifierKey;
+            if(item.KeyItems.Count() > 0)
+            {
+                var firstKey = item.KeyItems.FirstOrDefault().Clone();
+                vm.ModifierKey = firstKey.ModifierKey;
+                vm.PressedKey = firstKey.Key;
+                vm.ArrowKeys = firstKey.ArrowKeys;
+
+                vm.KeyItems = item.KeyItems.Skip(1).Select(o => o.Clone()).ToList();
+            }
             vm.IsKeyupEvent = item.IsKeyupEvent;
+            vm.IsDisableCommand = item.IsDisableCommand;
             vm.ChangeKeyText();
 
             IsOpenSettingWindow = true;
             dialog.ShowDialog();
             IsOpenSettingWindow = false;
 
-            item.AlertKey = vm.PressedKey;
-            item.ModifierKey = vm.ModifierKey;
+            if (vm.ModifierKey != null || vm.PressedKey != null || vm.ArrowKeys.Count() > 0)
+                vm.KeyItems.Add(new KeyItem(vm.ModifierKey, vm.PressedKey, vm.ArrowKeys));
+
+            item.KeyItems = vm.KeyItems.Select(o => o.Clone()).ToList();
             item.IsKeyupEvent = vm.IsKeyupEvent;
+            item.IsDisableCommand = vm.IsDisableCommand;
         }
 
-        private void PlaySound(TimerItem item, bool isBeforeSoundItem = false)
+        private void PlaySound(SoundTimerItem item, bool isBeforeSoundItem = false)
         {
             try
             {
