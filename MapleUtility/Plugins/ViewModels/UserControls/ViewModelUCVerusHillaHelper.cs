@@ -9,6 +9,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -19,163 +20,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
     public class ViewModelUCVerusHillaHelper : Notifier, IViewModelItemAvailable
     {
         public IWavePlayer PrevWavePlayer;
-        private ModifierKeys? subtractTimeModifierKey = null;
-        public ModifierKeys? SubtractTimeModifierKey
+
+        private List<TimerKeyItem> keyItems = new List<TimerKeyItem>();
+        public List<TimerKeyItem> KeyItems
         {
-            get { return subtractTimeModifierKey; }
+            get { return keyItems; }
             set
             {
-                subtractTimeModifierKey = value;
-                OnPropertyChanged("SubtractTimeModifierKey");
-                OnPropertyChanged("SubtractTimeKeyString");
-            }
-        }
-
-        private Key? subtractTimeKey = null;
-        public Key? SubtractTimeKey
-        {
-            get { return subtractTimeKey; }
-            set
-            {
-                subtractTimeKey = value;
-                OnPropertyChanged("SubtractTimeKey");
-                OnPropertyChanged("SubtractTimeKeyString");
-            }
-        }
-
-        public string SubtractTimeKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(SubtractTimeModifierKey, SubtractTimeKey, "없음");
-            }
-        }
-
-        private ModifierKeys? backModifierKey = null;
-        public ModifierKeys? BackModifierKey
-        {
-            get { return backModifierKey; }
-            set
-            {
-                backModifierKey = value;
-                OnPropertyChanged("BackModifierKey");
-                OnPropertyChanged("BackKeyString");
-            }
-        }
-
-        private Key? backKey = null;
-        public Key? BackKey
-        {
-            get { return backKey; }
-            set
-            {
-                backKey = value;
-                OnPropertyChanged("BackKey");
-                OnPropertyChanged("BackKeyString");
-            }
-        }
-
-        public string BackKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(BackModifierKey, BackKey, "없음");
-            }
-        }
-
-        private ModifierKeys? scytheModifierKey = null;
-        public ModifierKeys? ScytheModifierKey
-        {
-            get { return scytheModifierKey; }
-            set
-            {
-                scytheModifierKey = value;
-                OnPropertyChanged("ScytheModifierKey");
-                OnPropertyChanged("ScytheKeyString");
-            }
-        }
-
-        private Key? scytheKey = null;
-        public Key? ScytheKey
-        {
-            get { return scytheKey; }
-            set
-            {
-                scytheKey = value;
-                OnPropertyChanged("ScytheKey");
-                OnPropertyChanged("ScytheKeyString");
-            }
-        }
-
-        public string ScytheKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(ScytheModifierKey, ScytheKey, "없음");
-            }
-        }
-
-        private ModifierKeys? nextModifierKey = null;
-        public ModifierKeys? NextModifierKey
-        {
-            get { return nextModifierKey; }
-            set
-            {
-                nextModifierKey = value;
-                OnPropertyChanged("NextModifierKey");
-                OnPropertyChanged("NextKeyString");
-            }
-        }
-
-        private Key? nextKey = null;
-        public Key? NextKey
-        {
-            get { return nextKey; }
-            set
-            {
-                nextKey = value;
-                OnPropertyChanged("NextKey");
-                OnPropertyChanged("NextKeyString");
-            }
-        }
-
-        public string NextKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(NextModifierKey, NextKey, "없음");
-            }
-        }
-
-        private ModifierKeys? addTimeModifierKey = null;
-        public ModifierKeys? AddTimeModifierKey
-        {
-            get { return addTimeModifierKey; }
-            set
-            {
-                addTimeModifierKey = value;
-                OnPropertyChanged("AddTimeModifierKey");
-                OnPropertyChanged("AddTimeKeyString");
-            }
-        }
-
-        private Key? addTimeKey = null;
-        public Key? AddTimeKey
-        {
-            get { return addTimeKey; }
-            set
-            {
-                addTimeKey = value;
-                OnPropertyChanged("AddTimeKey");
-                OnPropertyChanged("AddTimeKeyString");
-            }
-        }
-
-        public string AddTimeKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(AddTimeModifierKey, AddTimeKey, "없음");
+                keyItems = value;
+                OnPropertyChanged("KeyItems");
             }
         }
 
@@ -400,6 +253,31 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        public TimerKeyItem SubtractTimeKey
+        {
+            get { return KeyItems.FirstOrDefault(o => o.Name == "SubtractTimeKey"); }
+        }
+
+        public TimerKeyItem BackKey
+        {
+            get { return KeyItems.FirstOrDefault(o => o.Name == "BackKey"); }
+        }
+
+        public TimerKeyItem ScytheKey
+        {
+            get { return KeyItems.FirstOrDefault(o => o.Name == "ScytheKey"); }
+        }
+
+        public TimerKeyItem NextKey
+        {
+            get { return KeyItems.FirstOrDefault(o => o.Name == "NextKey"); }
+        }
+
+        public TimerKeyItem AddTimeKey
+        {
+            get { return KeyItems.FirstOrDefault(o => o.Name == "AddTimeKey"); }
+        }
+
         public bool IsAlertBeforeTimer { get; set; } = false;
         public bool IsOpenSettingWindow { get; set; } = false;
         public List<Key> PressedKeyList { get; set; } = new List<Key>();
@@ -429,14 +307,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             ScytheKeyCommand = new RelayCommand(o => ScytheKeyEvent());
             NextKeyCommand = new RelayCommand(o => NextKeyEvent());
             AddTimeKeyCommand = new RelayCommand(o => ChangeTime(5));
-            SubtractTimeKeySettingCommand = new RelayCommand(o => SubtractTimeKeySettingEvent((Window)o));
-            BackKeySettingCommand = new RelayCommand(o => BackKeySettingEvent((Window)o));
-            ScytheKeySettingCommand = new RelayCommand(o => ScytheKeySettingEvent((Window)o));
-            NextKeySettingCommand = new RelayCommand(o => NextKeySettingEvent((Window)o));
-            AddTimeKeySettingCommand = new RelayCommand(o => AddTimeKeySettingEvent((Window)o));
             ResetCommand = new RelayCommand(o => ResetEvent());
             OpenHillaUIBarCommand = new RelayCommand(o => OpenHillaUIBarEvent());
             CloseCommand = new RelayCommand(o => CloseEvent((Window)o));
+
+            KeyItems.Add(new TimerKeyItem("SubtractTimeKey", ChangeTime, -5));
+            KeyItems.Add(new TimerKeyItem("BackKey", BackKeyEvent));
+            KeyItems.Add(new TimerKeyItem("ScytheKey", ScytheKeyEvent));
+            KeyItems.Add(new TimerKeyItem("NextKey", NextKeyEvent));
+            KeyItems.Add(new TimerKeyItem("AddTimeKey", ChangeTime, 5));
 
             CurrentPhase = 1;
             LatestPatternTime = null;
@@ -447,19 +326,38 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public void Initialize(WindowMain mainWindow, SettingItem settingItem)
         {
             MainWindow = mainWindow;
-
-            BackKey = settingItem.BackKey;
-            BackModifierKey = settingItem.BackModifierKey;
-            ScytheKey = settingItem.ScytheKey;
-            ScytheModifierKey = settingItem.ScytheModifierKey;
-            NextKey = settingItem.NextKey;
-            NextModifierKey = settingItem.NextModifierKey;
             UIBarTop = settingItem.HILLA_UIBAR_TOP;
             UIBarLeft = settingItem.HILLA_UIBAR_LEFT;
             UIBarWidth = settingItem.HILLA_UIBAR_WIDTH;
             UIBarHeight = settingItem.HILLA_UIBAR_HEIGHT;
             UIBarTransparency = settingItem.HILLA_UIBAR_TRANSPARENCY;
             Volume = settingItem.HILLA_VOLUME;
+
+            if (settingItem.HillaTimer_KeyItems != null)
+            {
+                foreach (var keyItem in settingItem.HillaTimer_KeyItems)
+                {
+                    var matchKeyItem = KeyItems.FirstOrDefault(o => o.Name == keyItem.Name);
+                    if (matchKeyItem == null)
+                        continue;
+
+                    matchKeyItem.KeyItems = keyItem.KeyItems.Select(o => o.Clone()).ToList();
+                }
+            }
+            else // 이전 데이터 호환
+            {
+                var timerPausedKey = KeyItems.FirstOrDefault(o => o.Name == "BackKey");
+                if(settingItem.BackModifierKey != null || settingItem.BackKey != null)
+                    timerPausedKey.AddKeyItem(new KeyItem(settingItem.BackModifierKey, settingItem.BackKey));
+
+                var timerLockedKey = KeyItems.FirstOrDefault(o => o.Name == "ScytheKey");
+                if (settingItem.ScytheModifierKey != null || settingItem.ScytheKey != null)
+                    timerLockedKey.AddKeyItem(new KeyItem(settingItem.ScytheModifierKey, settingItem.ScytheKey));
+
+                var timerOnOffKey = KeyItems.FirstOrDefault(o => o.Name == "NextKey");
+                if (settingItem.NextModifierKey != null || settingItem.NextKey != null)
+                    timerOnOffKey.AddKeyItem(new KeyItem(settingItem.NextModifierKey, settingItem.NextKey));
+            }
         }
 
         private void BackKeyEvent()
@@ -549,96 +447,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 CurrentPhase++;
         }
 
-        private void SubtractTimeKeySettingEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = SubtractTimeKey;
-            vm.ModifierKey = SubtractTimeModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            SubtractTimeKey = vm.PressedKey;
-            SubtractTimeModifierKey = vm.ModifierKey;
-        }
-
-        private void BackKeySettingEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = BackKey;
-            vm.ModifierKey = BackModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            BackKey = vm.PressedKey;
-            BackModifierKey = vm.ModifierKey;
-        }
-
-        private void ScytheKeySettingEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = ScytheKey;
-            vm.ModifierKey = ScytheModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            ScytheKey = vm.PressedKey;
-            ScytheModifierKey = vm.ModifierKey;
-        }
-
-        private void NextKeySettingEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = NextKey;
-            vm.ModifierKey = NextModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            NextKey = vm.PressedKey;
-            NextModifierKey = vm.ModifierKey;
-        }
-
-        private void AddTimeKeySettingEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = AddTimeKey;
-            vm.ModifierKey = AddTimeModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            AddTimeKey = vm.PressedKey;
-            AddTimeModifierKey = vm.ModifierKey;
-        }
-
         private void ResetEvent()
         {
             CurrentPhase = 1;
@@ -704,47 +512,25 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)
+        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckHillaKey(modifierKeys, inputKey);
+            CheckHillaKey(commandArrowQueueItem,modifierKeys, inputKey, keyboardState);
         }
 
-        private void CheckHillaKey(ModifierKeys modifierKeys, Key inputKey)
+        private void CheckHillaKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (!IsHelperON)
                 return;
 
-            if (!(SubtractTimeModifierKey == null && SubtractTimeKey == null))
-            {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, SubtractTimeModifierKey, SubtractTimeKey))
-                    ChangeTime(-5);
-            }
+            var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
 
-            if (!(BackModifierKey == null && BackKey == null))
+            foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, BackModifierKey, BackKey))
-                    BackKeyEvent();
-            }
-
-            if (!(ScytheModifierKey == null && ScytheKey == null))
-            {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, ScytheModifierKey, ScytheKey))
-                    ScytheKeyEvent();
-            }
-
-            if (!(NextModifierKey == null && NextKey == null))
-            {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, NextModifierKey, NextKey))
-                    NextKeyEvent();
-            }
-
-            if (!(AddTimeModifierKey == null && AddTimeKey == null))
-            {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, AddTimeModifierKey, AddTimeKey))
-                    ChangeTime(5);
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                    keyItem.KeyCommand.Execute(true);
             }
         }
 

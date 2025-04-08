@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
         mc:Ignorable="d" ResizeMode="NoResize" Background="#252f46"
-        Title="Information" Height="500" Width="800">
+        Title="Information" Height="550" Width="800">
 
     <Window.Resources>
         <Style TargetType="TextBlock" x:Key="MainTextBlockStyle" BasedOn="{StaticResource BaseTextBlockType}">
@@ -40,7 +40,7 @@
 
             <StackPanel Grid.Row="0">
                 <TextBlock Text="개발자" Style="{StaticResource MainTextBlockStyle}"/>
-                <TextBlock Text="엘리시움 서버 간짠" Style="{StaticResource SubTextBlockStyle}"/>
+                <TextBlock Text="츄르코" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="이메일 (피드백)" Style="{StaticResource MainTextBlockStyle}"/>
                 <TextBlock Text="enosischuruko@gmail.com" Style="{StaticResource SubTextBlockStyle}"/>
                 <TextBlock Text="건의사항이나 버그, 불편한 사항을 보내주시면 감사하겠습니다!" Style="{StaticResource SubTextBlockStyle}"/>
@@ -52,7 +52,7 @@
                     <Hyperlink
                         FontSize="14"
                         NavigateUri="https://enosischuruko.tistory.com/"
-                        RequestNavigate="Hyperlink_RequestNavigate">
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="LightGray">
                         https://enosischuruko.tistory.com/
                     </Hyperlink>
                 </TextBlock>
@@ -64,7 +64,7 @@
                     <Hyperlink
                         FontSize="14"
                         NavigateUri="https://notificationsounds.com/message-tones/"
-                        RequestNavigate="Hyperlink_RequestNavigate">
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="LightGray">
                         https://notificationsounds.com/message-tones/
                     </Hyperlink>
                 </TextBlock>
@@ -73,7 +73,7 @@
                     <Hyperlink 
                         FontSize="14"
                         NavigateUri="https://www.pngfuel.com/free-png/gqcds"
-                        RequestNavigate="Hyperlink_RequestNavigate">
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="LightGray">
                         https://www.pngfuel.com/free-png/gqcds
                     </Hyperlink>
                 </TextBlock>
@@ -82,7 +82,7 @@
                     <Hyperlink 
                         FontSize="14"
                         NavigateUri="https://www.flaticon.com/authors/freepik"
-                        RequestNavigate="Hyperlink_RequestNavigate">
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="LightGray">
                         https://www.flaticon.com/authors/freepik
                     </Hyperlink>
                 </TextBlock>
@@ -90,7 +90,7 @@
                     <Hyperlink 
                         FontSize="14"
                         NavigateUri="https://www.flaticon.com/authors/smashicons"
-                        RequestNavigate="Hyperlink_RequestNavigate">
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="LightGray">
                         https://www.flaticon.com/authors/smashicons
                     </Hyperlink>
                 </TextBlock>
@@ -99,7 +99,7 @@
                     <Hyperlink 
                         FontSize="14"
                         NavigateUri="http://levelup.nexon.com/font/index.aspx"
-                        RequestNavigate="Hyperlink_RequestNavigate">
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="LightGray">
                         http://levelup.nexon.com/font/index.aspx
                     </Hyperlink>
                 </TextBlock>

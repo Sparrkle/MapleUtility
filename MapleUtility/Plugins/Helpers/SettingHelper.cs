@@ -101,7 +101,7 @@ namespace MapleUtility.Plugins.Helpers
 
     public class SettingItem
     {
-        public ObservableCollection<TimerItem> TimerList;
+        public ObservableCollection<SoundTimerItem> TimerList;
         public ObservableCollection<PresetItem> PresetList;
         public ObservableCollection<ImageItem> ImageList;
         public ObservableCollection<SoundItem> SoundList;
@@ -131,6 +131,8 @@ namespace MapleUtility.Plugins.Helpers
         public Key? NextKey = null;
         public ModifierKeys? NextModifierKey = null;
 
+        public List<TimerKeyItem> MainTimer_KeyItems { get; set; } = null;
+        public List<TimerKeyItem> HillaTimer_KeyItems { get; set; } = null;
         public List<TimerKeyItem> KALOS_InstanceKeyItems { get; set; } = null;
 
         public int? UIBarFontSize;

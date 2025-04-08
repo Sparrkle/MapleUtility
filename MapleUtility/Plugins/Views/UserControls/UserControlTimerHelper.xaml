@@ -140,7 +140,7 @@
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="{Binding KeyString}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SettingKeyCommand}" >
+                                <Button Content="{Binding KeyString}" ToolTip="{Binding KeyString}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SettingKeyCommand}" >
                                     <Button.CommandParameter>
                                         <MultiBinding Converter="{StaticResource MultiParamConverter}">
                                             <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}"/>
