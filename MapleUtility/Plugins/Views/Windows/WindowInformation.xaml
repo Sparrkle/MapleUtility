@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
-        mc:Ignorable="d" ResizeMode="NoResize" Background="#252f46"
+        mc:Ignorable="d" ResizeMode="NoResize" Background="#1d0d2c"
         Title="Information" Height="500" Width="800">
 
     <Window.Resources>
@@ -30,7 +30,7 @@
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Width="70" Height="70" Margin="0, 0, 0, 220" Background="#01000000" Panel.ZIndex="100" MouseDown="Border_MouseDown"/>
-        <Image Grid.Column="0" Source="/MapleUtility;component/Plugins/Images/churuko2.png"/>
+        <Image Grid.Column="0" Source="/MapleUtility;component/Plugins/Images/churuko_image.png"/>
 
         <Grid Grid.Column="1" Margin="10, 0, 0, 5">
             <Grid.RowDefinitions>

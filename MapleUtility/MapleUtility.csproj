@@ -672,7 +672,9 @@
   <ItemGroup>
     <Resource Include="Plugins\Images\churuko2.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Plugins\Images\churuko_image.png" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Costura64\WebView2Loader.dll" />
   </ItemGroup>
