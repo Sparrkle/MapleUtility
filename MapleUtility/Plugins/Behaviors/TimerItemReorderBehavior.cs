@@ -161,7 +161,7 @@ namespace MapleUtility.Plugins.Behaviors
 
         private void OnDrop(object sender, Telerik.Windows.DragDrop.DragEventArgs e)
         {
-            var draggedItem = DragDropPayloadManager.GetDataFromObject(e.Data, "DraggedItem") as TimerItem;
+            var draggedItem = DragDropPayloadManager.GetDataFromObject(e.Data, "DraggedItem") as SoundTimerItem;
             var details = DragDropPayloadManager.GetDataFromObject(e.Data, "DropDetails") as DropIndicationDetails;
 
             if (details == null || draggedItem == null)

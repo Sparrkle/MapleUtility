@@ -61,8 +61,8 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
-        private ObservableCollection<TimerItem> timerList;
-        public ObservableCollection<TimerItem> TimerList
+        private ObservableCollection<SoundTimerItem> timerList;
+        public ObservableCollection<SoundTimerItem> TimerList
         {
             get { return timerList; }
             set
@@ -73,7 +73,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
-        public IEnumerable<TimerItem> OrderedTimerList
+        public IEnumerable<SoundTimerItem> OrderedTimerList
         {
             get { return TimerList.OrderBy(o => o.Priority); }
         }
@@ -102,6 +102,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 selectedUIBarStyle = value;
                 OnPropertyChanged("SelectedUIBarStyle");
+            }
+        }
+
+        private bool uiBarVertical;
+        public bool UIBarVertical
+        {
+            get { return uiBarVertical; }
+            set
+            {
+                uiBarVertical = value;
+                OnPropertyChanged("UIBarVertical");
             }
         }
 
@@ -334,100 +345,33 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
-        private ModifierKeys? timerOnOffModifierKey = null;
-        public ModifierKeys? TimerOnOffModifierKey
+        private List<TimerKeyItem> keyItems = new List<TimerKeyItem>();
+        public List<TimerKeyItem> KeyItems
         {
-            get { return timerOnOffModifierKey; }
+            get { return keyItems; }
             set
             {
-                timerOnOffModifierKey = value;
-                OnPropertyChanged("TimerOnOffModifierKey");
-                OnPropertyChanged("OnOffKeyString");
+                keyItems = value;
+                OnPropertyChanged("KeyItems");
+                OnPropertyChanged("PausedSettingKey");
+                OnPropertyChanged("LockSettingKey");
+                OnPropertyChanged("OnOffSettingKey");
             }
         }
 
-        private Key? timerOnOffKey = null;
-        public Key? TimerOnOffKey
+        public TimerKeyItem PausedSettingKey
         {
-            get { return timerOnOffKey; }
-            set
-            {
-                timerOnOffKey = value;
-                OnPropertyChanged("TimerOnOffKey");
-                OnPropertyChanged("OnOffKeyString");
-            }
+            get { return KeyItems.FirstOrDefault(o => o.Name == "TimerPausedKey"); }
         }
 
-        public string OnOffKeyString
+        public TimerKeyItem LockSettingKey
         {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(TimerOnOffModifierKey, TimerOnOffKey, "없음");
-            }
+            get { return KeyItems.FirstOrDefault(o => o.Name == "TimerLockedKey"); }
         }
 
-        private ModifierKeys? pauseAllModifierKey = null;
-        public ModifierKeys? PauseAllModifierKey
+        public TimerKeyItem OnOffSettingKey
         {
-            get { return pauseAllModifierKey; }
-            set
-            {
-                pauseAllModifierKey = value;
-                OnPropertyChanged("PauseAllModifierKey");
-                OnPropertyChanged("PauseAllKeyString");
-            }
-        }
-
-        private Key? pauseAllKey = null;
-        public Key? PauseAllKey
-        {
-            get { return pauseAllKey; }
-            set
-            {
-                pauseAllKey = value;
-                OnPropertyChanged("PauseAllKey");
-                OnPropertyChanged("PauseAllKeyString");
-            }
-        }
-
-        public string PauseAllKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(PauseAllModifierKey, PauseAllKey, "없음");
-            }
-        }
-
-        private ModifierKeys? timerLockModifierKey = null;
-        public ModifierKeys? TimerLockModifierKey
-        {
-            get { return timerLockModifierKey; }
-            set
-            {
-                timerLockModifierKey = value;
-                OnPropertyChanged("TimerLockModifierKey");
-                OnPropertyChanged("TimerLockKeyString");
-            }
-        }
-
-        private Key? timerLockKey = null;
-        public Key? TimerLockKey
-        {
-            get { return timerLockKey; }
-            set
-            {
-                timerLockKey = value;
-                OnPropertyChanged("TimerLockKey");
-                OnPropertyChanged("TimerLockKeyString");
-            }
-        }
-
-        public string TimerLockKeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(TimerLockModifierKey, TimerLockKey, "없음");
-            }
+            get { return KeyItems.FirstOrDefault(o => o.Name == "TimerOnOffKey"); }
         }
 
         public RadTabItem SelectedTab
@@ -444,9 +388,6 @@ namespace MapleUtility.Plugins.ViewModels.Views
         private bool disposedValue;
 
         #region Button Command Variables
-        public ICommand OnOffSettingKeyCommand { get; set; }
-        public ICommand PauseAllSettingKeyCommand { get; set; }
-        public ICommand TimerLockSettingKeyCommand { get; set; }
         public ICommand OpenColorPickerCommand { get; set; }
         public ICommand CopyCurrentPresetCommand { get; set; }
         public ICommand AddPresetCommand { get; set; }
@@ -466,9 +407,6 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
         public ViewModelSettingWindow()
         {
-            OnOffSettingKeyCommand = new RelayCommand(o => OnOffSettingKeyEvent((Window)o));
-            PauseAllSettingKeyCommand = new RelayCommand(o => PauseAllSettingKeyEvent((Window)o));
-            TimerLockSettingKeyCommand = new RelayCommand(o => TimerLockSettingKeyEvent((Window)o));
             OpenColorPickerCommand = new RelayCommand(o => OpenColorPickerEvent());
             CopyCurrentPresetCommand = new RelayCommand(o => CopyCurrentPresetEvent());
             AddPresetCommand = new RelayCommand(o => AddPresetEvent());
@@ -481,8 +419,8 @@ namespace MapleUtility.Plugins.ViewModels.Views
             PlayTestSoundCommand = new RelayCommand(o => PlaySound((SoundItem)o));
             LoadDefaultSettingCommand = new RelayCommand(o => LoadDefaultSettingEvent());
             SelectSoundCommand = new RelayCommand(o => SelectSoundEvent((SoundItem)o));
-            PriorityUpCommand = new RelayCommand(o => PriorityUpEvent((TimerItem)o));
-            PriorityDownCommand = new RelayCommand(o => PriorityDownEvent((TimerItem)o));
+            PriorityUpCommand = new RelayCommand(o => PriorityUpEvent((SoundTimerItem)o));
+            PriorityDownCommand = new RelayCommand(o => PriorityDownEvent((SoundTimerItem)o));
             CloseCommand = new RelayCommand(o => CloseEvent((Window)o));
 
             UIBarStyleList = new List<string>()
@@ -518,60 +456,6 @@ namespace MapleUtility.Plugins.ViewModels.Views
         ~ViewModelSettingWindow()
         {
             Dispose();
-        }
-
-        private void OnOffSettingKeyEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = TimerOnOffKey;
-            vm.ModifierKey = TimerOnOffModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            TimerOnOffKey = vm.PressedKey;
-            TimerOnOffModifierKey = vm.ModifierKey;
-        }
-
-        private void PauseAllSettingKeyEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = PauseAllKey;
-            vm.ModifierKey = PauseAllModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            PauseAllKey = vm.PressedKey;
-            PauseAllModifierKey = vm.ModifierKey;
-        }
-
-        private void TimerLockSettingKeyEvent(Window window)
-        {
-            var dialog = new WindowTimerPressKeyboard();
-            var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
-
-            dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;
-            dialog.Top = window.Top + (window.ActualHeight - dialog.Height) / 2;
-
-            vm.PressedKey = TimerLockKey;
-            vm.ModifierKey = TimerLockModifierKey;
-            vm.ChangeKeyText();
-
-            dialog.ShowDialog();
-
-            TimerLockKey = vm.PressedKey;
-            TimerLockModifierKey = vm.ModifierKey;
         }
 
         private void OpenColorPickerEvent()
@@ -679,17 +563,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             item.Path = filePath;
         }
 
-        private void PriorityUpEvent(TimerItem item)
+        private void PriorityUpEvent(SoundTimerItem item)
         {
             PriorityEvent(item, item.Priority - 1);
         }
 
-        private void PriorityDownEvent(TimerItem item)
+        private void PriorityDownEvent(SoundTimerItem item)
         {
             PriorityEvent(item, item.Priority + 1);
         }
 
-        private void PriorityEvent(TimerItem item, int resultPriority)
+        private void PriorityEvent(SoundTimerItem item, int resultPriority)
         {
             if(OrderedTimerList.Count() > 0)
                 OrderedTimerList.LastOrDefault().IsLast = false;

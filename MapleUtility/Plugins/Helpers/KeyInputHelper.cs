@@ -22,23 +22,38 @@ namespace MapleUtility.Plugins.Helpers
             return keys;
         }
 
-        public static bool CheckPressModifierAndNormalKey(ModifierKeys inputModifierKeys, Key inputKey, ModifierKeys? modifierKey, Key? pressKey)
+        public static bool CheckPressModifierAndNormalKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys inputModifierKeys, Key inputKey, TimerKeyItemBase timerKeyItem)
         {
-            if (modifierKey.HasValue)
+            if (timerKeyItem.KeyItems.Count() == 0)
+                return false;
+
+            foreach(var keyItem in timerKeyItem.KeyItems)
             {
-                if ((modifierKey & inputModifierKeys) != modifierKey)
-                    return false;
+                var modifierKey = keyItem.ModifierKey;
+                var pressKey = keyItem.Key;
+
+                if(keyItem.ArrowKeys.Count() > 0)
+                {
+                    if (!commandArrowQueueItem.Contains(keyItem))
+                        continue;
+                }
+
+                if (modifierKey.HasValue)
+                {
+                    if ((modifierKey & inputModifierKeys) != modifierKey)
+                        continue;
+                }
+
+                if (pressKey.HasValue)
+                {
+                    if (inputKey != pressKey.Value)
+                        continue;
+                }
+
+                return true;
             }
 
-            if (pressKey.HasValue)
-            {
-                if (inputKey == pressKey.Value)
-                    return true;
-                else
-                    return false;
-            }
-
-            return true;
+            return false;
         }
     }
 }

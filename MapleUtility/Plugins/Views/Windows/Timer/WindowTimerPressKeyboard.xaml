@@ -6,11 +6,30 @@
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
         mc:Ignorable="d" ResizeMode="NoResize"
-        Title="" Height="150" Width="250" PreviewKeyDown="Window_KeyDown">
+        Title="" Height="200" Width="480" PreviewKeyDown="Window_KeyDown">
 
-    <StackPanel VerticalAlignment="Center">
-        <TextBlock FontSize="16" Text="{Binding KeyText}" Margin="0, 0, 0, 10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <Button Content="초기화" Command="{Binding KeyClearCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="10, 2" Margin="0, 5" />
-        <Button Content="확인" Command="{Binding KeySaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="10, 2" />
-    </StackPanel>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="14" Text="{Binding PrevKeyText}" Margin="10, 0" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="0" FontSize="16" Text="{Binding KeyText}" Margin="10, 0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        
+        <Grid Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <CheckBox Grid.Row="0" IsChecked="{Binding IsKeyupEvent}" Content="키를 뗄 때 기준으로 설정"/>
+            <CheckBox Grid.Row="1" IsChecked="{Binding IsDisableCommand}" Content="방향키 커맨드 비활성화"/>
+        </Grid>
+
+        <Button Grid.Row="1" Width="100" Content="추가" Command="{Binding AddKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0, 2"/>
+        <Button Grid.Row="2" Width="80" Content="확인" Command="{Binding KeySaveCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" VerticalAlignment="Bottom" HorizontalAlignment="Center" Padding="0, 2"/>
+        <Button Grid.Row="2" Width="90" Content="전체 초기화" Command="{Binding KeyClearCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Padding="0, 2"/>
+    </Grid>
 </Window>

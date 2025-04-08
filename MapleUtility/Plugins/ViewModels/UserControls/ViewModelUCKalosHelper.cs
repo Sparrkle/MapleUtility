@@ -3,11 +3,13 @@ using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Lib;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
+using MapleUtility.Plugins.Views.Windows;
 using MapleUtility.Plugins.Views.Windows.Timer;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,7 +22,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public IWavePlayer PrevWavePlayer;
 
         #region 즉사 관련
-        private List<TimerKeyItem> instantKeyItems = new List<TimerKeyItem>(7);
+        private List<TimerKeyItem> instantKeyItems = new List<TimerKeyItem>();
         public List<TimerKeyItem> InstanceKeyItems
         {
             get { return instantKeyItems; }
@@ -202,6 +204,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public bool IsAlertInstantBeforeTimer { get; set; } = false;
         public bool IsOpenSettingWindow { get; set; } = false;
 
+        private WindowMain MainWindow;
+
         #region Button Command Variables
         public ICommand ResetCommand { get; set; }
         public ICommand OpenKalosUIBarCommand { get; set; }
@@ -215,13 +219,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             CloseCommand = new RelayCommand(o => CloseEvent((Window)o));
 
             #region 즉사 Key Setting
-            instantKeyItems.Add(new TimerKeyItem(InstantPressKeyEvent));
+            instantKeyItems.Add(new TimerKeyItem("InstantKey", InstantPressKeyEvent));
 
             for (int i=1; i<=3; i++)
-                instantKeyItems.Add(new TimerKeyItem(InstantTimerPressKeyEvent, false));
+                instantKeyItems.Add(new TimerKeyItem($"InstantKeyMinus{i}", InstantTimerPressKeyEvent, false));
 
             for (int i = 1; i <= 3; i++)
-                instantKeyItems.Add(new TimerKeyItem(InstantTimerPressKeyEvent, true));
+                instantKeyItems.Add(new TimerKeyItem($"InstantKeyPlus{i}", InstantTimerPressKeyEvent, true));
             #endregion
 
             IsHelperON = false;
@@ -238,8 +242,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             NextInstantPatternTime = NextInstantPatternTime + TimeSpan.FromSeconds(time);
         }
 
-        public void Initialize(SettingItem settingItem)
+        public void Initialize(WindowMain mainWindow, SettingItem settingItem)
         {
+            MainWindow = mainWindow;
+
             UIBarTop = settingItem.KALOS_UIBAR_TOP;
             UIBarLeft = settingItem.KALOS_UIBAR_LEFT;
             UIBarWidth = settingItem.KALOS_UIBAR_WIDTH;
@@ -249,11 +255,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if(settingItem.KALOS_InstanceKeyItems != null)
             {
                 for(int i=0; i<settingItem.KALOS_InstanceKeyItems.Count; i++)
-                {
-                    InstanceKeyItems[i].Time = settingItem.KALOS_InstanceKeyItems[i].Time;
-                    InstanceKeyItems[i].ModifierKey = settingItem.KALOS_InstanceKeyItems[i].ModifierKey;
-                    InstanceKeyItems[i].Key = settingItem.KALOS_InstanceKeyItems[i].Key;
-                }
+                    InstanceKeyItems[i].KeyItems = settingItem.KALOS_InstanceKeyItems[i].Copy().KeyItems;
             }
             else
             {
@@ -325,6 +327,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             var window = WindowKalosUIBar.Instance;
             window.DataContext = this;
+            window.IsVisibleChanged -= SyncUIBar;
+            window.IsVisibleChanged += SyncUIBar;
 
             if (window.IsVisible)
                 window.Hide();
@@ -344,6 +348,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 else if (window.Top + window.Height / 2 > screen.Height)
                     window.Top = screen.Height - window.Height;
             }
+        }
+        private void SyncUIBar(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MainWindow.MenuKalosUIBarItem.Checked = (sender as Window).IsVisible;
         }
 
         private void CloseEvent(Window window)
@@ -372,26 +380,24 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyDownEvent(ModifierKeys modifierKeys, Key inputKey)
+        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckKalosKey(modifierKeys, inputKey);
+            CheckKalosKey(commandArrowQueueItem, modifierKeys, inputKey, keyboardState);
         }
 
-        private void CheckKalosKey(ModifierKeys modifierKeys, Key inputKey)
+        private void CheckKalosKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (!IsHelperON)
                 return;
 
-            foreach (var keyItem in instantKeyItems)
+            var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
+            foreach (var keyItem in instantKeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (!(keyItem.ModifierKey == null && keyItem.Key == null))
-                {
-                    if (KeyInputHelper.CheckPressModifierAndNormalKey(modifierKeys, inputKey, keyItem.ModifierKey, keyItem.Key))
-                        keyItem.KeyCommand.Execute(true);
-                }
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                    keyItem.KeyCommand.Execute(true);
             }
         }
 

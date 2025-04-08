@@ -10,29 +10,51 @@ namespace MapleUtility.Plugins.Helpers
 {
     public class KeyTextHelper
     {
-        public static string ConvertKeyText(ModifierKeys? ModifierKey, Key? PressedKey, string nullText = "")
+        public static string ConvertKeyText(ModifierKeys? modifierKey, Key? pressedKey, List<Key> arrowKeys, string nullText = "")
         {
-            if (ModifierKey == null && PressedKey == null)
+            if (modifierKey == null && pressedKey == null && arrowKeys?.Count() == 0)
                 return nullText;
 
             var resultText = "";
-            if (ModifierKey.HasValue)
+            if(arrowKeys != null)
             {
-                if (ModifierKey.Value.HasFlag(ModifierKeys.Control))
+                foreach(var arrowKey in arrowKeys)
+                {
+                    switch(arrowKey)
+                    {
+                        case Key.Up:
+                            resultText += "🡑";
+                            break;
+                        case Key.Down:
+                            resultText += "🡓";
+                            break;
+                        case Key.Left:
+                            resultText += "🡐";
+                            break;
+                        case Key.Right:
+                            resultText += "🡒";
+                            break;
+                    }
+                }
+            }
+
+            if (modifierKey.HasValue)
+            {
+                if (modifierKey.Value.HasFlag(ModifierKeys.Control))
                     resultText += "Ctrl + ";
-                if (ModifierKey.Value.HasFlag(ModifierKeys.Alt))
+                if (modifierKey.Value.HasFlag(ModifierKeys.Alt))
                     resultText += "Alt + ";
-                if (ModifierKey.Value.HasFlag(ModifierKeys.Shift))
+                if (modifierKey.Value.HasFlag(ModifierKeys.Shift))
                     resultText += "Shift + ";
             }
 
-            if (PressedKey == null && resultText.Length >= 2)
+            if (pressedKey == null && modifierKey.HasValue)
                 return resultText.Substring(0, resultText.Length - 2);
             else
             {
                 string keyText;
 
-                switch (PressedKey)
+                switch (pressedKey)
                 {
                     case Key.Capital:
                         keyText = "CapsLock";
@@ -128,7 +150,7 @@ namespace MapleUtility.Plugins.Helpers
                         keyText = "한자";
                         break;
                     default:
-                        keyText = PressedKey.ToString();
+                        keyText = pressedKey.ToString();
                         break;
                 }
 

@@ -4,7 +4,9 @@ using MapleUtility.Plugins.Views.Windows.Timer;
 using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -12,7 +14,7 @@ using System.Xml.Serialization;
 
 namespace MapleUtility.Plugins.Models
 {
-    public class TimerItem : Notifier, ICloneable
+    public class SoundTimerItem : TimerKeyItemBase
     {
         [JsonIgnore]
         public IWavePlayer PrevWavePlayer;
@@ -217,15 +219,6 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        [JsonIgnore]
-        public string KeyString
-        {
-            get
-            {
-                return KeyTextHelper.ConvertKeyText(ModifierKey, AlertKey, "없음");
-            }
-        }
-
         private ImageItem imageItem;
         public ImageItem ImageItem
         {
@@ -283,6 +276,28 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        private bool isKeyupEvent;
+        public bool IsKeyupEvent
+        {
+            get { return isKeyupEvent; }
+            set
+            {
+                isKeyupEvent = value;
+                OnPropertyChanged("IsKeyupEvent");
+            }
+        }
+
+        private bool isDisableCommand;
+        public bool IsDisableCommand
+        {
+            get { return isDisableCommand; }
+            set
+            {
+                isDisableCommand = value;
+                OnPropertyChanged("IsDisableCommand");
+            }
+        }
+
         [JsonIgnore]
         public bool IsAlertBeforeTimer { get; set; } = false;
 
@@ -298,21 +313,20 @@ namespace MapleUtility.Plugins.Models
             OnPropertyChanged("SoundString");
         }
 
-        public TimerItem CreateNewPresetClone(PresetItem preset)
+        public SoundTimerItem CreateNewPresetClone(PresetItem preset)
         {
-            var clone = this.Clone() as TimerItem;
+            var clone = this.Copy() as SoundTimerItem;
             clone.Preset = preset;
 
             return clone;
         }
 
-        public object Clone()
+        public override TimerKeyItemBase Copy()
         {
-            return new TimerItem()
+            return new SoundTimerItem()
             {
                 Priority = this.Priority,
-                AlertKey = this.AlertKey,
-                ModifierKey = this.ModifierKey,
+                KeyItems = this.KeyItems.Select(o => o.Clone()).ToList(),
                 IsTimerLoopChecked = this.IsTimerLoopChecked,
                 IsTimerResetTimeChecked = this.IsTimerResetTimeChecked,
                 TimerTime = this.TimerTime,

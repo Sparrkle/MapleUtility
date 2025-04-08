@@ -101,7 +101,7 @@ namespace MapleUtility.Plugins.Helpers
 
     public class SettingItem
     {
-        public ObservableCollection<TimerItem> TimerList;
+        public ObservableCollection<SoundTimerItem> TimerList;
         public ObservableCollection<PresetItem> PresetList;
         public ObservableCollection<ImageItem> ImageList;
         public ObservableCollection<SoundItem> SoundList;
@@ -131,14 +131,17 @@ namespace MapleUtility.Plugins.Helpers
         public Key? NextKey = null;
         public ModifierKeys? NextModifierKey = null;
 
+        public List<TimerKeyItem> MainTimer_KeyItems { get; set; } = null;
+        public List<TimerKeyItem> HillaTimer_KeyItems { get; set; } = null;
         public List<TimerKeyItem> KALOS_InstanceKeyItems { get; set; } = null;
 
         public int? UIBarFontSize;
         public string SelectedUIBarFontName;
 
         public float UIBAR_TRANSPARENCY = 19;
-        public int UIBAR_WIDTH = 400;
-        public int UIBAR_HEIGHT = 110;
+        public int UIBAR_WIDTH = 400; // 구버전 호환
+        public int UIBAR_SIZE = 400;
+        public bool UIBAR_VERTICAL = false;
 
         public int UIBAR_TOP;
         public int UIBAR_LEFT;
