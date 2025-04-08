@@ -917,6 +917,9 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 else
                 {
                     timer.EndTime = DateTime.Now + timer.TimerTime;
+
+                    if (RunningTimerList.Any(o => o.GetHashCode() == timer.GetHashCode()))
+                        continue;
                     RunningTimerList.Add(timer);
                 }
                 DebugLogHelper.Write(timer.Name + " 타이머 작동되었습니다.");
