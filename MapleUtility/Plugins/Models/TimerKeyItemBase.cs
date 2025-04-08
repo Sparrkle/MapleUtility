@@ -35,5 +35,11 @@ namespace MapleUtility.Plugins.Models
         }
 
         public abstract TimerKeyItemBase Copy();
+
+        public void AddKeyItem(KeyItem keyItem)
+        {
+            KeyItems.Add(keyItem);
+            OnPropertyChanged("KeyString");
+        }
     }
 }

@@ -344,15 +344,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 var timerPausedKey = KeyItems.FirstOrDefault(o => o.Name == "BackKey");
                 if(settingItem.BackModifierKey != null || settingItem.BackKey != null)
-                    timerPausedKey.KeyItems.Add(new KeyItem(settingItem.BackModifierKey, settingItem.BackKey));
+                    timerPausedKey.AddKeyItem(new KeyItem(settingItem.BackModifierKey, settingItem.BackKey));
 
                 var timerLockedKey = KeyItems.FirstOrDefault(o => o.Name == "ScytheKey");
                 if (settingItem.ScytheModifierKey != null || settingItem.ScytheKey != null)
-                    timerLockedKey.KeyItems.Add(new KeyItem(settingItem.ScytheModifierKey, settingItem.ScytheKey));
+                    timerLockedKey.AddKeyItem(new KeyItem(settingItem.ScytheModifierKey, settingItem.ScytheKey));
 
                 var timerOnOffKey = KeyItems.FirstOrDefault(o => o.Name == "NextKey");
                 if (settingItem.NextModifierKey != null || settingItem.NextKey != null)
-                    timerOnOffKey.KeyItems.Add(new KeyItem(settingItem.NextModifierKey, settingItem.NextKey));
+                    timerOnOffKey.AddKeyItem(new KeyItem(settingItem.NextModifierKey, settingItem.NextKey));
             }
         }
 

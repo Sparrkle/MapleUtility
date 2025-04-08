@@ -472,7 +472,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (!timer.AlertKey.HasValue && !timer.ModifierKey.HasValue)
                     continue;
 
-                timer.KeyItems.Add(new KeyItem(timer.ModifierKey, timer.AlertKey));
+                timer.AddKeyItem(new KeyItem(timer.ModifierKey, timer.AlertKey));
                 timer.ModifierKey = null;
                 timer.AlertKey = null;
             }
@@ -545,15 +545,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 var timerPausedKey = KeyItems.FirstOrDefault(o => o.Name == "TimerPausedKey");
                 if (settingItem.PauseAllModifierKey != null || settingItem.PauseAllKey != null)
-                    timerPausedKey.KeyItems.Add(new KeyItem(settingItem.PauseAllModifierKey, settingItem.PauseAllKey));
+                    timerPausedKey.AddKeyItem(new KeyItem(settingItem.PauseAllModifierKey, settingItem.PauseAllKey));
 
                 var timerLockedKey = KeyItems.FirstOrDefault(o => o.Name == "TimerLockedKey");
                 if (settingItem.TimerLockModifierKey != null || settingItem.TimerLockKey != null)
-                    timerLockedKey.KeyItems.Add(new KeyItem(settingItem.TimerLockModifierKey, settingItem.TimerLockKey));
+                    timerLockedKey.AddKeyItem(new KeyItem(settingItem.TimerLockModifierKey, settingItem.TimerLockKey));
 
                 var timerOnOffKey = KeyItems.FirstOrDefault(o => o.Name == "TimerOnOffKey");
                 if (settingItem.TimerOnOffModifierKey != null || settingItem.TimerOnOffKey != null)
-                    timerOnOffKey.KeyItems.Add(new KeyItem(settingItem.TimerOnOffModifierKey, settingItem.TimerOnOffKey));
+                    timerOnOffKey.AddKeyItem(new KeyItem(settingItem.TimerOnOffModifierKey, settingItem.TimerOnOffKey));
             }
 
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;

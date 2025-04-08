@@ -250,7 +250,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if(settingItem.KALOS_InstanceKeyItems != null)
             {
                 for(int i=0; i<settingItem.KALOS_InstanceKeyItems.Count; i++)
-                    InstanceKeyItems[i] = settingItem.KALOS_InstanceKeyItems[i].Copy() as TimerKeyItem;
+                    InstanceKeyItems[i].KeyItems = settingItem.KALOS_InstanceKeyItems[i].Copy().KeyItems;
             }
             else
             {

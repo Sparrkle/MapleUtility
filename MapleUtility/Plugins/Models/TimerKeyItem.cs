@@ -149,7 +149,7 @@ namespace MapleUtility.Plugins.Models
 
             // 구버전 호환
             if(ModifierKey != null || Key != null)
-                clone.KeyItems.Add(new KeyItem(ModifierKey, Key));
+                clone.AddKeyItem(new KeyItem(ModifierKey, Key));
 
             return clone;
         }
