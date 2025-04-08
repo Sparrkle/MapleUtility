@@ -105,6 +105,17 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private bool uiBarVertical;
+        public bool UIBarVertical
+        {
+            get { return uiBarVertical; }
+            set
+            {
+                uiBarVertical = value;
+                OnPropertyChanged("UIBarVertical");
+            }
+        }
+
         public bool IsPresetAllChecked
         {
             get

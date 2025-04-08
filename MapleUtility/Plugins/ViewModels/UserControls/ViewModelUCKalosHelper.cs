@@ -3,6 +3,7 @@ using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Lib;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
+using MapleUtility.Plugins.Views.Windows;
 using MapleUtility.Plugins.Views.Windows.Timer;
 using NAudio.Wave;
 using System;
@@ -203,6 +204,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public bool IsAlertInstantBeforeTimer { get; set; } = false;
         public bool IsOpenSettingWindow { get; set; } = false;
 
+        private WindowMain MainWindow;
+
         #region Button Command Variables
         public ICommand ResetCommand { get; set; }
         public ICommand OpenKalosUIBarCommand { get; set; }
@@ -239,8 +242,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             NextInstantPatternTime = NextInstantPatternTime + TimeSpan.FromSeconds(time);
         }
 
-        public void Initialize(SettingItem settingItem)
+        public void Initialize(WindowMain mainWindow, SettingItem settingItem)
         {
+            MainWindow = mainWindow;
+
             UIBarTop = settingItem.KALOS_UIBAR_TOP;
             UIBarLeft = settingItem.KALOS_UIBAR_LEFT;
             UIBarWidth = settingItem.KALOS_UIBAR_WIDTH;
@@ -322,6 +327,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             var window = WindowKalosUIBar.Instance;
             window.DataContext = this;
+            window.IsVisibleChanged -= SyncUIBar;
+            window.IsVisibleChanged += SyncUIBar;
 
             if (window.IsVisible)
                 window.Hide();
@@ -341,6 +348,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 else if (window.Top + window.Height / 2 > screen.Height)
                     window.Top = screen.Height - window.Height;
             }
+        }
+        private void SyncUIBar(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MainWindow.MenuKalosUIBarItem.Checked = (sender as Window).IsVisible;
         }
 
         private void CloseEvent(Window window)
