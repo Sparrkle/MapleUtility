@@ -3,6 +3,7 @@ using MapleUtility.Plugins.Helpers;
 using MapleUtility.Plugins.Lib;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
+using MapleUtility.Plugins.Views.Windows;
 using MapleUtility.Plugins.Views.Windows.Timer;
 using NAudio.Wave;
 using System;
@@ -403,6 +404,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public bool IsOpenSettingWindow { get; set; } = false;
         public List<Key> PressedKeyList { get; set; } = new List<Key>();
 
+        private WindowMain MainWindow;
+
         #region Button Command Variables
         public ICommand SubtractTimeKeyCommand { get; set; }
         public ICommand BackKeyCommand { get; set; }
@@ -441,8 +444,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsHelperON = false;
         }
 
-        public void Initialize(SettingItem settingItem)
+        public void Initialize(WindowMain mainWindow, SettingItem settingItem)
         {
+            MainWindow = mainWindow;
+
             BackKey = settingItem.BackKey;
             BackModifierKey = settingItem.BackModifierKey;
             ScytheKey = settingItem.ScytheKey;
@@ -645,6 +650,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             var window = WindowVerusHillaUIBar.Instance as WindowVerusHillaUIBar;
             window.DataContext = this;
+            window.IsVisibleChanged -= SyncUIBar;
+            window.IsVisibleChanged += SyncUIBar;
 
             if (window.IsVisible)
                 window.Hide();
@@ -664,6 +671,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 else if (window.Top + window.Height / 2 > screen.Height)
                     window.Top = screen.Height - window.Height;
             }
+        }
+
+        private void SyncUIBar(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MainWindow.MenuHillaUIBarItem.Checked = (sender as Window).IsVisible;
         }
 
         private void CloseEvent(Window window)

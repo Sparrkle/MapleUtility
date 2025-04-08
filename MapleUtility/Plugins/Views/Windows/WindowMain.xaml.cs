@@ -25,6 +25,14 @@ namespace MapleUtility.Plugins.Views.Windows
     public partial class WindowMain : Window
     {
         private GlobalKeyboardHookHelper _globalKeyboardHook;
+        private ViewModelUCTimerHelper TimerVM;
+        private ViewModelUCVerusHillaHelper HillaVM;
+        private ViewModelUCKalosHelper KalosVM;
+
+        private MenuItem MenuCloseItem = new MenuItem();
+        internal MenuItem MenuUIBarItem = new MenuItem();
+        internal MenuItem MenuHillaUIBarItem = new MenuItem();
+        internal MenuItem MenuKalosUIBarItem = new MenuItem();
 
         public WindowMain()
         {
@@ -68,21 +76,21 @@ namespace MapleUtility.Plugins.Views.Windows
             vm.Initialize(settingItem);
             vm.TabItems = tcMain.Items.Cast<RadTabItem>().ToList();
 
-            var timerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
-            timerVM.Initialize(settingItem);
+            TimerVM = ucTimerHelper.DataContext as ViewModelUCTimerHelper;
+            TimerVM.Initialize(this, settingItem);
 
             //var unionVM = ucUnionHelper.DataContext as ViewModelUCUnionRelocateHelper;
             //unionVM.Initialize(settingItem);
 
-            var hillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
-            hillaVM.Initialize(settingItem);
+            HillaVM = ucVerusHillaHelper.DataContext as ViewModelUCVerusHillaHelper;
+            HillaVM.Initialize(this, settingItem);
 
-            var kalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
-            kalosVM.Initialize(settingItem);
+            KalosVM = ucKalosHelper.DataContext as ViewModelUCKalosHelper;
+            KalosVM.Initialize(this, settingItem);
 
-            vm.mainTimer.Tick += timerVM.TickEvent;
-            vm.mainTimer.Tick += hillaVM.TickEvent;
-            vm.mainTimer.Tick += kalosVM.TickEvent;
+            vm.mainTimer.Tick += TimerVM.TickEvent;
+            vm.mainTimer.Tick += HillaVM.TickEvent;
+            vm.mainTimer.Tick += KalosVM.TickEvent;
 
             _globalKeyboardHook = new GlobalKeyboardHookHelper();
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
@@ -96,11 +104,11 @@ namespace MapleUtility.Plugins.Views.Windows
             }
 
             if (settingItem.IsShowUIBar)
-                timerVM.OpenUIBarEvent();
+                TimerVM.OpenUIBarEvent();
             if (settingItem.IsShowHillaUIBar)
-                hillaVM.OpenHillaUIBarEvent();
+                HillaVM.OpenHillaUIBarEvent();
             if (settingItem.IsShowKalosUIBar)
-                kalosVM.OpenKalosUIBarEvent();
+                KalosVM.OpenKalosUIBarEvent();
         }
 
         bool isUped;
@@ -308,18 +316,51 @@ namespace MapleUtility.Plugins.Views.Windows
 
         private void InitializeTray()
         {
-            System.Windows.Forms.ContextMenu menu = new System.Windows.Forms.ContextMenu();    // Menu 객체
+            System.Windows.Forms.ContextMenu menu = new System.Windows.Forms.ContextMenu();
 
-            System.Windows.Forms.MenuItem closeItem = new System.Windows.Forms.MenuItem();    // Menu 객체에 들어갈 각각의 menu
-            closeItem.Index = 0;
-            closeItem.Text = "종료";    // menu 이름
+            MenuUIBarItem = new MenuItem
+            {
+                Index = 0,
+                Text = "Show UIBar"
+            };
+            MenuUIBarItem.Click += delegate (object click, EventArgs eClick)
+            {
+                TimerVM.OpenUIBarEvent();
+            };
+            menu.MenuItems.Add(MenuUIBarItem);
 
-            closeItem.Click += delegate (object click, EventArgs eClick)    // menu 의 클릭 이벤트 등록
+            MenuHillaUIBarItem = new MenuItem
+            {
+                Index = 1,
+                Text = "Show Hilla UIBar"
+            };
+            MenuHillaUIBarItem.Click += delegate (object click, EventArgs eClick)
+            {
+                HillaVM.OpenHillaUIBarEvent();
+            };
+            menu.MenuItems.Add(MenuHillaUIBarItem);
+
+            MenuKalosUIBarItem = new MenuItem
+            {
+                Index = 2,
+                Text = "Show Kalos UIBar"
+            };
+            MenuKalosUIBarItem.Click += delegate (object click, EventArgs eClick)
+            {
+                KalosVM.OpenKalosUIBarEvent();
+            };
+            menu.MenuItems.Add(MenuKalosUIBarItem);
+
+            MenuCloseItem = new MenuItem
+            {
+                Index = 3,
+                Text = "종료"
+            };
+            MenuCloseItem.Click += delegate (object click, EventArgs eClick)
             {
                 App.Current.Shutdown();
             };
-                                           
-            menu.MenuItems.Add(closeItem);
+            menu.MenuItems.Add(MenuCloseItem);
 
             App.ni.Icon = Properties.Resources.UffieIcon;    // 아이콘 등록 2번째 방법
             App.ni.Visible = true;

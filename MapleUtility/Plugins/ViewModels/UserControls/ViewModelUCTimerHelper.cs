@@ -5,6 +5,7 @@ using MapleUtility.Plugins.Lib;
 using MapleUtility.Plugins.Models;
 using MapleUtility.Plugins.ViewModels.Views;
 using MapleUtility.Plugins.ViewModels.Views.Timer;
+using MapleUtility.Plugins.Views.Windows;
 using MapleUtility.Plugins.Views.Windows.Timer;
 using Microsoft.Win32;
 using NAudio.Wave;
@@ -487,6 +488,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand SettingKeyCommand { get; set; }
         #endregion
 
+        private WindowMain MainWindow;
+
         public ViewModelUCTimerHelper()
         {
             TimerList = new ObservableCollection<TimerItem>();
@@ -505,8 +508,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
         }
 
-        public void Initialize(SettingItem settingItem)
+        public void Initialize(WindowMain mainWindow, SettingItem settingItem)
         {
+            MainWindow = mainWindow;
+
             if (settingItem.TimerList == null)
                 TimerList = new ObservableCollection<TimerItem>();
             else
@@ -919,6 +924,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             var window = WindowTimerUIBar.Instance as WindowTimerUIBar;
             window.DataContext = this;
+            window.IsVisibleChanged -= SyncUIBar;
+            window.IsVisibleChanged += SyncUIBar;
 
             if (window.IsVisible)
                 window.Hide();
@@ -938,6 +945,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 else if (window.Top + window.Height / 2 > screen.Height)
                     window.Top = screen.Height - window.Height;
             }
+        }
+
+        private void SyncUIBar(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            MainWindow.MenuUIBarItem.Checked = (sender as Window).IsVisible;
         }
 
         private void CloseEvent(Window window)
