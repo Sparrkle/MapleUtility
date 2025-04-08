@@ -102,7 +102,7 @@ namespace MapleUtility.Plugins.ViewModels.Views
 
         private void DonateEvent()
         {
-            Process.Start(new ProcessStartInfo("https://toss.me/churuko"));
+            MessageBox.Show("토스 1001-8787-5135 ㅅㅇㅊ", "후원 정보");
         }
 
         private void InformationEvent(Window window)

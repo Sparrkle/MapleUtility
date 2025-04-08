@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows"
-        mc:Ignorable="d" ResizeMode="NoResize" Background="#252f46"
+        mc:Ignorable="d" ResizeMode="NoResize" Background="#1d0d2c"
         Title="Information" Height="550" Width="800">
 
     <Window.Resources>
