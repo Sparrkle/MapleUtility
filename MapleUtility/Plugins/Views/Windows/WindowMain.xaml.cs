@@ -264,6 +264,7 @@ namespace MapleUtility.Plugins.Views.Windows
                 UIBAR_LEFT = timerVM.UIBarLeft,
                 UIBAR_TRANSPARENCY = timerVM.UIBarTransparency,
                 UIBAR_SIZE = timerVM.UIBarSize,
+                UIBAR_VERTICAL = timerVM.UIBarVertical,
                 HILLA_UIBAR_TOP = hillaVM.UIBarTop,
                 HILLA_UIBAR_LEFT = hillaVM.UIBarLeft,
                 HILLA_UIBAR_TRANSPARENCY = hillaVM.UIBarTransparency,
