@@ -123,6 +123,7 @@ namespace MapleUtility.Plugins.Helpers
         public ModifierKeys? PauseAllModifierKey = null;
         public Key? TimerLockKey = null;
         public ModifierKeys? TimerLockModifierKey = null;
+        public bool UIBarVertical = false;
 
         public Key? BackKey = null;
         public ModifierKeys? BackModifierKey = null;
