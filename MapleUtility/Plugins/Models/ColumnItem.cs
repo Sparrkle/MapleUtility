@@ -41,10 +41,22 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        public ColumnItem(int id, string name)
+        private int index = -1;
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                index = value;
+                OnPropertyChanged("Index");
+            }
+        }
+
+        public ColumnItem(int id, string name, int index)
         {
             Id = id;
             Name = name;
+            Index = index;
         }
     }
 }

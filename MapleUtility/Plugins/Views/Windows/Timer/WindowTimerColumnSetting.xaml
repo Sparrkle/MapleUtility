@@ -7,7 +7,16 @@
         mc:Ignorable="d" ResizeMode="NoResize"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:mat="clr-namespace:Telerik.Windows.Controls.MaterialControls;assembly=Telerik.Windows.Controls"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Title="Column Setting" Height="400" Width="300">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="cvsColumnList" Source="{Binding ColumnList}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Index" Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -18,7 +27,7 @@
         <telerik:RadGridView
             Grid.Row="0"
             RowHeight="36"
-            ItemsSource="{Binding ColumnList, Mode=TwoWay}"
+            ItemsSource="{Binding Source={StaticResource cvsColumnList}}"
             HorizontalAlignment="Stretch"
             AutoGenerateColumns="False"
             CanUserFreezeColumns="False"

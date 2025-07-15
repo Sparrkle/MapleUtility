@@ -71,7 +71,7 @@
                 AutoGenerateColumns="False"
                 CanUserFreezeColumns="False"
                 CanUserResizeColumns="False"
-                CanUserReorderColumns="False"
+                CanUserReorderColumns="True"
                 RowIndicatorVisibility="Collapsed"
                 GroupRenderMode="Flat"
                 ShowGroupPanel="False"
@@ -103,7 +103,8 @@
                         IsFilterable="False"
                         IsSortable="False"
                         TextAlignment="Center"
-                        EditTriggers="CellClick">
+                        EditTriggers="CellClick"
+                        IsReorderable="False">
 
                         <telerik:GridViewDataColumn.Header>
                             <Grid HorizontalAlignment="Right">
@@ -127,7 +128,41 @@
 					    DataMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
 					    IsGroupable="False"
 					    IsFilterable="False"
-                        IsSortable="False"/>
+                        IsSortable="False"
+                        IsReorderable="False"/>
+
+                    <telerik:GridViewDataColumn
+                        Width="150"
+					    Header="타이머 사용여부"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True"
+                        IsVisible="{Binding ColumnList[8].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[8].Index, Mode=TwoWay}">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsEnabled, Mode=TwoWay}" HorizontalAlignment="Center"/>
+
+                                    <Button Grid.Column="1" Content="{Binding EnableKeyString}" ToolTip="{Binding EnableKeyString}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.SettingEnableKeyCommand}" >
+                                        <Button.CommandParameter>
+                                            <MultiBinding Converter="{StaticResource MultiParamConverter}">
+                                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}"/>
+                                                <Binding />
+                                            </MultiBinding>
+                                        </Button.CommandParameter>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
                         Width="120"
@@ -136,7 +171,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[0].IsVisible}">
+                        IsVisible="{Binding ColumnList[0].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[0].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
@@ -159,7 +195,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[1].IsVisible}">
+                        IsVisible="{Binding ColumnList[1].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[1].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
@@ -183,7 +220,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[2].IsVisible}">
+                        IsVisible="{Binding ColumnList[2].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[2].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
@@ -201,7 +239,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[3].IsVisible}">
+                        IsVisible="{Binding ColumnList[3].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[3].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.Header>
                             <TextBlock HorizontalAlignment="Center" Text="시간 초기화" ToolTipService.ToolTip="체크 할 경우 타이머가 실행 되고 있는 상태에서 해당 타이머의 키를 누르면 시간이 초기화됩니다."/>
@@ -224,7 +263,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[4].IsVisible}">
+                        IsVisible="{Binding ColumnList[4].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[4].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
@@ -257,7 +297,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[5].IsVisible}">
+                        IsVisible="{Binding ColumnList[5].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[5].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
@@ -299,7 +340,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[6].IsVisible}">
+                        IsVisible="{Binding ColumnList[6].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[6].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
@@ -357,7 +399,8 @@
 					    IsGroupable="False"
 					    IsFilterable="False"
                         IsReadOnly="True"
-                        IsVisible="{Binding ColumnList[7].IsVisible}">
+                        IsVisible="{Binding ColumnList[7].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[7].Index, Mode=TwoWay}">
 
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>

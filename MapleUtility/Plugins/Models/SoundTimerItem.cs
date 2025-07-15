@@ -14,8 +14,30 @@ using System.Xml.Serialization;
 
 namespace MapleUtility.Plugins.Models
 {
+    // TimerKeyItemBase는 기존버전 호환용
     public class SoundTimerItem : TimerKeyItemBase
     {
+        private List<TimerKeyItem> soundKeyItems = new List<TimerKeyItem>();
+        public List<TimerKeyItem> SoundKeyItems
+        {
+            get { return soundKeyItems; }
+            set
+            {
+                soundKeyItems = value;
+                OnPropertyChanged("SoundKeyItems");
+            }
+        }
+
+        public TimerKeyItem SoundKeyItem
+        {
+            get { return SoundKeyItems.FirstOrDefault(o => o.Name == "SoundKey"); }
+        }
+
+        public TimerKeyItem EnableKeyItem
+        {
+            get { return SoundKeyItems.FirstOrDefault(o => o.Name == "EnableKey"); }
+        }
+
         [JsonIgnore]
         public IWavePlayer PrevWavePlayer;
 
@@ -78,6 +100,17 @@ namespace MapleUtility.Plugins.Models
 
                 volume = intValue;
                 OnPropertyChanged("Volume");
+            }
+        }
+
+        private bool isEnabled;
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                isEnabled = value;
+                OnPropertyChanged("IsEnabled");
             }
         }
 
@@ -276,28 +309,6 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        private bool isKeyupEvent;
-        public bool IsKeyupEvent
-        {
-            get { return isKeyupEvent; }
-            set
-            {
-                isKeyupEvent = value;
-                OnPropertyChanged("IsKeyupEvent");
-            }
-        }
-
-        private bool isDisableCommand;
-        public bool IsDisableCommand
-        {
-            get { return isDisableCommand; }
-            set
-            {
-                isDisableCommand = value;
-                OnPropertyChanged("IsDisableCommand");
-            }
-        }
-
         [JsonIgnore]
         public bool IsAlertBeforeTimer { get; set; } = false;
 
@@ -326,7 +337,7 @@ namespace MapleUtility.Plugins.Models
             return new SoundTimerItem()
             {
                 Priority = this.Priority,
-                KeyItems = this.KeyItems.Select(o => o.Clone()).ToList(),
+                SoundKeyItems = this.SoundKeyItems.Select(o => o.Copy() as TimerKeyItem).ToList(),
                 IsTimerLoopChecked = this.IsTimerLoopChecked,
                 IsTimerResetTimeChecked = this.IsTimerResetTimeChecked,
                 TimerTime = this.TimerTime,

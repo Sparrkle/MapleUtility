@@ -490,6 +490,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand OpenUIBarCommand { get; set; }
         public ICommand CloseCommand { get; set; }
         public ICommand SettingKeyCommand { get; set; }
+        public ICommand SettingEnableKeyCommand { get; set; }
         #endregion
 
         private WindowMain MainWindow;
@@ -510,6 +511,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
             CloseCommand = new RelayCommand(o => CloseEvent((Window) o));
             SettingKeyCommand = new RelayCommand(o => SettingKeyEvent(o));
+            //SettingEnableKeyCommand = new RelayCommand(o => SettingEnableKeyEvent(o));
 
             KeyItems.Add(new TimerKeyItem("TimerPausedKey", delegate ()
             {
@@ -606,14 +608,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 ColumnList = new ObservableCollection<ColumnItem>()
                 {
-                    new ColumnItem(1, "단축키 설정"),
-                    new ColumnItem(2, "타이머 시간"),
-                    new ColumnItem(3, "자동 반복"),
-                    new ColumnItem(4, "시간 초기화"),
-                    new ColumnItem(5, "이미지"),
-                    new ColumnItem(6, "알림 사운드"),
-                    new ColumnItem(7, "미리 알림 사운드"),
-                    new ColumnItem(8, "음량 조절"),
+                    new ColumnItem(1, "단축키 설정", 3),
+                    new ColumnItem(2, "타이머 시간", 4),
+                    new ColumnItem(3, "자동 반복", 5),
+                    new ColumnItem(4, "시간 초기화", 6),
+                    new ColumnItem(5, "이미지", 7),
+                    new ColumnItem(6, "알림 사운드", 8),
+                    new ColumnItem(7, "미리 알림 사운드", 9),
+                    new ColumnItem(8, "음량 조절", 10),
+                    new ColumnItem(9, "타이머 사용여부", 2),
                 };
             }
             else
@@ -621,8 +624,16 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 // 이전 데이터 호환
                 if (settingItem.ColumnList.Count <= 6)
                 {
-                    settingItem.ColumnList.Add(new ColumnItem(7, "미리 알림 사운드"));
-                    settingItem.ColumnList.Add(new ColumnItem(8, "음량 조절"));
+                    settingItem.ColumnList.Add(new ColumnItem(7, "미리 알림 사운드", 9));
+                    settingItem.ColumnList.Add(new ColumnItem(8, "음량 조절", 10));
+                }
+                // 이전 데이터 호환
+                if (settingItem.ColumnList.Count <= 8)
+                {
+                    var index = 3;
+                    foreach(var column in settingItem.ColumnList)
+                        column.Index = index++;
+                    settingItem.ColumnList.Add(new ColumnItem(9, "타이머 사용여부", 2));
                 }
                 ColumnList = settingItem.ColumnList;
             }
@@ -893,7 +904,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if (!IsTimerON || IsTimerPaused || IsTimerLocked)
                 return;
 
-            foreach (var timer in PresetTimerList.Where(o => o.IsKeyupEvent == isKeyupEvent))
+            foreach (var timer in PresetTimerList.Where(o => o.SoundKeyItem.IsKeyupEvent == isKeyupEvent))
             {
                 if (timer.KeyItems.Count() == 0 || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
                     continue;
@@ -1002,8 +1013,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
                 vm.KeyItems = item.KeyItems.Skip(1).Select(o => o.Clone()).ToList();
             }
-            vm.IsKeyupEvent = item.IsKeyupEvent;
-            vm.IsDisableCommand = item.IsDisableCommand;
+            vm.IsKeyupEvent = item.SoundKeyItem.IsKeyupEvent;
+            vm.IsDisableCommand = item.SoundKeyItem.IsDisableCommand;
             vm.ChangeKeyText();
 
             IsOpenSettingWindow = true;
@@ -1014,8 +1025,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 vm.KeyItems.Add(new KeyItem(vm.ModifierKey, vm.PressedKey, vm.ArrowKeys));
 
             item.KeyItems = vm.KeyItems.Select(o => o.Clone()).ToList();
-            item.IsKeyupEvent = vm.IsKeyupEvent;
-            item.IsDisableCommand = vm.IsDisableCommand;
+            item.SoundKeyItem.IsKeyupEvent = vm.IsKeyupEvent;
+            item.SoundKeyItem.IsDisableCommand = vm.IsDisableCommand;
         }
 
         private void PlaySound(SoundTimerItem item, bool isBeforeSoundItem = false)
