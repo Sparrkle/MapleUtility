@@ -315,7 +315,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             get
             {
                 if (!UIBarVertical)
-                    return 600;
+                    return 1200;
                 else
                     return UIBarWidthSize;
             }
@@ -337,7 +337,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             get
             {
                 if (UIBarVertical)
-                    return 600;
+                    return 1200;
                 else
                     return UIBarHeightSize;
             }
@@ -454,8 +454,8 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 if (value <= 12)
                     uIBarFontSize = 12;
-                else if (value >= 26)
-                    uIBarFontSize = 26;
+                else if (value >= 64)
+                    uIBarFontSize = 64;
                 else
                     uIBarFontSize = value;
                 OnPropertyChanged("UIBarFontSize");
