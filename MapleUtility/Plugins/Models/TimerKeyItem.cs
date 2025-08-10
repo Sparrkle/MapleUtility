@@ -111,7 +111,7 @@ namespace MapleUtility.Plugins.Models
 
         private void KeySettingEvent(Window window)
         {
-            var dialog = new WindowTimerPressKeyboard();
+            var dialog = WindowTimerPressKeyboard.Instance as WindowTimerPressKeyboard;
             var vm = dialog.DataContext as ViewModelTimerPressKeyboard;
 
             dialog.Left = window.Left + (window.ActualWidth - dialog.Width) / 2;

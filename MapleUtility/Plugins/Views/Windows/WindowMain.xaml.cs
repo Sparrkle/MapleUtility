@@ -120,6 +120,9 @@ namespace MapleUtility.Plugins.Views.Windows
 
         private void OnKeyPressed(object sender, GlobalKeyboardHookHelperEventArgs e)
         {
+            if (WindowTimerPressKeyboard.IsWindowVisible)
+                return;
+
             var inputKey = KeyInterop.KeyFromVirtualKey(e.KeyboardData.VirtualCode);
             var modifierKeys = KeyInputHelper.GetModifierKeys(Control.ModifierKeys);
             switch(inputKey)
