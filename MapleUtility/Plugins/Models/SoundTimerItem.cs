@@ -17,25 +17,25 @@ namespace MapleUtility.Plugins.Models
     // TimerKeyItemBase는 기존버전 호환용
     public class SoundTimerItem : TimerKeyItemBase
     {
-        private List<TimerKeyItem> soundKeyItems = new List<TimerKeyItem>();
-        public List<TimerKeyItem> SoundKeyItems
+        private List<TimerKeyItem> timerKeyItems = new List<TimerKeyItem>();
+        public List<TimerKeyItem> TimerKeyItems
         {
-            get { return soundKeyItems; }
+            get { return timerKeyItems; }
             set
             {
-                soundKeyItems = value;
-                OnPropertyChanged("SoundKeyItems");
+                timerKeyItems = value;
+                OnPropertyChanged("TimerKeyItems");
             }
         }
 
         public TimerKeyItem SoundKeyItem
         {
-            get { return SoundKeyItems.FirstOrDefault(o => o.Name == "SoundKey"); }
+            get { return TimerKeyItems.FirstOrDefault(o => o.Name == "SoundKey"); }
         }
 
         public TimerKeyItem EnableKeyItem
         {
-            get { return SoundKeyItems.FirstOrDefault(o => o.Name == "EnableKey"); }
+            get { return TimerKeyItems.FirstOrDefault(o => o.Name == "EnableKey"); }
         }
 
         [JsonIgnore]
@@ -312,6 +312,14 @@ namespace MapleUtility.Plugins.Models
         [JsonIgnore]
         public bool IsAlertBeforeTimer { get; set; } = false;
 
+        public void AddDefaultTimerKeyItems()
+        {
+            TimerKeyItems.Add(new TimerKeyItem("SoundKey"));
+            TimerKeyItems.Add(new TimerKeyItem("EnableKey"));
+            OnPropertyChanged("SoundKeyItem");
+            OnPropertyChanged("EnableKeyItem");
+        }
+
         public void RefreshRemainTime()
         {
             OnPropertyChanged("RemainTime");
@@ -337,9 +345,10 @@ namespace MapleUtility.Plugins.Models
             return new SoundTimerItem()
             {
                 Priority = this.Priority,
-                SoundKeyItems = this.SoundKeyItems.Select(o => o.Copy() as TimerKeyItem).ToList(),
+                TimerKeyItems = this.TimerKeyItems.Select(o => o.Copy() as TimerKeyItem).ToList(),
                 IsTimerLoopChecked = this.IsTimerLoopChecked,
                 IsTimerResetTimeChecked = this.IsTimerResetTimeChecked,
+                IsEnabled = this.IsEnabled,
                 TimerTime = this.TimerTime,
                 Volume = this.Volume,
                 ImageItem = this.ImageItem,

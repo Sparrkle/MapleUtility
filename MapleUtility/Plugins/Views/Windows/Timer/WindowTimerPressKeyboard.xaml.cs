@@ -1,4 +1,5 @@
-﻿using MapleUtility.Plugins.ViewModels.Views.Timer;
+﻿using MapleUtility.Plugins.UserControls;
+using MapleUtility.Plugins.ViewModels.Views.Timer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace MapleUtility.Plugins.Views.Windows.Timer
     /// <summary>
     /// WindowTimerPressKeyboard.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class WindowTimerPressKeyboard : Window
+    public partial class WindowTimerPressKeyboard : UCUniqueWindow
     {
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -28,6 +29,29 @@ namespace MapleUtility.Plugins.Views.Windows.Timer
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        private static UCUniqueWindow instance;
+        public static UCUniqueWindow Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new WindowTimerPressKeyboard();
+                return instance;
+            }
+            set => instance = value;
+        }
+
+        public static bool IsWindowVisible
+        {
+            get { return Instance == null ? false : Instance.IsVisible; }
+        }
+
+        protected override UCUniqueWindow InternalInstance
+        {
+            get { return Instance; }
+            set => Instance = value;
+        }
 
         public WindowTimerPressKeyboard()
         {
