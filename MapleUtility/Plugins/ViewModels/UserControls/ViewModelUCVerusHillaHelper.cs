@@ -418,6 +418,9 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             if (seconds >= 0)
                 IsAlertBeforeTimer = false;
 
+            if (LatestPatternTime == null)
+                return;
+
             LatestPatternTime = LatestPatternTime.Value.Add(new TimeSpan(0, 0, -seconds));
             InternalLatestPatternTime = InternalLatestPatternTime.Value.Add(new TimeSpan(0, 0, seconds));
         }
