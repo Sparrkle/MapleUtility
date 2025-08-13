@@ -87,7 +87,7 @@ namespace MapleUtility.Plugins.Models
             KeySettingCommand = new RelayCommand(o => KeySettingEvent((Window)o));
         }
 
-        public TimerKeyItem(string name)
+        public TimerKeyItem(string name) : this()
         {
             Name = name;
         }
