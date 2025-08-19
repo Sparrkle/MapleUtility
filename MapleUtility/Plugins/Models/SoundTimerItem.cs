@@ -103,7 +103,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
-        private bool isEnabled;
+        private bool isEnabled = true;
         public bool IsEnabled
         {
             get { return isEnabled; }
