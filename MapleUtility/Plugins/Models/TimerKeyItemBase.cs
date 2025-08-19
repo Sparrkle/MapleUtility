@@ -28,7 +28,7 @@ namespace MapleUtility.Plugins.Models
         {
             get
             {
-                if (KeyItems.Count() == 0)
+                if (KeyItems.Where(o => o != null).Count() == 0)
                     return "없음";
                 return string.Join(", ", KeyItems.Select(o => o.KeyString));
             }
