@@ -153,6 +153,7 @@
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
+    <Compile Include="Plugins\Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Plugins\Converters\IsEqualTargetItemConverter.cs" />
     <Compile Include="Plugins\Converters\MinusValueConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />

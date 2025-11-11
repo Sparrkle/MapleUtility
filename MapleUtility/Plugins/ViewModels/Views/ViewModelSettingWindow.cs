@@ -116,6 +116,28 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private List<SortType> uiBarSortList;
+        public List<SortType> UIBarSortList
+        {
+            get { return uiBarSortList; }
+            set
+            {
+                uiBarSortList = value;
+                OnPropertyChanged("UIBarSortList");
+            }
+        }
+
+        private SortType selectedUIBarSort;
+        public SortType SelectedUIBarSort
+        {
+            get { return selectedUIBarSort; }
+            set
+            {
+                selectedUIBarSort = value;
+                OnPropertyChanged("SelectedUIBarSort");
+            }
+        }
+
         public bool IsPresetAllChecked
         {
             get
@@ -427,6 +449,12 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 "스택형",
                 "고정형",
+            };
+
+            UIBarSortList = new List<SortType>()
+            {
+                SortType.RemainTime,
+                SortType.RemainTimeDesc
             };
         }
 

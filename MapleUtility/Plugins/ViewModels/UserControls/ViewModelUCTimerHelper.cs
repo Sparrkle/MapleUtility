@@ -12,6 +12,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -54,6 +56,28 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private ICollectionView orderedPriorityTimerView;
+        public ICollectionView OrderedPriorityTimerView
+        {
+            get { return orderedPriorityTimerView; }
+            set
+            {
+                orderedPriorityTimerView = value; 
+                OnPropertyChanged("OrderedPriorityTimerView");
+            }
+        }
+
+        private ICollectionView orderedRunningTimerView;
+        public ICollectionView OrderedRunningTimerView
+        {
+            get { return orderedRunningTimerView; }
+            set
+            {
+                orderedRunningTimerView = value;
+                OnPropertyChanged("OrderedRunningTimerView");
+            }
+        }
+
         public IEnumerable<SoundTimerItem> PresetTimerList
         {
             get
@@ -61,7 +85,12 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (SelectedPreset == null || TimerList == null)
                     return null;
 
-                return TimerList.Where(o => o.Preset == SelectedPreset);
+                var timerList = TimerList.Where(o => o.Preset == SelectedPreset);
+
+                OrderedPriorityTimerView = CollectionViewSource.GetDefaultView(timerList);
+                OrderedPriorityTimerView.SortDescriptions.Add(new SortDescription("Priority", ListSortDirection.Ascending));
+
+                return timerList;
             }
         }
 
@@ -425,6 +454,18 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private SortType selectedUIBarSort;
+        public SortType SelectedUIBarSort
+        {
+            get { return selectedUIBarSort; }
+            set
+            {
+                selectedUIBarSort = value;
+                OnPropertyChanged("SelectedUIBarSort");
+                ApplyRunningTimerViewSorting();
+            }
+        }
+
         private FontFamily selectedUIBarFont = null;
         public FontFamily SelectedUIBarFont
         {
@@ -528,6 +569,9 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 IsTimerON = !IsTimerON;
             }));
+
+            OrderedRunningTimerView = CollectionViewSource.GetDefaultView(RunningTimerList);
+            ApplyRunningTimerViewSorting();
         }
 
         public void Initialize(WindowMain mainWindow, SettingItem settingItem)
@@ -693,6 +737,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
 
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
+            SelectedUIBarSort = settingItem.SelectedUIBarSort;
             RemainSquareColor = settingItem.RemainSquareColor;
             RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
@@ -897,6 +942,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
             timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
+            timerSettingVM.SelectedUIBarSort = SelectedUIBarSort;
             timerSettingVM.UIBarTransparency = UIBarTransparency;
             timerSettingVM.KeyItems = KeyItems.Select(o => o.Copy() as TimerKeyItem).ToList();
             timerSettingVM.UIBarVertical = UIBarVertical;
@@ -932,6 +978,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
             UIBarTransparency = timerSettingVM.UIBarTransparency;
             SelectedUIBarStyle = timerSettingVM.SelectedUIBarStyle;
+            SelectedUIBarSort = timerSettingVM.SelectedUIBarSort;
             UIBarVertical = timerSettingVM.UIBarVertical;
 
             vm.ChangeSoundList();
@@ -970,6 +1017,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     continue;
 
                 DebugLogHelper.Write(timer.Name + " 타이머 작동되었습니다.");
+                OrderedRunningTimerView.Refresh();
             }
 
             foreach (var timer in PresetTimerList.Where(o => o.EnableKeyItem.IsKeyupEvent == isKeyupEvent))
@@ -1095,6 +1143,23 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             OnPropertyChanged("IsTimerAllChecked");
             OnPropertyChanged("IsRemoveTimerEnabled");
+        }
+
+        private void ApplyRunningTimerViewSorting()
+        {
+            OrderedRunningTimerView.SortDescriptions.Clear();
+
+            switch(SelectedUIBarSort)
+            {
+                case SortType.RemainTime:
+                    OrderedRunningTimerView.SortDescriptions.Add(new SortDescription("RemainTime", ListSortDirection.Ascending));
+                    break;
+                case SortType.RemainTimeDesc:
+                    OrderedRunningTimerView.SortDescriptions.Add(new SortDescription("RemainTime", ListSortDirection.Descending));
+                    break;
+            }
+
+            OrderedRunningTimerView.Refresh();
         }
 
         public void ItemCheckEvent()

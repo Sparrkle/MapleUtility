@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.UserControls.Timer.Setting"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:converter="clr-namespace:MapleUtility.Plugins.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -19,6 +20,7 @@
                 <Image Source="/MapleUtility;component/Plugins/Images/colorcircle.png" Margin="4 0 0 0" Height="18" Width="18" HorizontalAlignment="Left" VerticalAlignment="Center" />
             </Grid>
         </DataTemplate>
+        <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     </UserControl.Resources>
     
     <Grid Margin="5">
@@ -168,6 +170,17 @@
             <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
                 <TextBlock Text="UI Bar 세로표시" VerticalAlignment="Center" Width="270"/>
                 <CheckBox IsChecked="{Binding UIBarVertical}" Margin="5, 0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
+                <TextBlock Text="UI Bar 정렬 설정" VerticalAlignment="Center" Width="270"/>
+                <telerik:RadComboBox ItemsSource="{Binding UIBarSortList}" SelectedItem="{Binding SelectedUIBarSort}" Width="200" VerticalAlignment="Center">
+                    <telerik:RadComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </telerik:RadComboBox.ItemTemplate>
+                </telerik:RadComboBox>
             </StackPanel>
 
         </StackPanel>        
