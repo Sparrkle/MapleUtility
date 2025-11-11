@@ -255,7 +255,7 @@
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent" HorizontalAlignment="Center">
-                                    <CheckBox IsChecked="{Binding IsHideUIBar, Mode=TwoWay}"/>
+                                    <CheckBox IsChecked="{Binding IsHideUIBar, Mode=TwoWay}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.RefreshViewCommand}"/>
                                 </Grid>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
@@ -281,8 +281,7 @@
                                     EmptyText="(이미지 없음)"
                                     DisplayMemberPath="Name"
                                     VerticalContentAlignment="Center"
-                                    Margin="5, 0"
-                                    >
+                                    Margin="5, 0">
 
                                     <telerik:RadComboBox.ClearSelectionButtonContent>
                                         <Grid Width="100" HorizontalAlignment="Left">

@@ -89,6 +89,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
                 OrderedPriorityTimerView = CollectionViewSource.GetDefaultView(timerList);
                 OrderedPriorityTimerView.SortDescriptions.Add(new SortDescription("Priority", ListSortDirection.Ascending));
+                OrderedPriorityTimerView.Filter = o => { var item = o as SoundTimerItem; return !item.IsHideUIBar; };
 
                 return timerList;
             }
@@ -534,6 +535,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand CloseCommand { get; set; }
         public ICommand SettingKeyCommand { get; set; }
         public ICommand SettingEnableKeyCommand { get; set; }
+        public ICommand RefreshViewCommand { get; set; }
         #endregion
 
         private WindowMain MainWindow;
@@ -554,6 +556,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             CheckCommand = new RelayCommand(o => CheckEvent());
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
             CloseCommand = new RelayCommand(o => CloseEvent((Window) o));
+            RefreshViewCommand = new RelayCommand(o => RefreshOrderView());
 
             KeyItems.Add(new TimerKeyItem("TimerPausedKey", delegate ()
             {
@@ -571,6 +574,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }));
 
             OrderedRunningTimerView = CollectionViewSource.GetDefaultView(RunningTimerList);
+            OrderedRunningTimerView.Filter = o => { var item = o as SoundTimerItem; return !item.IsHideUIBar; };
             ApplyRunningTimerViewSorting();
         }
 
@@ -1149,7 +1153,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             OrderedRunningTimerView.SortDescriptions.Clear();
 
-            switch(SelectedUIBarSort)
+            switch (SelectedUIBarSort)
             {
                 case SortType.RemainTime:
                     OrderedRunningTimerView.SortDescriptions.Add(new SortDescription("RemainTime", ListSortDirection.Ascending));
@@ -1159,7 +1163,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     break;
             }
 
-            OrderedRunningTimerView.Refresh();
+            RefreshOrderView();
+        }
+
+        private void RefreshOrderView()
+        {
+            OrderedPriorityTimerView?.Refresh();
+            OrderedRunningTimerView?.Refresh();
         }
 
         public void ItemCheckEvent()
