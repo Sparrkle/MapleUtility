@@ -243,6 +243,26 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
+                        Width="80"
+					    Header="UIBar 숨김"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True"
+                        IsVisible="{Binding ColumnList[10].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[10].Index, Mode=TwoWay}">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsHideUIBar, Mode=TwoWay}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
                         Width="140"
 					    Header="이미지"
                         HeaderTextAlignment="Center"

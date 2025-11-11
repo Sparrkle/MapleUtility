@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -628,12 +629,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     new ColumnItem(2, "타이머 시간", 4),
                     new ColumnItem(3, "자동 반복", 5),
                     new ColumnItem(4, "시간 초기화", 6),
-                    new ColumnItem(5, "이미지", 7),
-                    new ColumnItem(6, "알림 사운드", 8),
-                    new ColumnItem(7, "미리 알림 사운드", 9),
-                    new ColumnItem(8, "음량 조절", 10),
+                    new ColumnItem(11, "타이머 수동실행", 7),
+                    new ColumnItem(5, "이미지", 8),
+                    new ColumnItem(6, "알림 사운드", 9),
+                    new ColumnItem(7, "미리 알림 사운드", 10),
+                    new ColumnItem(8, "음량 조절", 11),
                     new ColumnItem(9, "타이머 사용여부", 2),
-                    new ColumnItem(10, "타이머 수동실행", 11),
+                    new ColumnItem(10, "타이머 수동실행", 12),
                 };
             }
             else
@@ -655,7 +657,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 // 이전 데이터 호환
                 if (settingItem.ColumnList.Count <= 9)
                 {
-                    settingItem.ColumnList.Add(new ColumnItem(10, "타이머 수동실행", 11));
+                    foreach (var column in settingItem.ColumnList.OrderBy(o => o.Index).Skip(5))
+                        column.Index++;
+
+                    settingItem.ColumnList.Add(new ColumnItem(10, "타이머 수동실행", 12));
+                    settingItem.ColumnList.Add(new ColumnItem(11, "UIBar 숨김", 7));
                 }
                 ColumnList = settingItem.ColumnList;
             }
