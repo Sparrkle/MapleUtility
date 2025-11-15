@@ -521,6 +521,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         #region Button Command Variables
         public ICommand ColumnSettingCommand { get; set; }
+        public ICommand ExecuteTimerCommand { get; set; }
         public ICommand AddTimerCommand { get; set; }
         public ICommand RemoveTimerCommand { get; set; }
         public ICommand RemoveRunningTimerCommand { get; set; }
@@ -542,6 +543,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             RunningTimerList = new ObservableCollection<SoundTimerItem>();
 
             ColumnSettingCommand = new RelayCommand(o => ColumnSettingEvent());
+            ExecuteTimerCommand = new RelayCommand(o => ExecuteTimerEvent((SoundTimerItem) o));
             AddTimerCommand = new RelayCommand(o => AddTimerEvent());
             RemoveTimerCommand = new RelayCommand(o => RemoveTimerEvent());
             RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((SoundTimerItem) o));
@@ -675,6 +677,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     new ColumnItem(7, "미리 알림 사운드", 9),
                     new ColumnItem(8, "음량 조절", 10),
                     new ColumnItem(9, "타이머 사용여부", 2),
+                    new ColumnItem(10, "타이머 수동실행", 11),
                 };
             }
             else
@@ -692,6 +695,11 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     foreach(var column in settingItem.ColumnList)
                         column.Index = index++;
                     settingItem.ColumnList.Add(new ColumnItem(9, "타이머 사용여부", 2));
+                }
+                // 이전 데이터 호환
+                if (settingItem.ColumnList.Count <= 9)
+                {
+                    settingItem.ColumnList.Add(new ColumnItem(10, "타이머 수동실행", 11));
                 }
                 ColumnList = settingItem.ColumnList;
             }
@@ -820,6 +828,31 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             window.ShowDialog();
 
             ColumnList = vm.ColumnList;
+        }
+
+        private bool ExecuteTimerEvent(SoundTimerItem timer)
+        {
+            if (timer.SoundItem != null)
+            {
+                if (!timer.SoundItem.IsInternalSound && !File.Exists(timer.SoundItem.Path))
+                    return false;
+            }
+
+            if (timer.EndTime != null && timer.EndTime > DateTime.Now)
+            {
+                if (!timer.IsTimerResetTimeChecked)
+                    return false;
+
+                timer.EndTime = DateTime.Now + timer.TimerTime;
+            }
+            else
+            {
+                timer.EndTime = DateTime.Now + timer.TimerTime;
+
+                if (!RunningTimerList.Any(o => o.GetHashCode() == timer.GetHashCode()))
+                    RunningTimerList.Add(timer);
+            }
+            return true;
         }
 
         private void AddTimerEvent()
@@ -974,27 +1007,9 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, timer.SoundKeyItem))
                     continue;
 
-                if (timer.SoundItem != null)
-                {
-                    if (!timer.SoundItem.IsInternalSound && !File.Exists(timer.SoundItem.Path))
-                        continue;
-                }
+                if (!ExecuteTimerEvent(timer))
+                    continue;
 
-                if (timer.EndTime != null && timer.EndTime > DateTime.Now)
-                {
-                    if (!timer.IsTimerResetTimeChecked)
-                        continue;
-
-                    timer.EndTime = DateTime.Now + timer.TimerTime;
-                }
-                else
-                {
-                    timer.EndTime = DateTime.Now + timer.TimerTime;
-
-                    if (RunningTimerList.Any(o => o.GetHashCode() == timer.GetHashCode()))
-                        continue;
-                    RunningTimerList.Add(timer);
-                }
                 DebugLogHelper.Write(timer.Name + " 타이머 작동되었습니다.");
                 OrderedRunningTimerView.Refresh();
             }
