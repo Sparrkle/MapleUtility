@@ -120,8 +120,7 @@ namespace MapleUtility.Plugins.Models
             {
                 var firstKey = KeyItems.FirstOrDefault().Clone();
                 vm.ModifierKey = firstKey.ModifierKey;
-                vm.PressedKey = firstKey.Key;
-                vm.ArrowKeys = firstKey.ArrowKeys;
+                vm.PressedKeys = firstKey.PressedKeys.ToList();
 
                 vm.KeyItems = KeyItems.Skip(1).Select(o => o.Clone()).ToList();
             }
@@ -131,8 +130,8 @@ namespace MapleUtility.Plugins.Models
 
             dialog.ShowDialog();
 
-            if(vm.ModifierKey != null || vm.PressedKey != null || vm.ArrowKeys.Count() > 0)
-                vm.KeyItems.Add(new KeyItem(vm.ModifierKey, vm.PressedKey, vm.ArrowKeys));
+            if(vm.ModifierKey != null || vm.PressedKeys.Count() > 0)
+                vm.KeyItems.Add(new KeyItem(vm.ModifierKey, vm.PressedKeys));
 
             KeyItems = vm.KeyItems.Select(o => o.Clone()).ToList();
             IsKeyupEvent = vm.IsKeyupEvent;

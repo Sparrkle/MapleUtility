@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace MapleUtility.Plugins.Models
 {
-    public class CommandArrowItem
+    public class CommandItem
     {
         public DateTime PressedTime { get; set; }
         public Key? Key { get; set; }

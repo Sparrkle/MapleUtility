@@ -239,6 +239,17 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        private bool isHideUIBar;
+        public bool IsHideUIBar
+        {
+            get { return isHideUIBar; }
+            set
+            {
+                isHideUIBar = value;
+                OnPropertyChanged("IsHideUIBar");
+            }
+        }
+
         [JsonIgnore]
         private bool isTimerLoopChecked;
         [JsonIgnore]
@@ -347,6 +358,7 @@ namespace MapleUtility.Plugins.Models
                 Priority = this.Priority,
                 TimerKeyItems = this.TimerKeyItems.Select(o => o.Copy() as TimerKeyItem).ToList(),
                 IsTimerLoopChecked = this.IsTimerLoopChecked,
+                IsHideUIBar = this.IsHideUIBar,
                 IsTimerResetTimeChecked = this.IsTimerResetTimeChecked,
                 IsEnabled = this.IsEnabled,
                 TimerTime = this.TimerTime,

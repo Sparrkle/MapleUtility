@@ -12,14 +12,17 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -53,6 +56,28 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private ICollectionView orderedPriorityTimerView;
+        public ICollectionView OrderedPriorityTimerView
+        {
+            get { return orderedPriorityTimerView; }
+            set
+            {
+                orderedPriorityTimerView = value; 
+                OnPropertyChanged("OrderedPriorityTimerView");
+            }
+        }
+
+        private ICollectionView orderedRunningTimerView;
+        public ICollectionView OrderedRunningTimerView
+        {
+            get { return orderedRunningTimerView; }
+            set
+            {
+                orderedRunningTimerView = value;
+                OnPropertyChanged("OrderedRunningTimerView");
+            }
+        }
+
         public IEnumerable<SoundTimerItem> PresetTimerList
         {
             get
@@ -60,7 +85,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (SelectedPreset == null || TimerList == null)
                     return null;
 
-                return TimerList.Where(o => o.Preset == SelectedPreset);
+                var timerList = TimerList.Where(o => o.Preset == SelectedPreset);
+
+                OrderedPriorityTimerView = CollectionViewSource.GetDefaultView(timerList);
+                OrderedPriorityTimerView.SortDescriptions.Add(new SortDescription("Priority", ListSortDirection.Ascending));
+                OrderedPriorityTimerView.Filter = o => { var item = o as SoundTimerItem; return !item.IsHideUIBar; };
+
+                return timerList;
             }
         }
 
@@ -424,6 +455,18 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private SortType selectedUIBarSort;
+        public SortType SelectedUIBarSort
+        {
+            get { return selectedUIBarSort; }
+            set
+            {
+                selectedUIBarSort = value;
+                OnPropertyChanged("SelectedUIBarSort");
+                ApplyRunningTimerViewSorting();
+            }
+        }
+
         private FontFamily selectedUIBarFont = null;
         public FontFamily SelectedUIBarFont
         {
@@ -480,6 +523,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
         #region Button Command Variables
         public ICommand ColumnSettingCommand { get; set; }
+        public ICommand ExecuteTimerCommand { get; set; }
         public ICommand AddTimerCommand { get; set; }
         public ICommand RemoveTimerCommand { get; set; }
         public ICommand RemoveRunningTimerCommand { get; set; }
@@ -491,6 +535,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public ICommand CloseCommand { get; set; }
         public ICommand SettingKeyCommand { get; set; }
         public ICommand SettingEnableKeyCommand { get; set; }
+        public ICommand RefreshViewCommand { get; set; }
         #endregion
 
         private WindowMain MainWindow;
@@ -501,6 +546,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             RunningTimerList = new ObservableCollection<SoundTimerItem>();
 
             ColumnSettingCommand = new RelayCommand(o => ColumnSettingEvent());
+            ExecuteTimerCommand = new RelayCommand(o => ExecuteTimerEvent((SoundTimerItem) o));
             AddTimerCommand = new RelayCommand(o => AddTimerEvent());
             RemoveTimerCommand = new RelayCommand(o => RemoveTimerEvent());
             RemoveRunningTimerCommand = new RelayCommand(o => RemoveRunningTimerEvent((SoundTimerItem) o));
@@ -510,6 +556,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             CheckCommand = new RelayCommand(o => CheckEvent());
             OpenUIBarCommand = new RelayCommand(o => OpenUIBarEvent());
             CloseCommand = new RelayCommand(o => CloseEvent((Window) o));
+            RefreshViewCommand = new RelayCommand(o => RefreshOrderView());
 
             KeyItems.Add(new TimerKeyItem("TimerPausedKey", delegate ()
             {
@@ -525,6 +572,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             {
                 IsTimerON = !IsTimerON;
             }));
+
+            OrderedRunningTimerView = CollectionViewSource.GetDefaultView(RunningTimerList);
+            OrderedRunningTimerView.Filter = o => { var item = o as SoundTimerItem; return !item.IsHideUIBar; };
+            ApplyRunningTimerViewSorting();
         }
 
         public void Initialize(WindowMain mainWindow, SettingItem settingItem)
@@ -626,11 +677,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     new ColumnItem(2, "타이머 시간", 4),
                     new ColumnItem(3, "자동 반복", 5),
                     new ColumnItem(4, "시간 초기화", 6),
-                    new ColumnItem(5, "이미지", 7),
-                    new ColumnItem(6, "알림 사운드", 8),
-                    new ColumnItem(7, "미리 알림 사운드", 9),
-                    new ColumnItem(8, "음량 조절", 10),
+                    new ColumnItem(11, "타이머 수동실행", 7),
+                    new ColumnItem(5, "이미지", 8),
+                    new ColumnItem(6, "알림 사운드", 9),
+                    new ColumnItem(7, "미리 알림 사운드", 10),
+                    new ColumnItem(8, "음량 조절", 11),
                     new ColumnItem(9, "타이머 사용여부", 2),
+                    new ColumnItem(10, "타이머 수동실행", 12),
                 };
             }
             else
@@ -648,6 +701,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     foreach(var column in settingItem.ColumnList)
                         column.Index = index++;
                     settingItem.ColumnList.Add(new ColumnItem(9, "타이머 사용여부", 2));
+                }
+                // 이전 데이터 호환
+                if (settingItem.ColumnList.Count <= 9)
+                {
+                    foreach (var column in settingItem.ColumnList.OrderBy(o => o.Index).Skip(5))
+                        column.Index++;
+
+                    settingItem.ColumnList.Add(new ColumnItem(10, "타이머 수동실행", 12));
+                    settingItem.ColumnList.Add(new ColumnItem(11, "UIBar 숨김", 7));
                 }
                 ColumnList = settingItem.ColumnList;
             }
@@ -679,6 +741,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
 
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
+            SelectedUIBarSort = settingItem.SelectedUIBarSort;
             RemainSquareColor = settingItem.RemainSquareColor;
             RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
@@ -777,6 +840,31 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             ColumnList = vm.ColumnList;
         }
 
+        private bool ExecuteTimerEvent(SoundTimerItem timer)
+        {
+            if (timer.SoundItem != null)
+            {
+                if (!timer.SoundItem.IsInternalSound && !File.Exists(timer.SoundItem.Path))
+                    return false;
+            }
+
+            if (timer.EndTime != null && timer.EndTime > DateTime.Now)
+            {
+                if (!timer.IsTimerResetTimeChecked)
+                    return false;
+
+                timer.EndTime = DateTime.Now + timer.TimerTime;
+            }
+            else
+            {
+                timer.EndTime = DateTime.Now + timer.TimerTime;
+
+                if (!RunningTimerList.Any(o => o.GetHashCode() == timer.GetHashCode()))
+                    RunningTimerList.Add(timer);
+            }
+            return true;
+        }
+
         private void AddTimerEvent()
         {
             var newTimer = new SoundTimerItem();
@@ -858,6 +946,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsShowUIBarTimerName = IsShowUIBarTimerName;
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
             timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
+            timerSettingVM.SelectedUIBarSort = SelectedUIBarSort;
             timerSettingVM.UIBarTransparency = UIBarTransparency;
             timerSettingVM.KeyItems = KeyItems.Select(o => o.Copy() as TimerKeyItem).ToList();
             timerSettingVM.UIBarVertical = UIBarVertical;
@@ -893,26 +982,27 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             IsAlertShowScreenChecked = timerSettingVM.IsAlertShowScreenChecked;
             UIBarTransparency = timerSettingVM.UIBarTransparency;
             SelectedUIBarStyle = timerSettingVM.SelectedUIBarStyle;
+            SelectedUIBarSort = timerSettingVM.SelectedUIBarSort;
             UIBarVertical = timerSettingVM.UIBarVertical;
 
             vm.ChangeSoundList();
         }
 
-        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckTimerKey(commandArrowQueueItem, modifierKeys, inputKey, keyboardState);
+            CheckTimerKey(commandQueueItem, modifierKeys, keyboardState);
         }
 
-        private void CheckTimerKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckTimerKey(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
 
             foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, keyItem))
                     keyItem.KeyCommand.Execute(true);
             }
 
@@ -924,31 +1014,14 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (timer.SoundKeyItem.KeyItems.Count() == 0 || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
                     continue;
 
-                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, timer.SoundKeyItem))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, timer.SoundKeyItem))
                     continue;
 
-                if (timer.SoundItem != null)
-                {
-                    if (!timer.SoundItem.IsInternalSound && !File.Exists(timer.SoundItem.Path))
-                        continue;
-                }
+                if (!ExecuteTimerEvent(timer))
+                    continue;
 
-                if (timer.EndTime != null && timer.EndTime > DateTime.Now)
-                {
-                    if (!timer.IsTimerResetTimeChecked)
-                        continue;
-
-                    timer.EndTime = DateTime.Now + timer.TimerTime;
-                }
-                else
-                {
-                    timer.EndTime = DateTime.Now + timer.TimerTime;
-
-                    if (RunningTimerList.Any(o => o.GetHashCode() == timer.GetHashCode()))
-                        continue;
-                    RunningTimerList.Add(timer);
-                }
                 DebugLogHelper.Write(timer.Name + " 타이머 작동되었습니다.");
+                OrderedRunningTimerView.Refresh();
             }
 
             foreach (var timer in PresetTimerList.Where(o => o.EnableKeyItem.IsKeyupEvent == isKeyupEvent))
@@ -956,7 +1029,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (timer.EnableKeyItem.KeyItems.Count() == 0)
                     continue;
 
-                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, timer.EnableKeyItem))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, timer.EnableKeyItem))
                     continue;
 
                 timer.IsEnabled = !timer.IsEnabled;
@@ -1074,6 +1147,29 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         {
             OnPropertyChanged("IsTimerAllChecked");
             OnPropertyChanged("IsRemoveTimerEnabled");
+        }
+
+        private void ApplyRunningTimerViewSorting()
+        {
+            OrderedRunningTimerView.SortDescriptions.Clear();
+
+            switch (SelectedUIBarSort)
+            {
+                case SortType.RemainTime:
+                    OrderedRunningTimerView.SortDescriptions.Add(new SortDescription("RemainTime", ListSortDirection.Ascending));
+                    break;
+                case SortType.RemainTimeDesc:
+                    OrderedRunningTimerView.SortDescriptions.Add(new SortDescription("RemainTime", ListSortDirection.Descending));
+                    break;
+            }
+
+            RefreshOrderView();
+        }
+
+        private void RefreshOrderView()
+        {
+            OrderedPriorityTimerView?.Refresh();
+            OrderedRunningTimerView?.Refresh();
         }
 
         public void ItemCheckEvent()

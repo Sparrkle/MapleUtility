@@ -7,6 +7,7 @@
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:behaviors="clr-namespace:MapleUtility.Plugins.Behaviors"
              xmlns:converters="clr-namespace:MapleUtility.Plugins.Converters"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
@@ -242,6 +243,26 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
+                        Width="80"
+					    Header="UIBar 숨김"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True"
+                        IsVisible="{Binding ColumnList[10].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[10].Index, Mode=TwoWay}">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsHideUIBar, Mode=TwoWay}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.RefreshViewCommand}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
                         Width="140"
 					    Header="이미지"
                         HeaderTextAlignment="Center"
@@ -260,8 +281,7 @@
                                     EmptyText="(이미지 없음)"
                                     DisplayMemberPath="Name"
                                     VerticalContentAlignment="Center"
-                                    Margin="5, 0"
-                                    >
+                                    Margin="5, 0">
 
                                     <telerik:RadComboBox.ClearSelectionButtonContent>
                                         <Grid Width="100" HorizontalAlignment="Left">
@@ -397,6 +417,28 @@
 
                                     <telerik:RadSlider Value="{Binding Volume}" TickFrequency="10" TickPlacement="BottomRight" Minimum="0" Maximum="100" Grid.Column="0" Margin="0, 0, 5, 0" VerticalAlignment="Center"/>
                                     <TextBox Grid.Column="1" Text="{Binding Volume, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
+                        Width="120"
+					    Header="타이머 수동실행"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True"
+                        IsVisible="{Binding ColumnList[9].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[9].Index, Mode=TwoWay}">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <telerik:RadButton Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.ExecuteTimerCommand}" CommandParameter="{Binding .}">
+                                        <fa:FontAwesome Icon="Play" FontSize="18" Foreground="Black"/>
+                                    </telerik:RadButton>
                                 </Grid>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>

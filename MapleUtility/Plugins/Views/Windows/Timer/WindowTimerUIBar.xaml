@@ -19,19 +19,6 @@
         Top="{Binding UIBarTop, Mode=TwoWay}"  Left="{Binding UIBarLeft, Mode=TwoWay}"
         Width="{Binding UIBarWidthSize, Mode=TwoWay}" Height="{Binding UIBarHeightSize, Mode=TwoWay}">
 
-    <uc:UCUniqueWindow.Resources>
-        <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="RemainTime" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-        <CollectionViewSource x:Key="cvsOrderedPriorityTimerList" Source="{Binding PresetTimerList}">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Priority" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </uc:UCUniqueWindow.Resources>
-
     <Border Background="Transparent" MouseDown="Border_MouseDown">
         <Grid>
             <Grid.RowDefinitions>
@@ -91,10 +78,10 @@
             <telerik:RadListBox Grid.Row="1" BorderThickness="0" Background="Transparent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizing="True">
                 <telerik:RadListBox.Style>
                     <Style TargetType="{x:Type telerik:RadListBox}" BasedOn="{StaticResource RadListBoxStyle}">
-                        <Setter Property="ItemsSource" Value="{Binding Source={StaticResource cvsOrderedRunningTimerList}}"/>
+                        <Setter Property="ItemsSource" Value="{Binding OrderedRunningTimerView}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding SelectedUIBarStyle}" Value="고정형">
-                                <Setter Property="ItemsSource" Value="{Binding Source={StaticResource cvsOrderedPriorityTimerList}}"/>
+                                <Setter Property="ItemsSource" Value="{Binding OrderedPriorityTimerView}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

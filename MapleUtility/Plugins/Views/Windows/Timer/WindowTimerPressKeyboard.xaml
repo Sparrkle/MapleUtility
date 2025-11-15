@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
             
             <CheckBox Grid.Row="0" IsChecked="{Binding IsKeyupEvent}" Content="키를 뗄 때 기준으로 설정"/>
-            <CheckBox Grid.Row="1" IsChecked="{Binding IsDisableCommand}" Content="방향키 커맨드 비활성화"/>
+            <CheckBox Grid.Row="1" IsChecked="{Binding IsDisableCommand}" Content="조합 커맨드 비활성화"/>
         </Grid>
 
         <Button Grid.Row="1" Width="100" Content="추가" Command="{Binding AddKeyCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0, 2"/>

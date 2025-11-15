@@ -515,15 +515,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckHillaKey(commandArrowQueueItem,modifierKeys, inputKey, keyboardState);
+            CheckHillaKey(commandQueueItem, modifierKeys, keyboardState);
         }
 
-        private void CheckHillaKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckHillaKey(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (!IsHelperON)
                 return;
@@ -532,7 +532,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, keyItem))
                     keyItem.KeyCommand.Execute(true);
             }
         }

@@ -153,6 +153,7 @@
     <Compile Include="Plugins\Common\Defines.cs" />
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
+    <Compile Include="Plugins\Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Plugins\Converters\IsEqualTargetItemConverter.cs" />
     <Compile Include="Plugins\Converters\MinusValueConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
@@ -180,8 +181,8 @@
     <Compile Include="Plugins\Models\CapturePriorityItem.cs" />
     <Compile Include="Plugins\Models\CenterUnionCaptureModel.cs" />
     <Compile Include="Plugins\Models\ColumnItem.cs" />
-    <Compile Include="Plugins\Models\CommandArrowItem.cs" />
-    <Compile Include="Plugins\Models\CommandArrowQueueItem.cs" />
+    <Compile Include="Plugins\Models\CommandItem.cs" />
+    <Compile Include="Plugins\Models\CommandQueueItem.cs" />
     <Compile Include="Plugins\Models\ImageItem.cs" />
     <Compile Include="Plugins\Models\KeyItem.cs" />
     <Compile Include="Plugins\Models\PathfindResultItem.cs" />
