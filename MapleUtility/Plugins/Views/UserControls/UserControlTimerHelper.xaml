@@ -243,6 +243,26 @@
                     </telerik:GridViewDataColumn>
 
                     <telerik:GridViewDataColumn
+                        Width="80"
+					    Header="UIBar 숨김"
+                        HeaderTextAlignment="Center"
+					    IsGroupable="False"
+					    IsFilterable="False"
+                        IsReadOnly="True"
+                        IsVisible="{Binding ColumnList[10].IsVisible}"
+                        DisplayIndex="{Binding ColumnList[10].Index, Mode=TwoWay}">
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" HorizontalAlignment="Center">
+                                    <CheckBox IsChecked="{Binding IsHideUIBar, Mode=TwoWay}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.RefreshViewCommand}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn
                         Width="140"
 					    Header="이미지"
                         HeaderTextAlignment="Center"
@@ -261,8 +281,7 @@
                                     EmptyText="(이미지 없음)"
                                     DisplayMemberPath="Name"
                                     VerticalContentAlignment="Center"
-                                    Margin="5, 0"
-                                    >
+                                    Margin="5, 0">
 
                                     <telerik:RadComboBox.ClearSelectionButtonContent>
                                         <Grid Width="100" HorizontalAlignment="Left">
