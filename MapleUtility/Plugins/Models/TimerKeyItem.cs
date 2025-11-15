@@ -151,11 +151,5 @@ namespace MapleUtility.Plugins.Models
 
             return clone;
         }
-
-        public void KeyDataMigration()
-        {
-            foreach(var keyItem in KeyItems)
-                keyItem.KeyDataMigration();
-        }
     }
 }

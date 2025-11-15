@@ -34,6 +34,9 @@ namespace MapleUtility.Plugins.Models
                 key = value;
                 OnPropertyChanged("Key");
                 OnPropertyChanged("KeyString");
+
+                if(value != null)
+                    KeyDataMigration();
             }
         }
 
@@ -47,6 +50,7 @@ namespace MapleUtility.Plugins.Models
                 arrowKeys = value;
                 OnPropertyChanged("ArrowKeys");
                 OnPropertyChanged("KeyString");
+                KeyDataMigration();
             }
         }
 

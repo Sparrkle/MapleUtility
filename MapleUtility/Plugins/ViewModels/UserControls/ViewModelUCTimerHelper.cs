@@ -588,10 +588,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 // 데이터 오류 수정
                 foreach(var timerKey in timer.TimerKeyItems)
                     timerKey.KeyItems = timerKey.KeyItems.Where(o => o != null).ToList();
-
-                // 이전 데이터 호환
-                foreach (var timerKey in timer.TimerKeyItems)
-                    timerKey.KeyDataMigration();
             }
 
             if (settingItem.PresetList == null)
