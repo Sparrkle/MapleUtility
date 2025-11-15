@@ -677,13 +677,13 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                     new ColumnItem(2, "타이머 시간", 4),
                     new ColumnItem(3, "자동 반복", 5),
                     new ColumnItem(4, "시간 초기화", 6),
-                    new ColumnItem(11, "타이머 수동실행", 7),
                     new ColumnItem(5, "이미지", 8),
                     new ColumnItem(6, "알림 사운드", 9),
                     new ColumnItem(7, "미리 알림 사운드", 10),
                     new ColumnItem(8, "음량 조절", 11),
                     new ColumnItem(9, "타이머 사용여부", 2),
                     new ColumnItem(10, "타이머 수동실행", 12),
+                    new ColumnItem(11, "UIBar 숨김", 7),
                 };
             }
             else
@@ -840,7 +840,18 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             ColumnList = vm.ColumnList;
         }
 
-        private bool ExecuteTimerEvent(SoundTimerItem timer)
+        private void ExecuteTimerEvent(SoundTimerItem timer)
+        {
+            if (!IsTimerON || IsTimerPaused || IsTimerLocked)
+                return;
+
+            if (timer.SoundKeyItem.KeyItems.Count() == 0 || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
+                return;
+
+            ExecuteTimer(timer);
+        }
+
+        private bool ExecuteTimer(SoundTimerItem timer)
         {
             if (timer.SoundItem != null)
             {
@@ -1017,7 +1028,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, timer.SoundKeyItem))
                     continue;
 
-                if (!ExecuteTimerEvent(timer))
+                if (!ExecuteTimer(timer))
                     continue;
 
                 DebugLogHelper.Write(timer.Name + " 타이머 작동되었습니다.");
