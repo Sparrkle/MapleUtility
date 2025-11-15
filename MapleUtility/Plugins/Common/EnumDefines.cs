@@ -12,6 +12,14 @@ namespace MapleUtility.Plugins.Common
         END
     }
 
+    public enum SortType
+    {
+        [Description("남은 시간 오름차순")]
+        RemainTime,
+        [Description("남은 시간 내림차순")]
+        RemainTimeDesc,
+    }
+
     public enum CharacterType
     {
         [Description("무관")]
