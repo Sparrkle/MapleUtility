@@ -380,15 +380,15 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckKalosKey(commandArrowQueueItem, modifierKeys, inputKey, keyboardState);
+            CheckKalosKey(commandQueueItem, modifierKeys, keyboardState);
         }
 
-        private void CheckKalosKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckKalosKey(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (!IsHelperON)
                 return;
@@ -396,7 +396,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
             foreach (var keyItem in instantKeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, keyItem))
                     keyItem.KeyCommand.Execute(true);
             }
         }

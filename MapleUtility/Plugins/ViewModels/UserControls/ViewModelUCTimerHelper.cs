@@ -588,6 +588,10 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 // 데이터 오류 수정
                 foreach(var timerKey in timer.TimerKeyItems)
                     timerKey.KeyItems = timerKey.KeyItems.Where(o => o != null).ToList();
+
+                // 이전 데이터 호환
+                foreach (var timerKey in timer.TimerKeyItems)
+                    timerKey.KeyDataMigration();
             }
 
             if (settingItem.PresetList == null)
@@ -898,21 +902,21 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             vm.ChangeSoundList();
         }
 
-        public void KeyEvent(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        public void KeyEvent(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             if (IsOpenSettingWindow)
                 return;
 
-            CheckTimerKey(commandArrowQueueItem, modifierKeys, inputKey, keyboardState);
+            CheckTimerKey(commandQueueItem, modifierKeys, keyboardState);
         }
 
-        private void CheckTimerKey(CommandArrowQueueItem commandArrowQueueItem, ModifierKeys modifierKeys, Key inputKey, GlobalKeyboardHookHelper.KeyboardState keyboardState)
+        private void CheckTimerKey(CommandQueueItem commandQueueItem, ModifierKeys modifierKeys, GlobalKeyboardHookHelper.KeyboardState keyboardState)
         {
             var isKeyupEvent = keyboardState == GlobalKeyboardHookHelper.KeyboardState.KeyUp;
 
             foreach (var keyItem in KeyItems.Where(o => o.IsKeyupEvent == isKeyupEvent))
             {
-                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, keyItem))
+                if (KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, keyItem))
                     keyItem.KeyCommand.Execute(true);
             }
 
@@ -924,7 +928,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (timer.SoundKeyItem.KeyItems.Count() == 0 || !timer.TimerTime.HasValue || timer.TimerTime.Value.TotalSeconds <= 0)
                     continue;
 
-                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, timer.SoundKeyItem))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, timer.SoundKeyItem))
                     continue;
 
                 if (timer.SoundItem != null)
@@ -956,7 +960,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
                 if (timer.EnableKeyItem.KeyItems.Count() == 0)
                     continue;
 
-                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandArrowQueueItem, modifierKeys, inputKey, timer.EnableKeyItem))
+                if (!KeyInputHelper.CheckPressModifierAndNormalKey(commandQueueItem, modifierKeys, timer.EnableKeyItem))
                     continue;
 
                 timer.IsEnabled = !timer.IsEnabled;

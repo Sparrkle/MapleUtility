@@ -26,7 +26,7 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
         {
             get
             {
-                return KeyTextHelper.ConvertKeyText(ModifierKey, PressedKey, ArrowKeys, "지정할 단축키를 입력해주세요.");
+                return KeyTextHelper.ConvertKeyText(ModifierKey, PressedKeys, "지정할 단축키를 입력해주세요.");
             }
         }
 
@@ -42,8 +42,7 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
         }
 
         public ModifierKeys? ModifierKey = null;
-        public Key? PressedKey = null;
-        public List<Key> ArrowKeys = new List<Key>();
+        public List<Key> PressedKeys = new List<Key>();
 
         private bool isDisableCommand;
         public bool IsDisableCommand
@@ -82,18 +81,16 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
 
         private void AddKeyEvent()
         {
-            KeyItems.Add(new KeyItem(ModifierKey, PressedKey, ArrowKeys));
+            KeyItems.Add(new KeyItem(ModifierKey, PressedKeys));
             ModifierKey = null;
-            PressedKey = null;
-            ArrowKeys.Clear();
+            PressedKeys.Clear();
             ChangeKeyText();
         }
 
         private void KeyClearEvent()
         {
             ModifierKey = null;
-            PressedKey = null;
-            ArrowKeys.Clear();
+            PressedKeys.Clear();
             KeyItems.Clear();
             ChangeKeyText();
         }
@@ -114,41 +111,26 @@ namespace MapleUtility.Plugins.ViewModels.Views.Timer
             else
                 inputKey = e.Key.Equals(Key.ImeProcessed) ? e.ImeProcessedKey : e.Key;
 
-            bool isArrowKey = (inputKey == Key.Up || inputKey == Key.Down || inputKey == Key.Left || inputKey == Key.Right) && !isDisableCommand;
-
-            if(isArrowKey)
+            if (!(inputKey == Key.LeftCtrl) && !(inputKey == Key.LeftAlt) && !(inputKey == Key.LeftShift)
+            && !(inputKey == Key.RightCtrl) && !(inputKey == Key.RightAlt) && !(inputKey == Key.RightShift)
+            && !(inputKey == Key.LWin) && !(inputKey == Key.RWin) && !(inputKey == Key.KanaMode))
             {
-                if (PressedKey != null || ModifierKey != null)
-                    ArrowKeys.Clear();
-
-                ArrowKeys.Add(inputKey);
-                PressedKey = null;
-                ModifierKey = null;
+                if (isDisableCommand)
+                    PressedKeys.Clear();
+                PressedKeys.Add(inputKey);
             }
             else
+                PressedKeys.Clear();
+
+            if (!e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows) && e.KeyboardDevice.Modifiers != ModifierKeys.None)
             {
-                var prevPressedKey = PressedKey;
-
-                if (!(inputKey == Key.LeftCtrl) && !(inputKey == Key.LeftAlt) && !(inputKey == Key.LeftShift)
-                && !(inputKey == Key.RightCtrl) && !(inputKey == Key.RightAlt) && !(inputKey == Key.RightShift)
-                && !(inputKey == Key.LWin) && !(inputKey == Key.RWin) && !(inputKey == Key.KanaMode))
-                {
-                    if (PressedKey != null && (PressedKey != inputKey || ModifierKey != null))
-                        ArrowKeys.Clear();
-                    PressedKey = inputKey;
-                }
-                else
-                    PressedKey = null;
-
-                if (!e.KeyboardDevice.Modifiers.HasFlag(ModifierKeys.Windows) && e.KeyboardDevice.Modifiers != ModifierKeys.None)
-                {
-                    if ((ModifierKey != null && !e.KeyboardDevice.Modifiers.HasFlag(ModifierKey)) || (prevPressedKey != null && prevPressedKey != PressedKey))
-                        ArrowKeys.Clear();
+                if(isDisableCommand || PressedKeys.Count() == 0)
                     ModifierKey = e.KeyboardDevice.Modifiers;
-                }
                 else
-                    ModifierKey = null;
+                    ModifierKey = (ModifierKey == null ? ModifierKeys.None : ModifierKey) | e.KeyboardDevice.Modifiers;
             }
+            else if(isDisableCommand)
+                ModifierKey = null;
 
             ChangeKeyText();
         }

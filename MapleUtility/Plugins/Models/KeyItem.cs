@@ -24,6 +24,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        // 구버전 호환
         private Key? key = null;
         public Key? Key
         {
@@ -36,6 +37,7 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        // 구버전 호환
         private List<Key> arrowKeys = new List<Key>();
         public List<Key> ArrowKeys
         {
@@ -48,12 +50,24 @@ namespace MapleUtility.Plugins.Models
             }
         }
 
+        private List<Key> pressedKeys = new List<Key>();
+        public List<Key> PressedKeys
+        {
+            get { return pressedKeys; }
+            set
+            {
+                pressedKeys = value;
+                OnPropertyChanged("PressedKeys");
+                OnPropertyChanged("KeyString");
+            }
+        }
+
         [JsonIgnore]
         public string KeyString
         {
             get
             {
-                return KeyTextHelper.ConvertKeyText(ModifierKey, Key, ArrowKeys, "없음");
+                return KeyTextHelper.ConvertKeyText(ModifierKey, PressedKeys, "없음");
             }
         }
 
@@ -62,26 +76,51 @@ namespace MapleUtility.Plugins.Models
 
         }
 
+        public KeyItem(ModifierKeys? modifierKey, List<Key> pressedKeys)
+        {
+            ModifierKey = modifierKey;
+            PressedKeys = pressedKeys.ToList();
+        }
+
+        // 구버전 호환
         public KeyItem(ModifierKeys? modifierKey, Key? key)
         {
             ModifierKey = modifierKey;
-            Key = key;
-            ArrowKeys = arrowKeys.ToList();
+
+            if (PressedKeys == null)
+                PressedKeys = new List<Key>();
+
+            if (key != null)
+                PressedKeys.Add(key.Value);
         }
 
+        // 구버전 호환
         public KeyItem(ModifierKeys? modifierKey, Key? key, List<Key> arrowKeys) : this(modifierKey, key)
         {
-            ArrowKeys = arrowKeys.ToList();
+            PressedKeys = arrowKeys.ToList();
         }
 
         public KeyItem Clone()
         {
             var clone = new KeyItem();
             clone.ModifierKey = ModifierKey;
-            clone.Key = Key;
-            clone.ArrowKeys = ArrowKeys.ToList();
+            clone.PressedKeys = PressedKeys.ToList();
 
             return clone;
+        }
+
+        public void KeyDataMigration()
+        {
+            if (arrowKeys.Count() > 0)
+                PressedKeys = arrowKeys.ToList();
+            else
+                PressedKeys = new List<Key>();
+
+            if (key != null)
+                PressedKeys.Add(key.Value);
+
+            ArrowKeys.Clear();
+            Key = null;
         }
     }
 }
