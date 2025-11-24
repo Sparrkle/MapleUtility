@@ -30,7 +30,7 @@ namespace MapleUtility.Plugins.Models
             Queue.RemoveAll(o => o.PressedTime <= DateTime.Now);
         }
 
-        public bool Contains(KeyItem item, ModifierKeys modifierKey)
+        public bool Contains(KeyItem item, ModifierKeys modifierKey, bool isDisableCommand)
         {
             if (item.PressedKeys.Count() == 0 && item.ModifierKey == null)
                 return false;
@@ -41,12 +41,14 @@ namespace MapleUtility.Plugins.Models
             {
                 if (item.PressedKeys[i] == Queue[index].Key)
                     findIndex = index;
-                else
+                else if(!isDisableCommand)
                     return false;
 
                 if (findIndex >= 0)
                     i--;
                 if (index == 0)
+                    break;
+                if (isDisableCommand) // 커맨드 비활성화는 마지막 키만 확인하면 됨
                     break;
             }
 
@@ -55,44 +57,52 @@ namespace MapleUtility.Plugins.Models
 
             if(item.ModifierKey != null)
             {
-                var itemModifierKey = item.ModifierKey.Value;
-                if (findIndex == 0) // PressedKey는 있는데 매칭할게 없으니 false
-                    return false;
-                else if(findIndex == -1) // PressedKey는 없으니 처음부터 찾아야함
-                    index = Queue.Count() - 1;
-                else
-                    index = findIndex - 1;
-
-                for(; index >= 0; index--)
+                if(isDisableCommand)
                 {
-                    switch(Queue[index].Key)
+                    if ((modifierKey & item.ModifierKey) != modifierKey)
+                        return false;
+                }
+                else
+                {
+                    var itemModifierKey = item.ModifierKey.Value;
+                    if (findIndex == -1) // PressedKey는 없을 경우 처음부터 찾아야함
+                        index = Queue.Count() - 1;
+                    else if (findIndex == 0) // PressedKey는 있는데 매칭할게 없으니 false
+                        return false;
+                    else
+                        index = findIndex - 1;
+
+                    for (; index >= 0; index--)
                     {
-                        case Key.LeftCtrl:
-                        case Key.RightCtrl:
-                            itemModifierKey = ~ModifierKeys.Control & itemModifierKey;
+                        switch (Queue[index].Key)
+                        {
+                            case Key.LeftCtrl:
+                            case Key.RightCtrl:
+                                itemModifierKey = ~ModifierKeys.Control & itemModifierKey;
+                                break;
+                            case Key.LeftAlt:
+                            case Key.RightAlt:
+                                itemModifierKey = ~ModifierKeys.Alt & itemModifierKey;
+                                break;
+                            case Key.LeftShift:
+                            case Key.RightShift:
+                                itemModifierKey = ~ModifierKeys.Shift & itemModifierKey;
+                                break;
+                            case Key.LWin:
+                            case Key.RWin:
+                                itemModifierKey = ~ModifierKeys.Windows & itemModifierKey;
+                                break;
+                            default:
+                                return false;
+                        }
+
+                        if (!itemModifierKey.HasAnyFlags())
                             break;
-                        case Key.LeftAlt:
-                        case Key.RightAlt:
-                            itemModifierKey = ~ModifierKeys.Alt & itemModifierKey;
-                            break;
-                        case Key.LeftShift:
-                        case Key.RightShift:
-                            itemModifierKey = ~ModifierKeys.Shift & itemModifierKey;
-                            break;
-                        case Key.LWin:
-                        case Key.RWin:
-                            itemModifierKey = ~ModifierKeys.Windows & itemModifierKey;
-                            break;
-                        default:
-                            return false;
                     }
 
-                    if (!itemModifierKey.HasAnyFlags())
-                        break;
+                    if (itemModifierKey.HasAnyFlags())
+                        return false;
                 }
-
-                if (itemModifierKey.HasAnyFlags())
-                    return false;
             }
 
             return true;

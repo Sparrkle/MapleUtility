@@ -27,11 +27,13 @@ namespace MapleUtility.Plugins.Helpers
             if (timerKeyItem.KeyItems.Count() == 0)
                 return false;
 
+            var isDisableCommand = timerKeyItem is TimerKeyItem timerItem && timerItem.IsDisableCommand;
+
             foreach(var keyItem in timerKeyItem.KeyItems)
             {
                 var modifierKey = keyItem.ModifierKey;
 
-                if (!commandQueueItem.Contains(keyItem, inputModifierKeys))
+                if (!commandQueueItem.Contains(keyItem, inputModifierKeys, isDisableCommand))
                     continue;
 
                 return true;
