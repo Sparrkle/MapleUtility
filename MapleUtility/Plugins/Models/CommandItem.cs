@@ -11,5 +11,10 @@ namespace MapleUtility.Plugins.Models
     {
         public DateTime PressedTime { get; set; }
         public Key? Key { get; set; }
+
+        public override string ToString()
+        {
+            return Key.ToString();
+        }
     }
 }
