@@ -8,6 +8,7 @@
     xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
     xmlns:controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
     xmlns:fa="http://schemas.fontawesome.io/icons/"
+    xmlns:converters="clr-namespace:MapleUtility.Plugins.Converters"
     x:Class="MapleUtility.Plugins.Views.UserControls.UserControlVerusHillaHelper"
     mc:Ignorable="d" Background="#211d1e">
 
@@ -38,6 +39,7 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
         <Style TargetType="{x:Type telerik1:RadButton}" BasedOn="{StaticResource RadButtonHillaStyle}"/>
+        <converters:IsEqualOrLessThanConverter x:Key="IsEqualOrLessThanConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -135,7 +137,19 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" FontSize="42" Text="다음 패턴까지 남은 시간" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" FontSize="42" Text="{Binding RemainTimeSeconds, StringFormat=\{0\}초}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                            <TextBlock Grid.Column="1" FontSize="42" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
+                                        <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat={}{0:F0}초}"/>
+                                        <Setter Property="Foreground" Value="#f86475"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrLessThanConverter}, ConverterParameter=1}" Value="true">
+                                                <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat={}{0:F1}초}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Grid>
                     </Grid>
 

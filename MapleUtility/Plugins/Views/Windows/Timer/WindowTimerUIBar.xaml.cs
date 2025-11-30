@@ -21,6 +21,8 @@ namespace MapleUtility.Plugins.Views.Windows.Timer
     /// </summary>
     public partial class WindowTimerUIBar : UCUniqueWindow
     {
+        private int UI_TEXT_STEP = 5;
+
         private static UCUniqueWindow instance;
         public static UCUniqueWindow Instance
         {
@@ -54,6 +56,15 @@ namespace MapleUtility.Plugins.Views.Windows.Timer
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
+        }
+
+        private void vbTime_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var viewBox = sender as Viewbox;
+            if (viewBox.ActualWidth <= 0.0)
+                return;
+
+            viewBox.MinWidth = Math.Ceiling(viewBox.ActualWidth / (double)UI_TEXT_STEP) * UI_TEXT_STEP;
         }
     }
 }

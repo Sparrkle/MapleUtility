@@ -111,22 +111,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
-        public string RemainTimeSeconds
-        {
-            get
-            {
-                if (!RemainTime.HasValue)
-                    return "";
-
-                var totalSeconds = RemainTime.Value.TotalSeconds;
-
-                if (totalSeconds > 1.0f)
-                    return totalSeconds.ToString("F0");
-                else
-                    return totalSeconds.ToString("F1");
-            }
-        }
-
         private bool isHelperON;
         public bool IsHelperON
         {
@@ -497,7 +481,6 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
         public void TickEvent(object sender, EventArgs e)
         {
             OnPropertyChanged("RemainTime");
-            OnPropertyChanged("RemainTimeSeconds");
 
             if(RemainTime != null)
             {

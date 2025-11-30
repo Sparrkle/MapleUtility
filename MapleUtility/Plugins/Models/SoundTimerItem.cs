@@ -170,34 +170,17 @@ namespace MapleUtility.Plugins.Models
         }
 
         [JsonIgnore]
-        public TimeSpan? RemainTime
+        public TimeSpan RemainTime
         {
             get
             {
                 if (!EndTime.HasValue)
-                    return null;
+                    return TimeSpan.Zero;
 
                 if (PauseTime.HasValue)
-                    return EndTime - DateTime.Now + (DateTime.Now - PauseTime);
+                    return EndTime.Value - DateTime.Now + (DateTime.Now - PauseTime.Value);
 
-                return EndTime - DateTime.Now;
-            }
-        }
-
-        [JsonIgnore]
-        public string RemainTimeSeconds
-        {
-            get
-            {
-                if (!RemainTime.HasValue)
-                    return "";
-
-                var totalSeconds = RemainTime.Value.TotalSeconds;
-
-                if (totalSeconds > 1.0f)
-                    return totalSeconds.ToString("F0");
-                else
-                    return totalSeconds.ToString("F1");
+                return EndTime.Value - DateTime.Now;
             }
         }
 
@@ -206,10 +189,10 @@ namespace MapleUtility.Plugins.Models
         {
             get
             {
-                if (!RemainTime.HasValue || !TimerTime.HasValue)
+                if (RemainTime.TotalSeconds == 0 || !TimerTime.HasValue)
                     return 359.9f;
 
-                var result = (float)(360.0 * (RemainTime.Value.TotalSeconds / TimerTime.Value.TotalSeconds));
+                var result = (float)(360.0 * (RemainTime.TotalSeconds / TimerTime.Value.TotalSeconds));
                 if (result >= 360.0f)
                     return 359.9f;
 
@@ -334,7 +317,6 @@ namespace MapleUtility.Plugins.Models
         public void RefreshRemainTime()
         {
             OnPropertyChanged("RemainTime");
-            OnPropertyChanged("RemainTimeSeconds");
             OnPropertyChanged("RemainRadius");
         }
 

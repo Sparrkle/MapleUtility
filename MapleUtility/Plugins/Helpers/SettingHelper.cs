@@ -112,6 +112,7 @@ namespace MapleUtility.Plugins.Helpers
         public PresetItem SelectedPreset;
         public string SelectedUIBarStyle = "스택형";
         public SortType SelectedUIBarSort = SortType.RemainTime;
+        public TimeDisplayType SelectedUIBarDisplayType = TimeDisplayType.OnlySeconds;
         public Color RemainSquareColor = Color.FromArgb(88, 0, 50, 100);
         public float RemainBackAlpha = 78;
         public int AlertDuration = 2000;
