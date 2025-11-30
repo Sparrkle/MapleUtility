@@ -20,6 +20,14 @@ namespace MapleUtility.Plugins.Common
         RemainTimeDesc,
     }
 
+    public enum TimeDisplayType
+    {
+        [Description("초만 표시")]
+        OnlySeconds,
+        [Description("분, 초로 표시")]
+        WithMinuteSeconds,
+    }
+
     public enum CharacterType
     {
         [Description("무관")]

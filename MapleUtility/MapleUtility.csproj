@@ -164,8 +164,11 @@
     <Compile Include="Plugins\Common\EnumDefines.cs" />
     <Compile Include="Plugins\Common\ExceptionDefines.cs" />
     <Compile Include="Plugins\Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Plugins\Converters\IsEqualOrGreaterThanConverter.cs" />
+    <Compile Include="Plugins\Converters\IsEqualOrLessThanConverter.cs" />
     <Compile Include="Plugins\Converters\IsEqualTargetItemConverter.cs" />
     <Compile Include="Plugins\Converters\MinusValueConverter.cs" />
+    <Compile Include="Plugins\Converters\NumberFloorConverter.cs" />
     <Compile Include="Plugins\Helpers\AES256EncryptHelper.cs" />
     <Compile Include="Plugins\Helpers\CharacterBlockHelper.cs" />
     <Compile Include="Plugins\Helpers\DebugLogHelper.cs" />

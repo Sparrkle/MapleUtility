@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.Timer"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
+        xmlns:converters="clr-namespace:MapleUtility.Plugins.Converters"
         mc:Ignorable="d"
         ResizeMode="CanResizeWithGrip"
         WindowStyle="None" 
@@ -18,6 +19,12 @@
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Top="{Binding UIBarTop, Mode=TwoWay}"  Left="{Binding UIBarLeft, Mode=TwoWay}"
         Width="{Binding UIBarWidthSize, Mode=TwoWay}" Height="{Binding UIBarHeightSize, Mode=TwoWay}">
+
+    <Window.Resources>
+        <converters:IsEqualOrLessThanConverter x:Key="IsEqualOrLessThanConverter"/>
+        <converters:IsEqualOrGreaterThanConverter x:Key="IsEqualOrGreaterThanConverter"/>
+        <converters:NumberFloorConverter x:Key="NumberFloorConverter"/>
+    </Window.Resources>
 
     <Border Background="Transparent" MouseDown="Border_MouseDown">
         <Grid>
@@ -121,7 +128,7 @@
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarStyle}" Value="고정형"/>
-                                                    <Condition Binding="{Binding RemainTimeSeconds}" Value=""/>
+                                                    <Condition Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrLessThanConverter}, ConverterParameter=0}" Value="true"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <MultiDataTrigger.Setters>
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -167,14 +174,41 @@
                                         </Setter>
                                     </Style>
                                 </StackPanel.Resources>
-                                <uc:UCOutlineTextBlock Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold">
-                                    <uc:UCOutlineTextBlock.Style>
-                                        <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}">
-                                            <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarFont}" />
-                                            <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.UIBarFontSize}" />
-                                        </Style>
-                                    </uc:UCOutlineTextBlock.Style>
-                                </uc:UCOutlineTextBlock>
+                                <Viewbox x:Name="vbTime" StretchDirection="DownOnly" SizeChanged="vbTime_SizeChanged" HorizontalAlignment="Center">
+                                    <uc:UCOutlineTextBlock x:Name="tbTime" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" Margin="5, 0">
+                                        <uc:UCOutlineTextBlock.Style>
+                                            <Style TargetType="{x:Type uc:UCOutlineTextBlock}" BasedOn="{StaticResource BaseOutlineTextBlockStyle}">
+                                                <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarFont}" />
+                                                <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.UIBarFontSize}" />
+                                                <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat=#}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrLessThanConverter}, ConverterParameter=0}" Value="true">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrLessThanConverter}, ConverterParameter=1}" Value="true">
+                                                        <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat=0.#}"/>
+                                                    </DataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarDisplayType}" Value="WithMinuteSeconds"/>
+                                                            <Condition Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrGreaterThanConverter}, ConverterParameter=60}" Value="true"/>
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter Property="Text">
+                                                                <Setter.Value>
+                                                                    <MultiBinding StringFormat="{}{0}m {1:D2}s">
+                                                                        <Binding Path="RemainTime.TotalMinutes" Converter="{StaticResource NumberFloorConverter}"/>
+                                                                        <Binding Path="RemainTime.Seconds"/>
+                                                                    </MultiBinding>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </uc:UCOutlineTextBlock.Style>
+                                    </uc:UCOutlineTextBlock>
+                                </Viewbox>
                                 <uc:UCOutlineTextBlock Text="{Binding Name}" Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.IsShowUIBarTimerName, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Center" Stroke="#bb000000" StrokePosition="Outside" StrokeThickness="2" Fill="White" FontWeight="DemiBold" FontFamily="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.SelectedUIBarFont}" FontSize="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowTimerUIBar}}, Path=DataContext.UIBarNameFontSize}"/>
                             </StackPanel>
                         </Grid>

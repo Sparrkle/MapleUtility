@@ -183,6 +183,17 @@
                 </telerik:RadComboBox>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" Height="30" Margin="0, 2">
+                <TextBlock Text="UI Bar 표시 형식" VerticalAlignment="Center" Width="270"/>
+                <telerik:RadComboBox ItemsSource="{Binding UIBarDisplayTypeList}" SelectedItem="{Binding SelectedUIBarDisplayType}" Width="200" VerticalAlignment="Center">
+                    <telerik:RadComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </telerik:RadComboBox.ItemTemplate>
+                </telerik:RadComboBox>
+            </StackPanel>
+
         </StackPanel>        
     </Grid>
 </UserControl>

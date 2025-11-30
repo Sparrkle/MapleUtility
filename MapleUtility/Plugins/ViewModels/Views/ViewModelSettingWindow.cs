@@ -138,6 +138,28 @@ namespace MapleUtility.Plugins.ViewModels.Views
             }
         }
 
+        private List<TimeDisplayType> uiBarDisplayTypeList;
+        public List<TimeDisplayType> UIBarDisplayTypeList
+        {
+            get { return uiBarDisplayTypeList; }
+            set
+            {
+                uiBarDisplayTypeList = value;
+                OnPropertyChanged("UIBarDisplayTypeList");
+            }
+        }
+
+        private TimeDisplayType selectedUIBarDisplayType;
+        public TimeDisplayType SelectedUIBarDisplayType
+        {
+            get { return selectedUIBarDisplayType; }
+            set
+            {
+                selectedUIBarDisplayType = value;
+                OnPropertyChanged("SelectedUIBarDisplayType");
+            }
+        }
+
         public bool IsPresetAllChecked
         {
             get
@@ -455,6 +477,12 @@ namespace MapleUtility.Plugins.ViewModels.Views
             {
                 SortType.RemainTime,
                 SortType.RemainTimeDesc
+            };
+
+            UIBarDisplayTypeList = new List<TimeDisplayType>()
+            {
+                TimeDisplayType.OnlySeconds,
+                TimeDisplayType.WithMinuteSeconds
             };
         }
 

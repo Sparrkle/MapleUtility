@@ -15,6 +15,7 @@
 
     <UserControl.Resources>
         <converters:MultiParamConverter x:Key="MultiParamConverter"/>
+        <converters:IsEqualOrLessThanConverter x:Key="IsEqualOrLessThanConverter"/>
 
         <CollectionViewSource x:Key="cvsOrderedRunningTimerList" Source="{Binding RunningTimerList}">
             <CollectionViewSource.SortDescriptions>
@@ -526,7 +527,18 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" Text="{Binding RemainTimeSeconds}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
+                                        <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat=#}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrLessThanConverter}, ConverterParameter=1}" Value="true">
+                                                <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat=0.#}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                             <Button Grid.Column="2" Content="✕" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserControlTimerHelper}}, Path=DataContext.RemoveRunningTimerCommand}" CommandParameter="{Binding .}" FontSize="10"  Padding="0, 3"/>
                         </Grid>
                     </DataTemplate>

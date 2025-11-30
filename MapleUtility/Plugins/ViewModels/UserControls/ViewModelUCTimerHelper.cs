@@ -467,6 +467,17 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             }
         }
 
+        private TimeDisplayType selectedUIBarDisplayType;
+        public TimeDisplayType SelectedUIBarDisplayType
+        {
+            get { return selectedUIBarDisplayType; }
+            set
+            {
+                selectedUIBarDisplayType = value;
+                OnPropertyChanged("SelectedUIBarDisplayType");
+            }
+        }
+
         private FontFamily selectedUIBarFont = null;
         public FontFamily SelectedUIBarFont
         {
@@ -742,6 +753,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
 
             SelectedUIBarStyle = settingItem.SelectedUIBarStyle;
             SelectedUIBarSort = settingItem.SelectedUIBarSort;
+            SelectedUIBarDisplayType = settingItem.SelectedUIBarDisplayType;
             RemainSquareColor = settingItem.RemainSquareColor;
             RemainBackAlpha = settingItem.RemainBackAlpha;
             AlertDuration = settingItem.AlertDuration;
@@ -958,6 +970,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             timerSettingVM.IsAlertShowScreenChecked = IsAlertShowScreenChecked;
             timerSettingVM.SelectedUIBarStyle = SelectedUIBarStyle;
             timerSettingVM.SelectedUIBarSort = SelectedUIBarSort;
+            timerSettingVM.SelectedUIBarDisplayType = SelectedUIBarDisplayType;
             timerSettingVM.UIBarTransparency = UIBarTransparency;
             timerSettingVM.KeyItems = KeyItems.Select(o => o.Copy() as TimerKeyItem).ToList();
             timerSettingVM.UIBarVertical = UIBarVertical;
@@ -994,6 +1007,7 @@ namespace MapleUtility.Plugins.ViewModels.UserControls
             UIBarTransparency = timerSettingVM.UIBarTransparency;
             SelectedUIBarStyle = timerSettingVM.SelectedUIBarStyle;
             SelectedUIBarSort = timerSettingVM.SelectedUIBarSort;
+            SelectedUIBarDisplayType = timerSettingVM.SelectedUIBarDisplayType;
             UIBarVertical = timerSettingVM.UIBarVertical;
 
             vm.ChangeSoundList();

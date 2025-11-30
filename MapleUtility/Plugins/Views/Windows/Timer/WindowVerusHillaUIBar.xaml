@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:MapleUtility.Plugins.Views.Windows.Timer"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:helpers="clr-namespace:Telerik.Windows.Controls.Theming.Helpers;assembly=Telerik.Windows.Controls"
+        xmlns:converters="clr-namespace:MapleUtility.Plugins.Converters"
         mc:Ignorable="d"
         WindowStyle="None" 
         Topmost="True" 
@@ -22,6 +23,7 @@
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
             <Setter Property="Foreground" Value="#f86475"/>
         </Style>
+        <converters:IsEqualOrLessThanConverter x:Key="IsEqualOrLessThanConverter"/>
     </uc:UCUniqueWindow.Resources>
 
     <Border Background="Transparent" MouseDown="Border_MouseDown">
@@ -133,7 +135,19 @@
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Grid.Column="0" FontSize="14" Text="다음 패턴까지 남은 시간" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="1" FontSize="14" Text="{Binding RemainTimeSeconds, StringFormat={}{0}초}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="1" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockType}">
+                                            <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat={}{0:F0}초}"/>
+                                            <Setter Property="Foreground" Value="#f86475"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding RemainTime.TotalSeconds, Converter={StaticResource IsEqualOrLessThanConverter}, ConverterParameter=1}" Value="true">
+                                                    <Setter Property="Text" Value="{Binding RemainTime.TotalSeconds, StringFormat={}{0:F1}초}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </Grid>
                         </Grid>
 
